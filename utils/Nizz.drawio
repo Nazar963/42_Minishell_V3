@@ -1,0 +1,94 @@
+<mxfile host="65bd71144e">
+    <diagram id="0k4jsVLorXSa-fQWCVas" name="Page-1">
+        <mxGraphModel dx="2023" dy="1864" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="Working history" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="485" y="600" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=17;" parent="1" source="3" target="27" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=17;" parent="1" source="3" target="29" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="Parsing" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f0a30a;fontColor=#000000;strokeColor=#BD7000;strokeWidth=6;fontSize=17;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="305" y="70" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="44" style="edgeStyle=none;html=1;" edge="1" parent="1" source="4" target="10">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="47" style="edgeStyle=none;html=1;" edge="1" parent="1" source="4" target="2">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="Execute using PATH variable / relative or absolute path" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="305" y="600" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="No \ or ;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#66B2FF;strokeWidth=5;" parent="1" vertex="1">
+                    <mxGeometry x="480" y="70" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;Handle '&amp;nbsp;&lt;span style=&quot;background-color: rgb(13, 17, 23); color: rgb(230, 237, 243); font-family: &amp;quot;Fira Code&amp;quot;, Consolas, &amp;quot;Courier New&amp;quot;, monospace, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace;&quot;&gt;should prevent the shell from interpreting the metacharacters in the quoted sequence&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="520" y="-280" width="210" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;Handle &quot;&amp;nbsp;&lt;span style=&quot;background-color: rgb(13, 17, 23); color: rgb(230, 237, 243); font-family: &amp;quot;Fira Code&amp;quot;, Consolas, &amp;quot;Courier New&amp;quot;, monospace, &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace;&quot;&gt;should prevent the shell from interpreting the metacharacters in the quoted sequence except for $&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="-40" y="-280" width="210" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="Implement redirections:&lt;br&gt;- &amp;lt; should redirect input.&lt;br&gt;- &amp;gt; should redirect output.&lt;br&gt;- &amp;lt;&amp;lt; should be given a delimiter, then read the input until a line containing the delimiter is seen, no history.&lt;br&gt;- &amp;gt;&amp;gt; should redirect the ouput in the appeend mode." style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="245" y="820" width="240" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" style="edgeStyle=none;html=1;" edge="1" parent="1" source="10" target="9">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="Implement pipes |&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="272.5" y="710" width="185" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="Handle environment variables" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="520" y="420" width="185" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="Handle $?" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="272.5" y="-510" width="185" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="49" style="edgeStyle=none;html=1;" edge="1" parent="1" source="13" target="12">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="Handle ctrl+c, ctrl+d, ctrl+\" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="272.5" y="-350" width="185" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="43" style="edgeStyle=none;html=1;" edge="1" parent="1" source="14" target="4">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="48" style="edgeStyle=none;html=1;" edge="1" parent="1" source="14" target="11">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="Handle builtins:&lt;br&gt;- echo with -n&lt;br&gt;- cd with relative or absolute path&lt;br&gt;- pwd with no options&lt;br&gt;export with no options&lt;br&gt;unset with no options&lt;br&gt;env with no options or arguments&lt;br&gt;exit with no options" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="250" y="380" width="230" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" style="edgeStyle=none;html=1;" edge="1" parent="1" source="29" target="14">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="Nizz" style="ellipse;whiteSpace=wrap;html=1;fontSize=17;fillColor=#f0a30a;strokeColor=#BD7000;fontColor=#000000;rounded=0;strokeWidth=6;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="325" y="220" width="80" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=none;" edge="1" parent="1" source="3" target="27">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="305" y="100" as="sourcePoint"/>
+                        <mxPoint x="125" y="-100" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="32" style="edgeStyle=none;html=1;" edge="1" parent="1" source="27" target="8">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" style="edgeStyle=none;html=1;" edge="1" parent="1" source="27" target="7">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" style="edgeStyle=none;html=1;" edge="1" parent="1" source="27" target="13">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="Nata" style="ellipse;whiteSpace=wrap;html=1;fontSize=17;fillColor=#f0a30a;strokeColor=#BD7000;fontColor=#000000;rounded=0;strokeWidth=6;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="325" y="-100" width="80" height="80" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
