@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 12:25:27 by naal-jen          #+#    #+#             */
-/*   Updated: 2022/08/04 12:25:31 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:35:32 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
 
-void	ft_lstclear(t_list **lst, void (*del)(void*))
+void	ft_lstclear(t_token **lst, void (*del)(void*))
 {
-	t_list	*temp1;
+	t_token	*temp1;
 
 	temp1 = *lst;
 	if (!*lst)

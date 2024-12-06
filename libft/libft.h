@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 15:58:14 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/02 19:48:24 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/06 15:57:04 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,14 @@
 
 # include	<stddef.h> // size_t NULL
 # include	<stdlib.h> // malloc free sizeof
-# include   <stdio.h>
-# include   <stdlib.h>
-# include   <stddef.h>
-# include   <sys/types.h>
-# include   <sys/stat.h>
-# include   <fcntl.h>
-# include   <unistd.h>
+# include	<stdio.h>
+# include	<stdlib.h>
+# include	<stddef.h>
+# include	<sys/types.h>
+# include	<sys/stat.h>
+# include	<fcntl.h>
+# include	<unistd.h>
+# include	"../minishell.h"
 
 // -------------------------------------------------------------------------- */
 //                                 <ctype.h>                                  */
@@ -129,38 +130,57 @@ void		ft_putnbr_fd(int n, int fd);
 // ------------------------------------------------------------------------- */
 //                                 Bonus Part                                */
 // ------------------------------------------------------------------------- */
-typedef struct s_list
+
+typedef enum {
+	TOKEN_COMMAND,
+	TOKEN_ARGUMENT,
+	TOKEN_OPTION,
+	TOKEN_PIPE,
+	TOKEN_REDIRECTION_IN,
+	TOKEN_REDIRECTION_OUT,
+	TOKEN_APPEND_OUT,
+	TOKEN_HEREDOC,
+	TOKEN_FILENAME,
+	TOKEN_DELIMITER,
+	TOKEN_BUILTIN,
+	TOKEN_UNKNOWN
+}	TokenType;
+
+typedef struct s_token
 {
-	void			*content;
-	struct s_list	*next;
-}					t_list;
+	char			*content;
+	TokenType		type;
+	struct s_token	*next;
+}					t_token;
 // Allocates with malloc and returns a new node. The member variable ’content’ 
 // is initialized with the value of the parameter ’content’. The variable ’next’
 // is initialized to NULL.
-t_list		*ft_lstnew(void *content);
-// Adds the node ’new’ at the beginning of the list.
-void		ft_lstadd_front(t_list **lst, t_list *new);
-// Counts the number of nodes in a list.
-int			ft_lstsize(t_list *lst);
-// Returns the last node of the list.
-t_list		*ft_lstlast(t_list *lst);
-// Adds the node ’new’ at the end of the list.
-void		ft_lstadd_back(t_list **lst, t_list *new);
+t_token		*ft_lstnew(char *content);
+// Adds the node ’new’ at the beginning of the token.
+void		ft_lstadd_front(t_token **lst, t_token *new);
+// Counts the number of nodes in a token.
+int			ft_lstsize(t_token *lst);
+// Returns the last node of the token.
+t_token		*ft_lstlast(t_token *lst);
+// Adds the node ’new’ at the end of the token.
+void		ft_lstadd_back(t_token **lst, t_token *new);
 // Takes as a parameter a node and frees the memory of the node’s content using
 // the function ’del’ given as a parameter and free the node.
 // The memory of ’next’ must not be freed.
-void		ft_lstdelone(t_list *lst, void (*del)(void*));
+void		ft_lstdelone(t_token *lst, void (*del)(void*));
 // Deletes and frees the given node and every successor of that node, using the
-// function ’del’ and free. Finally, the pointer to the list must be set to NULL
-void		ft_lstclear(t_list **lst, void (*del)(void*));
-// Iterates the list ’lst’ and applies the function ’f’ on the content of each
+// function ’del’ and free. Finally, the pointer to the token must be set to NULL
+void		ft_lstclear(t_token **lst, void (*del)(void*));
+// Iterates the token ’lst’ and applies the function ’f’ on the content of each
 // node.
-void		ft_lstiter(t_list *lst, void (*f)(void *));
-//Iterates the list ’lst’ and applies the function ’f’ on the content of each
-// node. Creates a new list resulting of the successive applications of the
+void		ft_lstiter(t_token *lst, void (*f)(void *));
+//Iterates the token ’lst’ and applies the function ’f’ on the content of each
+// node. Creates a new token resulting of the successive applications of the
 // function ’f’. The ’del’ function is used to delete the content of a node if
 // needed.
-t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+t_token		*ft_lstmap(t_token *lst, void *(*f)(void *), void (*del)(void *));
+
+TokenType	ft_token_type(char *token);
 
 /* -------------------------------------------------------------------------- */
 /*                                Get_next_line                               */

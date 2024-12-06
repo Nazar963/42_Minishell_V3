@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:19:00 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/04 12:46:49 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/06 15:21:52 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	main(int ac, char **av, char **env)
 			free(input);
 			continue ;
 		}
-		tokens = ft_parsing_main(input);
+		tokens = ft_tokenizer_main(input);
 		if (tokens != NULL)
 		{
 			print_mtx(tokens, "Token N ");

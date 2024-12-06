@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:49:23 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/04 12:48:46 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:26:02 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void print_mtx(char **mtx, char *name)
 }
 
 
-char	*trim_input(char *input)
+char	*remove_begin_end_whitespaces(char *input)
 {
 	int		j;
 	char	*new;

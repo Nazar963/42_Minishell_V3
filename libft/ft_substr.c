@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 15:58:14 by naal-jen          #+#    #+#             */
-/*   Updated: 2022/08/06 21:27:58 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/06 13:00:47 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 //#include <stdio.h>
 
-static size_t	strnlen(const char *str, size_t n)
+static size_t	ft_strnlen(const char *str, size_t n)
 {
 	const char	*ptr;
 
@@ -36,7 +36,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (length < start)
 		start = length;
 	s += start;
-	len = strnlen(s, len);
+	len = ft_strnlen(s, len);
 	new_str = (char *)malloc(len + 1);
 	if (!new_str)
 		return (NULL);

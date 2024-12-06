@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 14:21:03 by naal-jen          #+#    #+#             */
-/*   Updated: 2022/08/04 14:21:05 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:35:09 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_lstsize(t_list *lst)
+int	ft_lstsize(t_token *lst)
 {
-	t_list	*fun;
+	t_token	*fun;
 	int		i;
 
 	if (!lst)

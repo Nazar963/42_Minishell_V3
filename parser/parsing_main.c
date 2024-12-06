@@ -1,18 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokensMain.c                                       :+:      :+:    :+:   */
+/*   parsing_main.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:43:55 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/03 21:55:54 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/06 15:56:28 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char **ft_parsing_main(char *input)
+//TODO: Separazione tra parsing e tokenizzazione
+//TODO: integrare la funziona tokenization direttamente dentro ft_token_generator
+//TODO: Inorder to create the right tokens which could be multiple we will need to split
+//TODO - the tokens into multiple matrix arrays inorder to reset the proccess of tokenization
+//TODO - in case of pipes
+//TODO: i modified the ft_lstnew to create a new string from the input string inorder to free tokens at the end.
+
+
+char **ft_token_generator(char *input)
 {
 	char **tokens;
 	char *token;
@@ -31,7 +39,7 @@ char **ft_parsing_main(char *input)
 	t_index = 0;
 	if (input == NULL)
 		return (NULL);
-	clean_input = trim_input(input); // ft_strtrim, spazi dal inizio e alla fine
+	clean_input = remove_begin_end_whitespaces(input); // ft_strtrim, spazi dal inizio e alla fine
 	len = ft_strlen(clean_input);
 
 	//allocazione di memoria per tokens
@@ -129,4 +137,42 @@ char **ft_parsing_main(char *input)
 	free(token);
 	free(clean_input);
 	return (tokens);
+}
+
+t_token	*ft_token_list_without_redirection(char **tokens)
+{
+	t_token	*token;
+	int		i;
+
+	i = 0;
+	token = malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token = ft_lstnew(tokens[i]);
+	token->type = TOKEN_COMMAND;
+	i++;
+	while (tokens[i])
+	{
+		ft_lstadd_back(&token, ft_lstnew(tokens[i]));
+		i++;
+	}
+	return (token);
+}
+
+char	**ft_tokenizer_main(char *input)
+{
+	t_token	*token;
+	char	**tokens;
+
+	token = NULL;
+	tokens = ft_token_generator(input);
+	token = ft_token_list_without_redirection(tokens);
+	while (token)
+	{
+		printf("Token: %s\n", token->content);
+		printf("Type: %d\n", token->type);
+		token = token->next;
+	}
+	exit(0);
+
 }
