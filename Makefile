@@ -6,7 +6,7 @@
 #    By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/02 19:06:12 by naal-jen          #+#    #+#              #
-#    Updated: 2024/12/06 15:58:28 by naal-jen         ###   ########.fr        #
+#    Updated: 2024/12/16 18:17:18 by naal-jen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,13 @@ READLINE = -lreadline
 NAME = minishell
 RM = rm -rf
 
-SRC = main.c parser/parsing_main.c parser/parsing_utils.c utils/free.c signals.c
+SRC = main.c signals.c\
+	builtins/export_print.c\
+	parser/parsing_check.c parser/parsing_generator.c parser/parsing_main.c parser/parsing_types.c parser/parsing_utils.c parser/path_identifier.c\
+	redirections/redirections_main.c\
+	utils/free.c utils/utils.c utils/print.c\
+	execve/execve_main.c\
+	pipes/pipes_main.c
 OBJ = $(SRC:%.c=$(OBJDIR)/%.o)
 
 OBJDIR = .objectFiles

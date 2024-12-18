@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:43:55 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/06 15:56:28 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/14 20:07:38 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,127 +19,82 @@
 //TODO - in case of pipes
 //TODO: i modified the ft_lstnew to create a new string from the input string inorder to free tokens at the end.
 
-
-char **ft_token_generator(char *input)
+void preparsing_check_and_split_input(t_mtx *data, char **env)
 {
-	char **tokens;
-	char *token;
-	int len;
-	int i;  // contatore di input
-	int t_count;//contatore di stringhe dentro char **tokens
-	int t_index; // contatore di caratteri dentro la stringa token
-	char quote; // per tenere virgolette ed apici
-	char twin_char;
-	int j;
-	char *clean_input;
-
-	j = 0;
-	i = 0;
-	t_count = 0;
-	t_index = 0;
-	if (input == NULL)
-		return (NULL);
-	clean_input = remove_begin_end_whitespaces(input); // ft_strtrim, spazi dal inizio e alla fine
-	len = ft_strlen(clean_input);
-
-	//allocazione di memoria per tokens
-	tokens = malloc(sizeof(char *) * 256);//massima quantita di argomenti, visto che non possiamo usare realloc
-	if (!tokens)
-		return (NULL);
-	while (j < 256)
+	while (data->i < data->len) //ciclo per creare tokens
 	{
-		tokens[j] = NULL;
-		j++;
-	}
-	token = malloc(sizeof(char) * len + 1);
-	if (token == NULL)
-	{
-		free(tokens);
-		return (NULL);
-	}
-
-	//ciclo per creare tokens
-	while (i < len)
-	{
-		//se c'e spazio, metti token in tokens
-		if (clean_input[i] == ' ')
+		if(data->str[data->i] == ' ') //se c'e spazio, metti token in tokens
+			ft_token_space(data);
+		else if (data->str[data->i] == '\'' || data->str[data->i] == '\"')
 		{
-			if (t_index > 0)
-			{
-				token[t_index] = '\0'; //per finire il token precedente
-				tokens[t_count] = ft_strdup(token);
-				t_count++;
-				t_index = 0;
-			}
-			i++;
+			ft_token_quote(data, env);
+			if (data->check == 1)
+				return ;
 		}
-		//se ci sono virgolette - cerca un altra virgoletta
-		else if (clean_input[i] == '\'' || clean_input[i] == '\"')
+		else if(data->str[data->i] == '$')
 		{
-			quote = clean_input[i];
-			i++;
-			while (clean_input[i] && clean_input[i] != quote)
-			{
-				token[t_index] = clean_input[i];
-				t_index++;
-				i++;
-			}
-			if (i >= len) // se arrivato alla fine e non ha trovato la virgoletta, deve pulire tutto e stampare errore
-			{
-				printf("Error: missing quote\n");
-				free(token);
-				free_mtx(tokens);
-				free(clean_input);
-				return (NULL);
-				//break ;
-			}
-			i++;
+			ft_expand(data, env);
+			if (data->check == 1)
+				return ;
 		}
+		else if(ft_is_special_char(&data->str[data->i]))
+		{
+			print_error("Error: Unsupported characters or operator '", &data->str[data->i]);
+			data->check = 1;
+			return ;
+		} 
 		// se ci sono operatori (include || e &&)
-		else if (clean_input[i] == '|' || clean_input[i] == '>' || clean_input[i] == '<' || clean_input[i] == '&')
-		{
-			twin_char = clean_input[i];
-			if (t_index > 0)
-			{
-				token[t_index] = '\0';
-				tokens[t_count] = ft_strdup(token);
-				t_count++;
-				t_index = 0;
-			}
-			token[t_index] = clean_input[i];
-			if (clean_input[i + 1] == twin_char)
-			{
-				t_index++;
-				i++;
-				token[t_index] = clean_input[i];
-			}
-			token[t_index + 1] = '\0';
-			tokens[t_count] = ft_strdup(token);
-			t_count++;
-			t_index = 0;
-			i++;
-		}
+		else if (data->str[data->i] == '|' || data->str[data->i] == '>' || data->str[data->i] == '<' || data->str[data->i] == '&')
+			ft_token_operator(data);
 		else
-		{
-			token[t_index] = clean_input[i];
-			t_index++;
-			i++;
-		}
+			data->buffer[data->j++] = data->str[data->i++];
 	}
-	//se ha letto tutto, metti ultimo token e finisci la matrice (null)
-	if (t_index > 0)
-	{
-		token[t_index] = '\0';
-		tokens[t_count] = ft_strdup(token);
-		t_count++;
-	}
-	tokens[t_count] = NULL;
-	free(token);
-	free(clean_input);
-	return (tokens);
 }
 
-t_token	*ft_token_list_without_redirection(char **tokens)
+char **ft_token_generator(char *input, char **env)
+{
+	t_mtx	data;
+
+	ft_tokendata_init(&data, input);
+	if(data.tokens == NULL || data.buffer == NULL)
+		return (NULL);
+	preparsing_check_and_split_input(&data, env); // spazi, virgolette, operatori
+	if (data.check == 1)
+	{
+		free_all_preparsing(&data);
+		return (NULL);
+	}
+	ft_tokens_finish(&data);
+	return (data.tokens);
+}
+
+
+
+void	first_token_type_assigning(t_token **token)
+{
+	if (ft_strncmp((*token)->content, "echo", 4) == 0)
+		(*token)->type = TOKEN_BUILTIN;
+	else if (ft_strncmp((*token)->content, "pwd", 3) == 0)
+		(*token)->type = TOKEN_BUILTIN;
+	else if (ft_strncmp((*token)->content, "cd", 2) == 0)
+		(*token)->type = TOKEN_BUILTIN;
+	else if (ft_strncmp((*token)->content, "export", 6) == 0)
+		(*token)->type = TOKEN_BUILTIN;
+	else if (ft_strncmp((*token)->content, "unset", 5) == 0)
+		(*token)->type = TOKEN_BUILTIN;
+	else if (ft_strncmp((*token)->content, "env", 3) == 0)
+		(*token)->type = TOKEN_BUILTIN;
+	else if (ft_strncmp((*token)->content, "exit", 4) == 0)
+		(*token)->type = TOKEN_BUILTIN;
+	else if (ft_strncmp((*token)->content, "<", 1) == 0)
+		(*token)->type = TOKEN_REDIRECTION_IN;
+	else if (ft_strncmp((*token)->content, ">", 1) == 0)
+		(*token)->type = TOKEN_REDIRECTION_OUT;
+	else
+		(*token)->type = TOKEN_COMMAND;
+}
+
+t_token	*ft_token_list_creation(char **tokens)
 {
 	t_token	*token;
 	int		i;
@@ -149,30 +104,31 @@ t_token	*ft_token_list_without_redirection(char **tokens)
 	if (!token)
 		return (NULL);
 	token = ft_lstnew(tokens[i]);
-	token->type = TOKEN_COMMAND;
-	i++;
-	while (tokens[i])
-	{
+	first_token_type_assigning(&token);
+	while (tokens[++i])
 		ft_lstadd_back(&token, ft_lstnew(tokens[i]));
-		i++;
-	}
 	return (token);
 }
 
-char	**ft_tokenizer_main(char *input)
+t_token	*ft_tokenizer_main(char *input, t_main *main)
 {
 	t_token	*token;
 	char	**tokens;
 
+	(void)main;
 	token = NULL;
-	tokens = ft_token_generator(input);
-	token = ft_token_list_without_redirection(tokens);
-	while (token)
-	{
-		printf("Token: %s\n", token->content);
-		printf("Type: %d\n", token->type);
-		token = token->next;
-	}
-	exit(0);
-
+	tokens = ft_token_generator(input, main->env);
+	// print_mtx(tokens, "Tokens");
+	if (ft_tokens_check(tokens) == 0)
+		token = ft_token_list_creation(tokens);
+	else
+		return (NULL);
+	// while (token)
+	// {
+	// 	printf("Token: %s\n", token->content);
+	// 	printf("Type: %d\n", token->type);
+	// 	token = token->next;
+	// }
+	// exit(0);
+	return (token);
 }

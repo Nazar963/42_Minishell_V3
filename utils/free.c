@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:58:01 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/03 21:50:50 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/14 20:26:43 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,41 @@ void free_mtx(char **mtx)
 		i++;
 	}
 	free(mtx);
+}
+
+void	free_linked_list(t_token *token)
+{
+	t_token	*temp;
+
+	while (token)
+	{
+		temp = token;
+		token = token->next;
+		free(temp->content);
+		free(temp);
+	}
+}
+
+void	free_all(t_main *main)
+{
+	free_mtx(main->env);
+	free_linked_list(main->token);
+}
+
+void free_str(char *str)
+{
+	if (str == NULL)
+		return ;
+	free(str);
+	str = NULL;
+}
+
+void free_all_preparsing (t_mtx *data)
+{
+	if (data->str)
+		free_str(data->str);
+	if (data->buffer)
+		free_str(data->buffer);
+	if (data->tokens)
+		free_mtx(data->tokens);
 }

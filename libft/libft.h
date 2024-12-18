@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 15:58:14 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/06 15:57:04 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/16 19:36:57 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,18 +132,18 @@ void		ft_putnbr_fd(int n, int fd);
 // ------------------------------------------------------------------------- */
 
 typedef enum {
-	TOKEN_COMMAND,
-	TOKEN_ARGUMENT,
-	TOKEN_OPTION,
-	TOKEN_PIPE,
-	TOKEN_REDIRECTION_IN,
-	TOKEN_REDIRECTION_OUT,
-	TOKEN_APPEND_OUT,
-	TOKEN_HEREDOC,
-	TOKEN_FILENAME,
-	TOKEN_DELIMITER,
-	TOKEN_BUILTIN,
-	TOKEN_UNKNOWN
+	TOKEN_COMMAND,			//* 0
+	TOKEN_ARGUMENT,			//* 1
+	TOKEN_OPTION,			//* 2
+	TOKEN_PIPE,				//* 3
+	TOKEN_REDIRECTION_IN,	//* 4
+	TOKEN_REDIRECTION_OUT,	//* 5
+	TOKEN_APPEND_OUT,		//* 6
+	TOKEN_HEREDOC,			//* 7
+	TOKEN_FILENAME,			//* 8
+	TOKEN_DELIMITER,		//* 9
+	TOKEN_BUILTIN,			//* 10
+	TOKEN_UNKNOWN			//* 11 might not be needed.
 }	TokenType;
 
 typedef struct s_token
@@ -156,6 +156,7 @@ typedef struct s_token
 // is initialized with the value of the parameter ’content’. The variable ’next’
 // is initialized to NULL.
 t_token		*ft_lstnew(char *content);
+t_token		*ft_lstnew_for_pipes(t_token *token);
 // Adds the node ’new’ at the beginning of the token.
 void		ft_lstadd_front(t_token **lst, t_token *new);
 // Counts the number of nodes in a token.
@@ -169,7 +170,7 @@ void		ft_lstadd_back(t_token **lst, t_token *new);
 // The memory of ’next’ must not be freed.
 void		ft_lstdelone(t_token *lst, void (*del)(void*));
 // Deletes and frees the given node and every successor of that node, using the
-// function ’del’ and free. Finally, the pointer to the token must be set to NULL
+// function ’del’ and free. Finally, the pointer to the list must be set to NULL
 void		ft_lstclear(t_token **lst, void (*del)(void*));
 // Iterates the token ’lst’ and applies the function ’f’ on the content of each
 // node.
