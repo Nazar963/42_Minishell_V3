@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/16 18:18:16 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/19 10:20:57 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_main
 	char		**env;
 	t_token		*token;
 	int			orig_fd[2];
+	int			pos_fd;
 }				t_main;
 
 //* --------------------------------- Natalie -------------------------------- */
@@ -165,12 +166,21 @@ void		handler(int case_num);
 void		child(t_token **token, char **envp);
 void		ft_execve_main(t_token **token, t_main *main);
 void		error_cmd(char *cmd);
+//£ ---------------------------- execve_main_pipes --------------------------- */
+void		execute_cmd_pipes(char *exec_path, char **cmd, char **envp);
+void		error_cmd_pipes(char *cmd);
+void		add_slash_pipes(char **new_path, char **cmd, char **envp);
+char		**ft_from_list_to_array_pipes(t_token **token);
+void		handle_path_pipes(t_token **token, char **envp);
+void		handler_pipes(int case_num);
+void		ft_execve_main_pipes(t_token **list, t_main *main, int **fds, int pos);
+void		child_pipes(t_token **list, t_main *main, int **fds, int pos);
 
 //* -------------------------------------------------------------------------- */
 //*                                    pipes                                   */
 //* -------------------------------------------------------------------------- */
 //£ ------------------------------- pipes_main ------------------------------- */
 int			ft_check_for_pipes(t_token **token);
-void		ft_pipes_main(t_token **token, t_main *main);
+int			ft_pipes_main(t_token **token, t_main *main);
 
 #endif

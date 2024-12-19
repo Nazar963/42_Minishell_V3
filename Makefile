@@ -6,7 +6,7 @@
 #    By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/02 19:06:12 by naal-jen          #+#    #+#              #
-#    Updated: 2024/12/16 18:17:18 by naal-jen         ###   ########.fr        #
+#    Updated: 2024/12/18 16:50:34 by naal-jen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRC = main.c signals.c\
 	redirections/redirections_main.c\
 	utils/free.c utils/utils.c utils/print.c\
 	execve/execve_main.c\
+	execve/execve_main_pipes.c\
 	pipes/pipes_main.c
 OBJ = $(SRC:%.c=$(OBJDIR)/%.o)
 
