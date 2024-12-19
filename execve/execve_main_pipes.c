@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execve_main.c                                      :+:      :+:    :+:   */
+/*   execve_main_pipes.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/18 16:32:00 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/19 10:38:14 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	execute_cmd(char *exec_path, char **cmd, char **envp)
+void	execute_cmd_pipes(char *exec_path, char **cmd, char **envp)
 {
 	if (execve(exec_path, cmd, envp) == -1)
 	{
@@ -21,14 +21,14 @@ void	execute_cmd(char *exec_path, char **cmd, char **envp)
 	}
 }
 
-void	error_cmd(char *cmd)
+void	error_cmd_pipes(char *cmd)
 {
 	ft_putstr_fd(cmd, 2);
 	ft_putendl_fd(": command not found", 2);
 	exit(EXIT_FAILURE);
 }
 
-void	add_slash(char **new_path, char **cmd, char **envp)
+void	add_slash_pipes(char **new_path, char **cmd, char **envp)
 {
 	int		i;
 	char	*exec_path;
@@ -42,20 +42,20 @@ void	add_slash(char **new_path, char **cmd, char **envp)
 		{
 			exec_path = ft_strjoin(new_path[i], with_slash);
 			if (access(exec_path, F_OK | X_OK) == 0)
-				execute_cmd(exec_path, cmd, envp);
+				execute_cmd_pipes(exec_path, cmd, envp);
 		}
 		if (new_path[i][ft_strlen(new_path[i] + 1)] != '/')
 			new_path[i] = ft_strjoin(new_path[i], "/");
 		exec_path = ft_strjoin(new_path[i], cmd[0]);
 		if (access(exec_path, F_OK | X_OK) == 0)
-			execute_cmd(exec_path, cmd, envp);
+			execute_cmd_pipes(exec_path, cmd, envp);
 		else
 			free(exec_path);
 	}
-	error_cmd(cmd[0]);
+	error_cmd_pipes(cmd[0]);
 }
 
-char	**ft_from_list_to_array(t_token **token)
+char	**ft_from_list_to_array_pipes(t_token **token)
 {
 	t_token	*temp;
 	int		i;
@@ -82,7 +82,7 @@ char	**ft_from_list_to_array(t_token **token)
 	return (cmd);
 }
 
-void	handle_path(t_token **token, char **envp)
+void	handle_path_pipes(t_token **token, char **envp)
 {
 	int		i;
 	char	**new_path;
@@ -92,12 +92,12 @@ void	handle_path(t_token **token, char **envp)
 	while (ft_strnstr(envp[i], "PATH=", 5) == 0)
 		i++;
 	new_path = ft_split(envp[i] + 5, ':');
-	cmd = ft_from_list_to_array(token);
+	cmd = ft_from_list_to_array_pipes(token);
 	// cmd = ft_split(argv[kind], ' ');
-	add_slash(new_path, cmd, envp);
+	add_slash_pipes(new_path, cmd, envp);
 }
 
-void	handler(int case_num)
+void	handler_pipes(int case_num)
 {
 	if (case_num == 1)
 	{
@@ -117,30 +117,44 @@ void	handler(int case_num)
 	return ;
 }
 
-void	child(t_token **token, char **envp)
+void	child_pipes(t_token **list, t_main *main, int **fds, int pos)
 {
-// 	int	fd[2];
 	int	pid1;
 
-	// if (pipe(fd) == -1)
-	// 	handler(2);
 	pid1 = fork();
 	if (pid1 < 0)
-		handler(1);
+		handler_pipes(1);
 	if (pid1 == 0)
 	{
-		// dup2(input_file, 0);
-		// dup2(fd[1], 1);
-		// close(fd[0]);
-		// close(output_file);
-		handle_path(token, envp);
-
+		if (pos == 1)
+		{
+			dup2(fds[main->pos_fd][1], STDOUT_FILENO);
+			close(fds[main->pos_fd][0]);
+		}
+		else if (pos == 2)
+		{
+			dup2(fds[main->pos_fd - 1][0], STDIN_FILENO);
+			dup2(fds[main->pos_fd][1], STDOUT_FILENO);
+		}
+		else if (pos == 3)
+		{
+			dup2(fds[main->pos_fd - 1][0], STDIN_FILENO);
+			dup2(main->orig_fd[1], STDOUT_FILENO);
+			close(fds[main->pos_fd][1]);
+		}
+		// close(fds[main->pos_fd][0]);
+		// close(fds[main->pos_fd][1]);
+		ft_redirections_main(list, main);
+		ft_check_for_builtin(list, main);
+		handle_path_pipes(list, main->env);
+		exit(0);
 	}
+	// close(fds[main->pos_fd][0]);
+	// close(fds[main->pos_fd][1]);
 	waitpid(pid1, NULL, 0);
-
 }
 
-void	ft_execve_main(t_token **token, t_main *main)
+void	ft_execve_main_pipes(t_token **list, t_main *main, int **fds, int pos)
 {
-	child(token, main->env);
+	child_pipes(list, main, fds, pos);
 }

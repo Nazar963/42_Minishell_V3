@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 16:21:45 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/18 09:06:13 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/18 23:33:49 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,18 @@ void	ft_del_node(t_token **token, t_token *delete)
 {
 	t_token	*temp;
 
-	if (token == NULL || *token == NULL)
+	if (token == NULL || *token == NULL || delete == NULL)
 		return;
 
+	if (*token == delete) {
+		*token = delete->next;
+		free(delete->content);
+		free(delete);
+		return;
+	}
+
 	temp = *token;
-	while (temp->next != delete)
+	while (temp->next != NULL && temp->next != delete)
 		temp = temp->next;
 	temp->next = delete->next;
 	free(delete->content);
@@ -50,15 +57,27 @@ void	ft_del_node(t_token **token, t_token *delete)
 void	ft_echo(t_token **token)
 {
 	ft_del_first_node(token);
-	if ((*token)->type == 2)
+	while (*token && (*token)->type != TOKEN_PIPE)
 	{
-		ft_del_first_node(token);
-		printf("%s", (*token)->content);
-	}
-	else if ((*token)->type == 1)
-	{
-		printf("%s\n", (*token)->content);
-		ft_del_first_node(token);
+		if ((*token)->type == 2)
+		{
+			ft_del_first_node(token);
+			if (*token && (*token)->content)
+				printf("%s", (*token)->content);
+			ft_del_first_node(token);
+		}
+		else if ((*token)->type == 1 && (*token)->next == NULL)
+		{
+			printf("%s\n", (*token)->content);
+			ft_del_first_node(token);
+		}
+		else if ((*token)->type == 1)
+		{
+			printf("%s ", (*token)->content);
+			ft_del_first_node(token);
+		}
+		else
+			*token = (*token)->next;
 	}
 }
 
@@ -318,7 +337,8 @@ int	ft_check_for_builtin(t_token **token, t_main *main)
 
 void	ft_path_identifier(t_token *token, t_main *main)
 {
-	// ft_pipes_main(&token, main);
+	if (ft_pipes_main(&token, main) == true)
+		return ;
 	ft_redirections_main(&token, main);
 	ft_check_for_builtin(&token, main);
 	ft_execve_main(&token, main);
