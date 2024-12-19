@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_main.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:43:55 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/14 20:07:38 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/19 11:10:39 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,16 @@ t_token	*ft_token_list_creation(char **tokens)
 	token = ft_lstnew(tokens[i]);
 	first_token_type_assigning(&token);
 	while (tokens[++i])
+	{
+		// if (token_node_controll (tokens[i]) == 0)
 		ft_lstadd_back(&token, ft_lstnew(tokens[i]));
+		// else 
+		// {
+		// 	free(token);
+		// 	token = NULL;
+		// 	return(token);
+		// }
+	}
 	return (token);
 }
 
@@ -118,9 +127,13 @@ t_token	*ft_tokenizer_main(char *input, t_main *main)
 	(void)main;
 	token = NULL;
 	tokens = ft_token_generator(input, main->env);
-	// print_mtx(tokens, "Tokens");
-	if (ft_tokens_check(tokens) == 0)
+	if (tokens && ft_tokens_check(tokens) == 0)
+	{
+		print_mtx(tokens, "Tokens");
 		token = ft_token_list_creation(tokens);
+		if (token == NULL)
+			return(NULL);
+	}
 	else
 		return (NULL);
 	// while (token)

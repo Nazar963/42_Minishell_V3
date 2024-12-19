@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:19:00 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/15 17:37:57 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/19 11:19:53 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	main(int ac, char **av, char **env)
 	t_token	*token;
 
 	(void) **av;
-	(void) **env;
+	//(void) **env;
 	if (ac != 1)
 		return (printf("Error\n"), 0);
 	welcome_mat();
@@ -93,10 +93,9 @@ int	main(int ac, char **av, char **env)
 		ctrl_d(input);
 		if (ft_strlen(input) == 0 || check_only_spaces(&input) == 0)
 			continue ;
-
 		token = ft_tokenizer_main(input, &main);
-		ft_path_identifier(token, &main);
-
+		//ft_path_identifier(token, &main);
+		(void) token ;
 		add_history(input);
 		free(input);
 		input = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_check.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:51:30 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/14 20:23:04 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/19 11:10:57 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int ft_tokens_check(char **tokens)
 				print_error("Error: syntax error near unexpected token `newline'", NULL);
 				return(1);
 			}
-			if (ft_is_operator(tokens[i + 1]))
+			if (ft_is_operator(tokens[i + 1]) || ft_is_special_char(tokens[i + 1]))
 			{
 				print_error("Error: syntax error near unexpected token `", tokens[i + 1]);
 				return(1);
@@ -82,6 +82,15 @@ int ft_tokens_check(char **tokens)
 			print_error("Error: Unsupported character or operator `", tokens[i]);
 			return(1);
 		}
+		//opzioni che iniziano con -
+		// else if(tokens[i][0] == '-' && !ft_is_number(tokens[i]))
+		// {
+		// 	if (ft_is_invalid_option(tokens[i]))
+		// 	{
+		// 		print_error("Error: invalid option '", tokens[i]);
+		// 		return(1);
+		// 	}
+		// }
 		else
 		{
 			last_was_operator = 0;
@@ -89,10 +98,10 @@ int ft_tokens_check(char **tokens)
 		}
 		i++;
 	}
-	// if (last_was_operator)
-	// {
-	// 	print_error("Error: syntax error near unexpected token `newline'", NULL);
-	// 	return(1);
-	// }
+	if (last_was_operator)
+	{
+		print_error("Error: syntax error near unexpected token `newline'", NULL);
+		return(1);
+	}
 	return(0);
 }
