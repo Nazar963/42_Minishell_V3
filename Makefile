@@ -6,7 +6,7 @@
 #    By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/02 19:06:12 by naal-jen          #+#    #+#              #
-#    Updated: 2024/12/18 16:50:34 by naal-jen         ###   ########.fr        #
+#    Updated: 2024/12/20 15:47:42 by naal-jen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ RM = rm -rf
 SRC = main.c signals.c\
 	builtins/export_print.c\
 	parser/parsing_check.c parser/parsing_generator.c parser/parsing_main.c parser/parsing_types.c parser/parsing_utils.c parser/path_identifier.c\
-	redirections/redirections_main.c\
+	redirections/redirections_main.c redirections/redirections_main_pipes.c\
 	utils/free.c utils/utils.c utils/print.c\
 	execve/execve_main.c\
 	execve/execve_main_pipes.c\

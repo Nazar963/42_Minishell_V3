@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/19 12:49:53 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:48:34 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,9 @@ void		ft_redirection_in(t_token **token, t_main *main, t_token *temp);
 void		ft_append_out(t_token **token, t_main *main, t_token *temp);
 void		ft_heredoc(t_token **token, t_main *main, t_token *temp);
 int			ft_redirections_main(t_token **token, t_main *main);
+//£ ------------------------- redirections_main_pipes ------------------------ */
+void		ft_heredoc_pipes(t_token **token, t_token *temp);
+int			ft_herdoc_pipes_main(t_token **token);
 
 //* -------------------------------------------------------------------------- */
 //*                                   execve                                   */

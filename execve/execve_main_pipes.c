@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/19 20:48:30 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:47:12 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void	child_pipes(t_token **list, t_main *main, int **fds, int pos)
 	int	pid1;
 	int	status;
 
+	ft_herdoc_pipes_main(list);
 	pid1 = fork();
 	if (pid1 < 0)
 		handler_pipes(1);

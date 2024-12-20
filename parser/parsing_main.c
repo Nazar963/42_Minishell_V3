@@ -253,12 +253,13 @@ void	assign_token_type(t_token *token, t_token *prev_token)
 		token->type = TOKEN_COMMAND; // dopo pipe sempre  commanda
 	else if (prev_token->type == TOKEN_REDIRECTION_IN
 		|| prev_token->type == TOKEN_REDIRECTION_OUT
-		|| prev_token->type == TOKEN_APPEND_OUT
-		|| prev_token->type == TOKEN_HEREDOC)
+		|| prev_token->type == TOKEN_APPEND_OUT)
 		token->type = TOKEN_FILENAME; // dopo questi solo filename
+	else if (prev_token->type == TOKEN_HEREDOC)
+		token->type = TOKEN_DELIMITER;
 	else if (ft_strncmp(token->content, "-", 1) == 0)
 		token->type = TOKEN_OPTION;
-	else if (ft_strncmp(token->content, "<", 1) == 0)
+	else if (ft_strncmp(token->content, "<", 2) == 0)
 		token->type = TOKEN_REDIRECTION_IN;
 	else if (ft_strncmp(token->content, ">", 1) == 0)
 		token->type = TOKEN_REDIRECTION_OUT;
