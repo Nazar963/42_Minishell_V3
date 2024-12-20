@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/20 15:48:34 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:45:12 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,15 @@ void		set_signals();
 //£ ---------------------------------- free ---------------------------------- */
 void		free_mtx(char **mtx);
 void		free_linked_list(t_token *token);
-void		free_all(t_main *main);
+// void		free_all(t_main *main);
+void		free_all(t_main *main, t_token **token);
 void		free_str(char *str);
 void		free_all_preparsing (t_mtx *data);
 //£ ---------------------------------- utils --------------------------------- */
 char		**ft_realloc(char **mtx, int size);
 int			ft_strlen_mtx(char **mtx);
 void		free_linked_list(t_token *token);
-void		free_all(t_main *main);
+//void		free_all(t_main *main);
 //£ ---------------------------------- print --------------------------------- */
 void		print_error(const char *str, const char *arg);
 void		print_mtx(char **mtx, char *name);
@@ -130,6 +131,7 @@ int			ft_is_pipe(char *token);
 int			ft_is_redirection(char *token);
 int			ft_is_operator(char *token);
 int			ft_is_special_char(char *token);
+int			ft_is_tab(char c, char next);
 //£ ------------------------------ parsing_utils ----------------------------- */
 int			check_only_spaces(char **str);
 char		*remove_begin_end_whitespaces(char *input);

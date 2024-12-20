@@ -175,6 +175,11 @@ void preparsing_check_and_split_input(t_mtx *data, char **env)
 			if (data->check == 1)
 				return ;
 		}
+		else if (ft_is_tab(data->str[data->i], data->str[data->i + 1]))
+		{
+			data->buffer[data->j++] = data->str[data->i++];
+			data->buffer[data->j++] = data->str[data->i++];
+		}
 		else if(ft_is_special_char(&data->str[data->i]))
 		{
 			print_error("Error: Unsupported characters or operator '", &data->str[data->i]);

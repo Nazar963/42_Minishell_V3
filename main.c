@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:19:00 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/19 12:54:30 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/20 17:34:41 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,16 +95,18 @@ int	main(int ac, char **av, char **env)
 		if (ft_strlen(input) == 0 || check_only_spaces(&input) == 0)
 			continue ;
 
+		add_history(input);
 		token = ft_tokenizer_main(input, &main);
+		if (token == NULL)
+			continue ;
 		ft_path_identifier(token, &main);
 
-		add_history(input);
 		free(input);
 		input = NULL;
 	}
 	rl_clear_history();
 	if (input)
 		free(input);
-	free_all(&main);
+	free_all(&main, &token);
 	return (0);
 }

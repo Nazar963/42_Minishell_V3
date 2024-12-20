@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_types.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 16:44:11 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/14 20:15:28 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:19:14 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,60 @@
 
 int ft_is_pipe(char *token)
 {
-	if (ft_strncmp(token, "|", 1) == 0)
+	int n;
+	
+	n = ft_strlen(token);
+	if (ft_strncmp(token, "|", n) == 0)
 		return (1);
 	return (0);
 }
 
 int ft_is_redirection(char *token)
 {
-	if ((ft_strncmp(token, ">", 1) == 0 || ft_strncmp(token, "<", 1) == 0
-		|| ft_strncmp(token, ">>", 2) == 0) || ft_strncmp(token, "<<", 2) == 0)
+	int n;
+	
+	n = ft_strlen(token);
+	if ((ft_strncmp(token, ">", n) == 0 || ft_strncmp(token, "<", n) == 0
+		|| ft_strncmp(token, ">>", n) == 0) || ft_strncmp(token, "<<", n) == 0)
 		return (1);
 	return (0);
 }
 
 int ft_is_operator(char *token)
 {
-	if ((ft_strncmp(token, "|", 1) == 0) || (ft_strncmp(token, ">", 1) == 0) 
-		|| (ft_strncmp(token, ">", 1) == 0) || (ft_strncmp(token, ">>", 2) == 0)
-		|| (ft_strncmp(token, "<<", 2) == 0))
+	int n;
+	
+	n = ft_strlen(token);
+	if ((ft_strncmp(token, "|", n) == 0) || (ft_strncmp(token, ">", n) == 0) 
+		|| (ft_strncmp(token, ">", n) == 0) || (ft_strncmp(token, ">>", n) == 0)
+		|| (ft_strncmp(token, "<<", n) == 0))
 		return (1);
 	return(0);
 }
 
+
 int ft_is_special_char(char *token)
 {
-	if ((ft_strncmp(token, ";", 1) == 0) || (ft_strncmp(token, "\\", 1) == 0))
+	int n;
+
+	n = ft_strlen(token);
+	if (ft_strncmp(token, ";", n) == 0)
+		return(1);
+	else if (ft_strncmp(token, "\n", n) == 0
+		|| ft_strncmp(token, "\v", n) == 0 || ft_strncmp(token, "\b", n) == 0
+		|| ft_strncmp(token, "\r", n) == 0 || ft_strncmp(token, "\t", n) == 0
+		|| ft_strncmp(token, "\f", n) == 0)
+			return (0);
+	else if (ft_strncmp(token, "\\", n) == 0)
+		return(1);
+	return(0);
+}
+
+int ft_is_tab(char c, char next)
+{
+	if ((c == '\\' && next == 'n') || (c == '\\' && next == 'v')
+		|| (c == '\\' && next == 'b') || (c == '\\' && next == 'r')
+		|| (c == '\\' && next == 't') || (c == '\\' && next == 'f'))
 		return(1);
 	return(0);
 }
