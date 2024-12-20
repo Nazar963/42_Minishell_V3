@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/20 16:45:12 by nakoriko         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:05:00 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ void		ft_expand(t_mtx *data, char **env_test);
 void		ft_token_quote(t_mtx *data, char **env_test);
 void		ft_token_operator(t_mtx *data);
 void		ft_tokens_finish(t_mtx *data);
+void		ft_expand_global(t_mtx *data);
 //£ ------------------------------ parsing_main ------------------------------ */
 void		preparsing_check_and_split_input(t_mtx *data, char **env);
 char		**ft_token_generator(char *input, char **env);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_generator.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 13:13:26 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/20 13:25:30 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:12:58 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,17 +152,33 @@ void ft_expand(t_mtx *data, char **env_test)
 		data->buffer[data->j++] = data->str[data->i++];
 }
 
+void ft_expand_global(t_mtx *data)
+{
+	char *str_global;
+
+	str_global = ft_itoa(g_global);
+	if (str_global)
+	{
+		ft_add_to_buffer(data, str_global);
+		data->i = data->i + ft_strlen(str_global) + 1; // non sono sicura se +1;
+		free(str_global);
+		if (data->check == 1)
+			return ;
+	}
+}
+
 void ft_token_quote(t_mtx *data, char **env_test)
 {
-	
-
 	data->quote = data->str[data->i];
 	data->i++;
 	while (data->str[data->i] && data->str[data->i] != data->quote)
 	{
 		if (data->str[data->i] == '$' && data->quote== '\"')
 		{
-			ft_expand(data, env_test);
+			if (data->str[data->i + 1] == '?')
+				ft_expand_global(data);
+			else
+				ft_expand(data, env_test);
 			if (data->check == 1)
 				return ;
 		}
