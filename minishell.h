@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/20 19:05:00 by nakoriko         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:55:31 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void		free_linked_list(t_token *token);
 //£ ---------------------------------- print --------------------------------- */
 void		print_error(const char *str, const char *arg);
 void		print_mtx(char **mtx, char *name);
+void		print_token_list(t_token *token);
 
 //* -------------------------------------------------------------------------- */
 //*                                  builtins                                  */

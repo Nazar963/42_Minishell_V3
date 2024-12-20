@@ -242,13 +242,17 @@ void	first_token_type_assigning(t_token **token)
 
 int is_a_builtin_check(t_token *token)
 {
-	if (ft_strncmp(token->content, "echo", 4) == 0
-		|| ft_strncmp(token->content, "cd", 2) == 0
-		|| ft_strncmp(token->content, "pwd", 3) == 0
-		|| ft_strncmp(token->content, "export", 6) == 0
-		|| ft_strncmp(token->content, "unset", 5) == 0
-		|| ft_strncmp(token->content, "env", 3) == 0 // e invironment? Siamo sicuri che token->content e qquesto? da capire un attimo
-		|| ft_strncmp(token->content, "exit", 4)== 0)
+	int n;
+	
+	n = ft_strlen(token->content);
+
+	if (ft_strncmp(token->content, "echo", n) == 0
+		|| ft_strncmp(token->content, "cd", n) == 0
+		|| ft_strncmp(token->content, "pwd", n) == 0
+		|| ft_strncmp(token->content, "export", n) == 0
+		|| ft_strncmp(token->content, "unset", n) == 0
+		|| ft_strncmp(token->content, "env", n) == 0 // e invironment? Siamo sicuri che token->content e qquesto? da capire un attimo
+		|| ft_strncmp(token->content, "exit", n)== 0)
 		return(1);
 	return (0);
 	
@@ -257,19 +261,21 @@ int is_a_builtin_check(t_token *token)
 // AGGIUNTO PER ASSEGNARE IL TIPO AL NODO PASSATO 
 void	assign_token_type(t_token *token, t_token *prev_token)
 {
-	if (prev_token->type == TOKEN_PIPE)
+	if (prev_token && prev_token->type == TOKEN_PIPE)
 		token->type = TOKEN_COMMAND; // dopo pipe sempre  commanda
-	else if (prev_token->type == TOKEN_REDIRECTION_IN
+	else if (!prev_token)
+		token->type = TOKEN_COMMAND;
+	else if (prev_token && (prev_token->type == TOKEN_REDIRECTION_IN
 		|| prev_token->type == TOKEN_REDIRECTION_OUT
-		|| prev_token->type == TOKEN_APPEND_OUT)
+		|| prev_token->type == TOKEN_APPEND_OUT))
 		token->type = TOKEN_FILENAME; // dopo questi solo filename
-	else if (prev_token->type == TOKEN_HEREDOC)
+	else if (prev_token && prev_token->type == TOKEN_HEREDOC)
 		token->type = TOKEN_DELIMITER;
 	else if (ft_strncmp(token->content, "-", 1) == 0)
 		token->type = TOKEN_OPTION;
 	else if (ft_strncmp(token->content, "<", 2) == 0)
 		token->type = TOKEN_REDIRECTION_IN;
-	else if (ft_strncmp(token->content, ">", 1) == 0)
+	else if (ft_strncmp(token->content, ">", 2) == 0)
 		token->type = TOKEN_REDIRECTION_OUT;
 	else if (ft_strncmp(token->content, ">>", 2) == 0)
 		token->type = TOKEN_APPEND_OUT;
@@ -305,7 +311,8 @@ t_token	*ft_token_list_creation(char **tokens)
 	if (!token)
 		return (NULL);
 	token = ft_lstnew(tokens[i]);
-	first_token_type_assigning(&token);
+	assign_token_type(token, prev_token);
+	//first_token_type_assigning(&token);
 	prev_token = token;
 	while (tokens[++i])
 	{
@@ -333,8 +340,8 @@ t_token	*ft_tokenizer_main(char *input, t_main *main)
 		if (token == NULL)
 		//controllare se devo freare
 			return(NULL);
-		// else 
-		// 	print_token_list(token);
+		else 
+			print_token_list(token);
 	}
 	else
 		return (NULL);

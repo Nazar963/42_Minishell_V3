@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_identifier.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 16:21:45 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/19 20:58:18 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:43:00 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,9 +350,12 @@ void	ft_path_identifier(t_token *token, t_main *main)
 {
 	if (ft_pipes_main(&token, main) == true)
 		return ;
-	ft_redirections_main(&token, main);
-	ft_check_for_builtin(&token, main);
-	ft_execve_main(&token, main);
+	if (token)
+		ft_redirections_main(&token, main);
+	if (token)
+		ft_check_for_builtin(&token, main);
+	if (token)
+		ft_execve_main(&token, main);
 	dup2(main->orig_fd[0], STDIN_FILENO);
 	dup2(main->orig_fd[1], STDOUT_FILENO);
 }

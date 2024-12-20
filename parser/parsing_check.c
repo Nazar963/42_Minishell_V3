@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:51:30 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/20 17:51:36 by nakoriko         ###   ########.fr       */
+/*   Updated: 2024/12/20 21:50:44 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int ft_tokens_check(char **tokens)
 				print_error("Error: syntax error near unexpected token '", tokens[i]);
 				return (1);
 			}
-			if (last_was_operator)
+			if (last_was_operator && i > 0)
 			{
 				print_error("Error: Invalid or misplaced redirection operators", NULL);
 				return(1);
@@ -89,10 +89,10 @@ int ft_tokens_check(char **tokens)
 		}
 		i++;
 	}
-	// if (last_was_operator)
-	// {
-	// 	print_error("Error: syntax error near unexpected token `newline'", NULL);
-	// 	return(1);
-	// }
+	if (last_was_operator)
+	{
+		print_error("Error: syntax error near unexpected token `newline'", NULL);
+		return(1);
+	}
 	return(0);
 }
