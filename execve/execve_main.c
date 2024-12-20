@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/18 16:32:00 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/19 20:41:20 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	execute_cmd(char *exec_path, char **cmd, char **envp)
 	if (execve(exec_path, cmd, envp) == -1)
 	{
 		free_mtx(cmd);
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
 }
 
@@ -119,7 +119,7 @@ void	handler(int case_num)
 
 void	child(t_token **token, char **envp)
 {
-// 	int	fd[2];
+	int	status;
 	int	pid1;
 
 	// if (pipe(fd) == -1)
@@ -136,8 +136,25 @@ void	child(t_token **token, char **envp)
 		handle_path(token, envp);
 
 	}
-	waitpid(pid1, NULL, 0);
-
+	// waitpid(pid1, NULL, 0);
+	waitpid(pid1, &status, 0);
+	// if (WIFEXITED(status))
+	// {
+	// 	if (status == 512)
+	// 		g_global = 2;
+	// 	// else if (status == 32512 && ft_strnstr(inputs[0], "./", 2)) //! Remember for which error do i need to check for this case.
+	// 	// 	g_global = 126;
+	// 	else if (status == 32512)
+	// 		g_global = 127;
+	// 	else if (status == 256)
+	// 		g_global = 127;
+	// }
+	if (WIFEXITED(status))
+		g_global = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_global = 128 + WTERMSIG(status); // Conventionally, 128 + signal number
+	else
+		g_global = 1; // General error
 }
 
 void	ft_execve_main(t_token **token, t_main *main)

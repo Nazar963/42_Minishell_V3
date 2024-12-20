@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 16:21:45 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/18 23:33:49 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/19 20:58:18 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,33 @@ void	ft_echo(t_token **token)
 	ft_del_first_node(token);
 	while (*token && (*token)->type != TOKEN_PIPE)
 	{
-		if ((*token)->type == 2)
+		if ((*token)->type == TOKEN_OPTION)
 		{
 			ft_del_first_node(token);
-			if (*token && (*token)->content)
-				printf("%s", (*token)->content);
+			if (ft_strncmp((*token)->content, "$?", 2) == 0
+				&& ft_strlen((*token)->content) == 2)
+				printf("%d ", g_global);
+			else
+				if (*token && (*token)->content)
+					printf("%s", (*token)->content);
 			ft_del_first_node(token);
 		}
-		else if ((*token)->type == 1 && (*token)->next == NULL)
+		else if ((*token)->type == TOKEN_ARGUMENT && (*token)->next == NULL)
 		{
-			printf("%s\n", (*token)->content);
+			if (ft_strncmp((*token)->content, "$?", 2) == 0
+				&& ft_strlen((*token)->content) == 2)
+				printf("%d\n", g_global);
+			else
+				printf("%s\n", (*token)->content);
 			ft_del_first_node(token);
 		}
-		else if ((*token)->type == 1)
+		else if ((*token)->type == TOKEN_ARGUMENT)
 		{
-			printf("%s ", (*token)->content);
+			if (ft_strncmp((*token)->content, "$?", 2) == 0
+				&& ft_strlen((*token)->content) == 2)
+				printf("%d ", g_global);
+			else
+				printf("%s ", (*token)->content);
 			ft_del_first_node(token);
 		}
 		else
@@ -97,16 +109,15 @@ void	ft_cd(t_token **token)
 	if (*token && !((*token)->type == 1))
 		return ;
 	if (!*token || (ft_strncmp((*token)->content, "~", 1) == 0)
-	|| (!((*token)->content[0] == '|')))
+	|| ((*token)->content[0] == '|'))
 	{
-		printf("hello you are in cd\n");
 		if (chdir(getenv("HOME")) == -1)
 			printf("cd: HOME not set\n");
 	}
 	else
 		if (chdir((*token)->content) == -1)
 			printf("cd: %s: No such file or directory\n", (*token)->content);
-
+	ft_del_first_node(token);
 }
 
 int	ft_check_for_already_existing_variable(char **env, char *variable)

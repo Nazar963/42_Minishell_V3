@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/19 10:20:57 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:49:53 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@
 #define false 0
 
 typedef struct s_token t_token;
+// extern	g_global;
+
+extern int	g_global;
+
 
 typedef struct s_main
 {

@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 12:43:05 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/19 10:21:21 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/19 11:29:35 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	ft_pipes_main(t_token **token, t_main *main)
 		return (false);
 
 //* ---------------------------------- pipes --------------------------------- */
-	pipe_count = ft_count_pipes(*token) + 1;
+	pipe_count = ft_count_pipes(*token);
 	fds = (int**)malloc(sizeof(int *) * (pipe_count));
 	while (++i < pipe_count)
 		fds[i] = (int*)malloc(sizeof(int) * 2);

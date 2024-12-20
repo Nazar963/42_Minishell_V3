@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/19 10:38:14 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/19 20:48:30 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	execute_cmd_pipes(char *exec_path, char **cmd, char **envp)
 	if (execve(exec_path, cmd, envp) == -1)
 	{
 		free_mtx(cmd);
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
 }
 
@@ -93,7 +93,6 @@ void	handle_path_pipes(t_token **token, char **envp)
 		i++;
 	new_path = ft_split(envp[i] + 5, ':');
 	cmd = ft_from_list_to_array_pipes(token);
-	// cmd = ft_split(argv[kind], ' ');
 	add_slash_pipes(new_path, cmd, envp);
 }
 
@@ -120,6 +119,7 @@ void	handler_pipes(int case_num)
 void	child_pipes(t_token **list, t_main *main, int **fds, int pos)
 {
 	int	pid1;
+	int	status;
 
 	pid1 = fork();
 	if (pid1 < 0)
@@ -129,29 +129,55 @@ void	child_pipes(t_token **list, t_main *main, int **fds, int pos)
 		if (pos == 1)
 		{
 			dup2(fds[main->pos_fd][1], STDOUT_FILENO);
+			close(fds[main->pos_fd][1]);
 			close(fds[main->pos_fd][0]);
 		}
 		else if (pos == 2)
 		{
 			dup2(fds[main->pos_fd - 1][0], STDIN_FILENO);
+			close(fds[main->pos_fd - 1][0]);
+
 			dup2(fds[main->pos_fd][1], STDOUT_FILENO);
+			close(fds[main->pos_fd][1]);
 		}
 		else if (pos == 3)
 		{
 			dup2(fds[main->pos_fd - 1][0], STDIN_FILENO);
+			close(fds[main->pos_fd - 1][0]);
+
 			dup2(main->orig_fd[1], STDOUT_FILENO);
-			close(fds[main->pos_fd][1]);
 		}
-		// close(fds[main->pos_fd][0]);
-		// close(fds[main->pos_fd][1]);
 		ft_redirections_main(list, main);
 		ft_check_for_builtin(list, main);
 		handle_path_pipes(list, main->env);
 		exit(0);
 	}
-	// close(fds[main->pos_fd][0]);
-	// close(fds[main->pos_fd][1]);
-	waitpid(pid1, NULL, 0);
+	// waitpid(pid1, NULL, 0);
+	waitpid(pid1, &status, 0);
+	// printf("hel fijoaew ifjwo%d\n", status);
+	if (WIFEXITED(status))
+	{
+		if (status == 512)
+			g_global = 2;
+		// else if (status == 32512 && ft_strnstr(inputs[0], "./", 2)) //! Remember for which error do i need to check for this case.
+		// 	g_global = 126;
+		else if (status == 32512)
+			g_global = 127;
+	}
+
+	if (pos == 1)
+		close(fds[main->pos_fd][1]);
+	else if (pos == 2)
+	{
+		close(fds[main->pos_fd - 1][0]);
+		close(fds[main->pos_fd][1]);
+	}
+	else if (pos == 3)
+	{
+		close(fds[main->pos_fd - 1][0]);
+		dup2(main->orig_fd[0], STDIN_FILENO);
+		dup2(main->orig_fd[1], STDOUT_FILENO);
+	}
 }
 
 void	ft_execve_main_pipes(t_token **list, t_main *main, int **fds, int pos)

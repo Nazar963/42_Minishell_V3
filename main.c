@@ -6,11 +6,13 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:19:00 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/15 17:37:57 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:54:30 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_global = 0;
 
 void	welcome_mat(void)
 {
@@ -80,7 +82,6 @@ int	main(int ac, char **av, char **env)
 	t_token	*token;
 
 	(void) **av;
-	(void) **env;
 	if (ac != 1)
 		return (printf("Error\n"), 0);
 	welcome_mat();
@@ -89,7 +90,7 @@ int	main(int ac, char **av, char **env)
 	init_orig_fd(&main);
 	while (1)
 	{
-		input = readline("︻╦̵̵̿╤─ ҉~• ");
+		input = readline("︻╦̵̵̿╤─ ҉~• "); //* NON lo possiamo usare ne il welcome mat perche hanno dei ascii fuori standard
 		ctrl_d(input);
 		if (ft_strlen(input) == 0 || check_only_spaces(&input) == 0)
 			continue ;

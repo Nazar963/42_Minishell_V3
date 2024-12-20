@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 13:13:26 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/14 20:14:20 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/20 13:25:30 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char *ft_get_env(char *str, char **env_test, int var_len)
 	i = 0;
 	j = 0;
 	new = NULL;
-	while (j < 5) // passrae largezza di matrice
+	while (env_test[j]) // passrae largezza di matrice
 	{
 		if ((ft_strncmp(str, env_test[j], var_len) == 0) && (env_test[j][var_len] == '=')) //se stringe uguali
 		{
