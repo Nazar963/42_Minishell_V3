@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/20 19:55:31 by nakoriko         ###   ########.fr       */
+/*   Updated: 2024/12/23 15:14:01 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef enum {
 /* -------------------------------------------------------------------------- */
 
 //£ ---------------------------------- main ---------------------------------- */
-void		welcome_mat(void);
 int			main(int ac, char **av, char **env);
 
 //£ ---------------------------------- signals ---------------------------------- */
@@ -88,13 +87,15 @@ void		free_linked_list(t_token *token);
 void		free_all(t_main *main, t_token **token);
 void		free_str(char *str);
 void		free_all_preparsing (t_mtx *data);
+void		ft_free_linked_list_until_pipe(t_token **token);
 //£ ---------------------------------- utils --------------------------------- */
 char		**ft_realloc(char **mtx, int size);
 int			ft_strlen_mtx(char **mtx);
 void		free_linked_list(t_token *token);
-//void		free_all(t_main *main);
+int			ft_control_int(char *str);
+void		free_orig_linked_list(t_token **token);
 //£ ---------------------------------- print --------------------------------- */
-void		print_error(const char *str, const char *arg);
+void		print_error(const char *str, const char *arg, char *other);
 void		print_mtx(char **mtx, char *name);
 void		print_token_list(t_token *token);
 
@@ -142,7 +143,7 @@ void		ft_del_first_node(t_token **token);
 void		ft_del_node(t_token **token, t_token *delete);
 void		ft_echo(t_token **token);
 void		ft_pwd(t_token **token);
-void		ft_cd(t_token **token);
+void		ft_cd(t_token **token, t_main *main);
 int			ft_check_for_already_existing_variable(char **env, char *variable);
 char		**ft_export_variable_reassign(char **env, char *variable, char *value);
 void		ft_export(t_token **token, t_main *main);
@@ -156,9 +157,9 @@ void		ft_path_identifier(t_token *token, t_main *main);
 //*                                redirections                                */
 //* -------------------------------------------------------------------------- */
 //£ ---------------------------- redirections_main ------------------------- */
-void		ft_redirection_out(t_token **token, t_main *main, t_token *temp);
-void		ft_redirection_in(t_token **token, t_main *main, t_token *temp);
-void		ft_append_out(t_token **token, t_main *main, t_token *temp);
+int			ft_redirection_out(t_token **token, t_main *main, t_token *temp);
+int			ft_redirection_in(t_token **token, t_main *main, t_token *temp);
+int			ft_append_out(t_token **token, t_main *main, t_token *temp);
 void		ft_heredoc(t_token **token, t_main *main, t_token *temp);
 int			ft_redirections_main(t_token **token, t_main *main);
 //£ ------------------------- redirections_main_pipes ------------------------ */
@@ -184,8 +185,8 @@ void		add_slash_pipes(char **new_path, char **cmd, char **envp);
 char		**ft_from_list_to_array_pipes(t_token **token);
 void		handle_path_pipes(t_token **token, char **envp);
 void		handler_pipes(int case_num);
-void		ft_execve_main_pipes(t_token **list, t_main *main, int **fds, int pos);
-void		child_pipes(t_token **list, t_main *main, int **fds, int pos);
+int			ft_execve_main_pipes(t_token **list, t_main *main, int **fds, int pos);
+int			child_pipes(t_token **list, t_main *main, int **fds, int pos);
 
 //* -------------------------------------------------------------------------- */
 //*                                    pipes                                   */

@@ -1,0 +1,44 @@
+ls | wc -l
+echo "one two three" | tr ' ' 'n'
+cat /etc/passwd | grep root
+echo "Hello" | grep -o "He"
+env | sort | head -n 5
+ls | grep "^." | wc -l
+cat /etc/passwd | grep "/bin/bash" | cut -d: -f1
+echo "Alpha Beta Gamma" | tr ' ' '\n' | sort | head -n 1
+seq 1 10 | paste -s -d+ | bc
+seq 5 | xargs echo | wc -w
+cd | echo "After cd with no args"
+cd /usr | pwd | grep usr
+export TESTVAR="hello" | env | grep TESTVAR
+export PATH=/usr/bin | printenv | grep PATH
+echo "A B C" | tr ' ' '\n' | wc -l | cat
+export MYVAR=123 | unset MYVAR | env | grep MYVAR
+echo "Trying cd with no args" | cd | cat
+cd | env | grep HOME
+export PATH=/usr/local/bin | pwd
+export TESTING=ok | unset TESTING | echo "$TESTING"
+cd .. | ls
+echo "hidden" | tr 'h' 'H' > /dev/null
+echo "VAR3=hello" | export VAR3 | echo "$VAR3"
+export VAR1=val1 VAR2=val2 | env | grep VAR1
+cd | cat
+unset NOEXIST | echo "Tried unset on NOEXIST"
+export CHECK=1 | env | grep CHECK
+pwd | grep "/"
+echo "No lines?" | head -n 0
+echo "cd test" | cd
+export TEMPVAR=abc | unset TEMPVAR | echo "$TEMPVAR"
+ls | grep shell
+export LANG=C | printenv | cut -d= -f1 | grep LANG
+cd /nonexistent | pwd
+echo "Hello World" | tr 'H' 'h' > transformed.txt
+cat transformed.txt
+export FOOD="pizza" | echo "$FOOD"
+cd /tmp | ls | wc -l
+env | sort | head -n 3
+export NEWVAR=42 > export_output.txt
+cat export_output.txt
+cat ./test_files/infile_big | grep oi
+cat minishell.h | grep ");"$
+export GHOST=123 | env | grep GHOST

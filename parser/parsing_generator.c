@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_generator.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 13:13:26 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/20 19:12:58 by nakoriko         ###   ########.fr       */
+/*   Updated: 2024/12/22 18:57:49 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void 	ft_add_to_buffer(t_mtx *data, char *var_value)
 	new_buffer = realloc(data->buffer, (var_len + 1));//cambiare per la funzione nostra
 	if (!new_buffer)
 	{
-		print_error("Impossible to allocate memory for environment variable value", NULL);
+		print_error("Impossible to allocate memory for environment variable value", NULL, NULL);
 		data->check = 1;
 		return ;
 	}
@@ -191,7 +191,7 @@ void ft_token_quote(t_mtx *data, char **env_test)
 	}
 	if (data->str[data->i] != data->quote)
 	{
-		print_error("Error: Unmatched quote", NULL);
+		print_error("Error: Unmatched quote", NULL, NULL);
 		data->check = 1;
 		return ;
 	}

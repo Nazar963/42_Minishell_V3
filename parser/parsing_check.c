@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_check.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:51:30 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/20 21:50:44 by nakoriko         ###   ########.fr       */
+/*   Updated: 2024/12/22 18:57:37 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ int ft_tokens_check(char **tokens)
 		{
 			if (last_was_operator == 1)
 			{
-				print_error("Error: syntax error near unexpected token `|'", NULL);
+				print_error("Error: syntax error near unexpected token `|'", NULL, NULL);
 				return(1);
 			}
 			pipe_count++;
 			if(pipe_count > max_open_files)
 			{
-					print_error("Error: too many pipes", NULL);
-					return(1);
+				print_error("Error: too many pipes", NULL, NULL);
+				return(1);
 			}
 			last_was_operator = 1; 
 		}
@@ -51,27 +51,27 @@ int ft_tokens_check(char **tokens)
 			open_files_count++;
 			if (redirection_count > 1)
 			{
-				print_error("Error: syntax error near unexpected token '", tokens[i]);
+				print_error("Error: syntax error near unexpected token '", tokens[i], NULL);
 				return (1);
 			}
 			if (last_was_operator && i > 0)
 			{
-				print_error("Error: Invalid or misplaced redirection operators", NULL);
+				print_error("Error: Invalid or misplaced redirection operators", NULL, NULL);
 				return(1);
 			}
 			if (open_files_count > max_open_files)
 			{
-				print_error("Error: too many open files", NULL);
+				print_error("Error: too many open files", NULL, NULL);
 				return(1);
 			}
 			if (!tokens[i + 1])
 			{
-				print_error("Error: syntax error near unexpected token `newline'", NULL);
+				print_error("Error: syntax error near unexpected token `newline'", NULL, NULL);
 				return(1);
 			}
 			if (ft_is_operator(tokens[i + 1]))
 			{
-				print_error("Error: syntax error near unexpected token `", tokens[i + 1]);
+				print_error("Error: syntax error near unexpected token `", tokens[i + 1], NULL);
 				return(1);
 			}
 			//controliamo che prima era argomento (almeno non operatore, il prossimo token esiste equesto non e un operatore)
@@ -79,7 +79,7 @@ int ft_tokens_check(char **tokens)
 		}
 		else if (ft_is_special_char(tokens[i]))
 		{
-			print_error("Error: Unsupported character or operator `", tokens[i]);
+			print_error("Error: Unsupported character or operator `", tokens[i], NULL);
 			return(1);
 		}
 		else
@@ -91,7 +91,7 @@ int ft_tokens_check(char **tokens)
 	}
 	if (last_was_operator)
 	{
-		print_error("Error: syntax error near unexpected token `newline'", NULL);
+		print_error("Error: syntax error near unexpected token `newline'", NULL, NULL);
 		return(1);
 	}
 	return(0);

@@ -3,40 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:19:00 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/20 20:11:05 by nakoriko         ###   ########.fr       */
+/*   Updated: 2024/12/22 18:08:00 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int g_global = 0;
-
-void	welcome_mat(void)
-{
-	int		fd;
-	char	*line;
-	int		i;
-
-	i = 0;
-	fd = open("utils/Design.txt", O_RDONLY);
-	line = (char *)malloc(sizeof(char) * 9);
-	i = read(fd, line, 8);
-	while (i)
-	{
-		line[i] = '\0';
-		printf("%s", line);
-		free(line);
-		line = NULL;
-		line = (char *)malloc(sizeof(char) * 9);
-		i = read(fd, line, 8);
-	}
-	if (line)
-		free(line);
-}
-
 
 void	ft_env_copier(char **env, t_main *main)
 {
@@ -64,6 +40,7 @@ static void	ctrl_d(char *input)
 	if (input == NULL)
 	{
 		printf("exit\n");
+		unlink("./utils/heredoc.txt");
 		exit(0);
 	}
 }
@@ -74,7 +51,7 @@ void	init_orig_fd(t_main *main)
 	main->orig_fd[1] = dup(STDOUT_FILENO);
 }
 
-//TODO: Cambia il prompt per essere uguale a quello del bash.
+
 int	main(int ac, char **av, char **env)
 {
 	char	*input;
@@ -84,13 +61,12 @@ int	main(int ac, char **av, char **env)
 	(void) **av;
 	if (ac != 1)
 		return (printf("Error\n"), 0);
-	welcome_mat();
 	set_signals();
 	ft_env_copier(env, &main);
 	init_orig_fd(&main);
 	while (1)
 	{
-		input = readline("︻╦̵̵̿╤─ ҉~• "); //* NON lo possiamo usare ne il welcome mat perche hanno dei ascii fuori standard
+		input = readline("minishell> ");
 		ctrl_d(input);
 		if (ft_strlen(input) == 0 || check_only_spaces(&input) == 0)
 			continue ;

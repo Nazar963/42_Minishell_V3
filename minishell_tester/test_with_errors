@@ -1,0 +1,19 @@
+cat <<EOF | grep line
+cat <<END | sort > sorted.txt
+cat <<X | head -n 5 | tail -n 2
+cat <<DATA | grep "nomatch"
+cat <<END | tr 'a-z' 'A-Z' > upper.txt
+cat <<TEXT | sed 's/world/universe/'
+cat <<HERE | grep -c "line"
+cat <<DOC | tr ' ' '\n' | wc -w
+cat <<NUMS | sort -n
+cat <<EOL | tr ':' '-'
+cat <<BLANK | wc -l
+cat <<ROWS | awk '{print $2}'
+cat <<MULTI | grep "repeat"
+cat <<SPC | grep "end"
+cat <<SYM | tr '!' '?'
+cat <<TEND | tail -n 1
+cat <<BLK | grep "^$"
+cat <<EEND | grep "line" | wc -l
+echo hi | >./outfiles/outfile01 echo bye >./test_files/invalid_permission

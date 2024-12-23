@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 12:43:05 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/19 11:29:35 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/22 20:19:28 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	ft_count_pipes(t_token *token)
 	return (count);
 }
 
-void	ft_pipe_handler(t_token **list, t_main *main, int **fds, int pos_fd)
+int	ft_pipe_handler(t_token **list, t_main *main, int **fds, int pos_fd)
 {
 	bool	first;
 	bool	last;
@@ -69,19 +69,20 @@ void	ft_pipe_handler(t_token **list, t_main *main, int **fds, int pos_fd)
 	if (first && !last)
 	{
 		pos = 1;
-		ft_execve_main_pipes(list, main, fds, pos);
+		return (ft_execve_main_pipes(list, main, fds, pos));
 	}
 	else if (first && last)
 	{
 		pos = 2;
-		ft_execve_main_pipes(list, main, fds, pos);
+		return (ft_execve_main_pipes(list, main, fds, pos));
 
 	}
 	else if (!first && last)
 	{
 		pos = 3;
-		ft_execve_main_pipes(list, main, fds, pos);
+		return (ft_execve_main_pipes(list, main, fds, pos));
 	}
+	return (0);
 }
 
 int	ft_pipes_main(t_token **token, t_main *main)
@@ -91,6 +92,8 @@ int	ft_pipes_main(t_token **token, t_main *main)
 	int		**fds;
 	int		pipe_count;
 	int		i;
+	int		*pids;
+	int		status;
 
 	i = -1;
 	done = false;
@@ -110,6 +113,12 @@ int	ft_pipes_main(t_token **token, t_main *main)
 	i = -1;
 /* -------------------------------------------------------------------------- */
 
+//* ---------------------------------- pids ---------------------------------- */
+	pids = (int*)malloc(sizeof(int) * pipe_count);
+	if (pids == NULL)
+		return (false);
+/* -------------------------------------------------------------------------- */
+
 	list = malloc(sizeof(t_token));
 	list = ft_lstnew_for_pipes(*token);
 	while (done == false)
@@ -118,16 +127,13 @@ int	ft_pipes_main(t_token **token, t_main *main)
 		while (*token)
 		{
 			if ((*token)->type == TOKEN_PIPE && ft_lstsize(list) != 1)
-			{
-				// ft_del_first_node(token);
 				break ;
-			}
 			ft_del_first_node(token);
 			if (!*token)
 				break ;
 			ft_lstadd_back(&list, ft_lstnew_for_pipes(*token));
 		}
-		ft_pipe_handler(&list, main, fds, i);
+		pids[i] = ft_pipe_handler(&list, main, fds, i);
 		free_linked_list(list);
 		if (!*token)
 			break ;
@@ -136,27 +142,16 @@ int	ft_pipes_main(t_token **token, t_main *main)
 		if (!*token)
 			done = true;
 	}
-	dup2(main->orig_fd[0], STDIN_FILENO);
-	dup2(main->orig_fd[1], STDOUT_FILENO);
-
-/* -------------------------------------------------------------------------- */
-	// while (list)
-	// {
-	// 	printf("this is the content: %s\n", list->content);
-	// 	printf("this is the type: %d\n", list->type);
-	// 	list = list->next;
-	// }
-
-	// printf("\n\n\n");
-
-	// while (*token)
-	// {
-	// 	printf("this is the content: %s\n", (*token)->content);
-	// 	printf("this is the type: %d\n", (*token)->type);
-	// 	*token = (*token)->next;
-	// }
-
-	// exit(0);
-/* -------------------------------------------------------------------------- */
+	i = -1;
+	while (++i <= pipe_count)
+	{
+		waitpid(pids[i], &status, 0);
+		if (WIFEXITED(status))
+			g_global = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			g_global = 128 + WTERMSIG(status); // Conventionally, 128 + signal number
+		else
+			g_global = 1; // General error
+	}
 	return (true);
 }

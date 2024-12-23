@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 20:44:33 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/08 15:30:54 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:29:55 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,17 @@ int	ft_strlen_mtx(char **mtx)
 	while (mtx[i])
 		i++;
 	return (i);
+}
+
+int	ft_control_int(char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (ft_isdigit(str[i]) == 1)
+			return (1);
+	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/19 20:41:20 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/23 16:04:33 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,11 @@ void	execute_cmd(char *exec_path, char **cmd, char **envp)
 	if (execve(exec_path, cmd, envp) == -1)
 	{
 		free_mtx(cmd);
-		exit(127);
+		perror("execve");
+		if (errno == ENOENT)
+			exit(127);
+		else
+			exit(126);
 	}
 }
 
@@ -25,7 +29,10 @@ void	error_cmd(char *cmd)
 {
 	ft_putstr_fd(cmd, 2);
 	ft_putendl_fd(": command not found", 2);
-	exit(EXIT_FAILURE);
+	if (errno == ENOENT)
+		exit(127);
+	else
+		exit(126);
 }
 
 void	add_slash(char **new_path, char **cmd, char **envp)
@@ -36,6 +43,18 @@ void	add_slash(char **new_path, char **cmd, char **envp)
 
 	i = -1;
 	with_slash = ft_strrchr(cmd[0], '/');
+	if (ft_strncmp(cmd[0], "./", 2) == 0)
+	{
+		if (access(cmd[0], F_OK | X_OK) == 0)
+			execute_cmd(cmd[0], cmd, envp);
+		else
+			error_cmd(cmd[0]);
+	}
+	if (with_slash)
+	{
+		if (access(cmd[0], F_OK | X_OK) == 0)
+			execute_cmd(cmd[0], cmd, envp);
+	}
 	while (new_path[++i])
 	{
 		if (with_slash)
@@ -138,17 +157,6 @@ void	child(t_token **token, char **envp)
 	}
 	// waitpid(pid1, NULL, 0);
 	waitpid(pid1, &status, 0);
-	// if (WIFEXITED(status))
-	// {
-	// 	if (status == 512)
-	// 		g_global = 2;
-	// 	// else if (status == 32512 && ft_strnstr(inputs[0], "./", 2)) //! Remember for which error do i need to check for this case.
-	// 	// 	g_global = 126;
-	// 	else if (status == 32512)
-	// 		g_global = 127;
-	// 	else if (status == 256)
-	// 		g_global = 127;
-	// }
 	if (WIFEXITED(status))
 		g_global = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))

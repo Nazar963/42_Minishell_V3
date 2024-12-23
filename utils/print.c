@@ -3,22 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 16:38:31 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/20 21:19:24 by nakoriko         ###   ########.fr       */
+/*   Updated: 2024/12/22 18:55:46 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	print_error(const char *str, const char *arg)
+void	print_error(const char *str, const char *arg, char *other)
 {
-	if (arg)
+	if (arg && !other)
 	{
 		write(2, str, ft_strlen(str));
 		write(2, arg, ft_strlen(arg));
 		write(2, "'\n", 2);
+	}
+	else if (arg && other)
+	{
+		write(2, str, ft_strlen(str));
+		write(2, arg, ft_strlen(arg));
+		write(2, other, ft_strlen(other));
+		write(2, "\n", 1);
 	}
 	else
 	{

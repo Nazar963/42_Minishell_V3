@@ -185,7 +185,7 @@ void preparsing_check_and_split_input(t_mtx *data, char **env)
 		}
 		else if(ft_is_special_char(&data->str[data->i]))
 		{
-			print_error("Error: Unsupported characters or operator '", &data->str[data->i]);
+			print_error("Error: Unsupported characters or operator '", &data->str[data->i], NULL);
 			data->check = 1;
 			return ;
 		} 
@@ -334,14 +334,14 @@ t_token	*ft_tokenizer_main(char *input, t_main *main)
 	tokens = ft_token_generator(input, main->env);
 	if (tokens && ft_tokens_check(tokens) == 0)
 	{
-		print_mtx(tokens, "Tokens");
+		// print_mtx(tokens, "Tokens");
 		token = ft_token_list_creation(tokens);
 		
 		if (token == NULL)
 		//controllare se devo freare
 			return(NULL);
-		else 
-			print_token_list(token);
+		// else 
+		// 	print_token_list(token);
 	}
 	else
 		return (NULL);
