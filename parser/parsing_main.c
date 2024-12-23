@@ -157,12 +157,19 @@
 //TODO - in case of pipes
 //TODO: i modified the ft_lstnew to create a new string from the input string inorder to free tokens at the end.
 
+
+
 void preparsing_check_and_split_input(t_mtx *data, char **env)
 {
 	while (data->i < data->len) //ciclo per creare tokens
 	{
 		if(data->str[data->i] == ' ') //se c'e spazio, metti token in tokens
 			ft_token_space(data);
+		else if (ft_is_tab(data->str[data->i], data->str[data->i + 1]))
+		{
+			data->buffer[data->j++] = data->str[data->i++];
+			data->buffer[data->j++] = data->str[data->i++];
+		}
 		else if (data->str[data->i] == '\'' || data->str[data->i] == '\"')
 		{
 			ft_token_quote(data, env);
@@ -178,19 +185,8 @@ void preparsing_check_and_split_input(t_mtx *data, char **env)
 			if (data->check == 1)
 				return ;
 		}
-		else if (ft_is_tab(data->str[data->i], data->str[data->i + 1]))
-		{
-			data->buffer[data->j++] = data->str[data->i++];
-			data->buffer[data->j++] = data->str[data->i++];
-		}
-		else if(ft_is_special_char(&data->str[data->i]))
-		{
-			print_error("Error: Unsupported characters or operator '", &data->str[data->i], NULL);
-			data->check = 1;
-			return ;
-		} 
 		// se ci sono operatori (include || e &&)
-		else if (data->str[data->i] == '|' || data->str[data->i] == '>' || data->str[data->i] == '<' || data->str[data->i] == '&')
+		else if (data->str[data->i] == '|' || data->str[data->i] == '>' || data->str[data->i] == '<')
 			ft_token_operator(data);
 		else
 			data->buffer[data->j++] = data->str[data->i++];
@@ -216,29 +212,29 @@ char **ft_token_generator(char *input, char **env)
 
 
 
-void	first_token_type_assigning(t_token **token)
-{
-	if (ft_strncmp((*token)->content, "echo", 4) == 0)
-		(*token)->type = TOKEN_BUILTIN;
-	else if (ft_strncmp((*token)->content, "pwd", 3) == 0)
-		(*token)->type = TOKEN_BUILTIN;
-	else if (ft_strncmp((*token)->content, "cd", 2) == 0)
-		(*token)->type = TOKEN_BUILTIN;
-	else if (ft_strncmp((*token)->content, "export", 6) == 0)
-		(*token)->type = TOKEN_BUILTIN;
-	else if (ft_strncmp((*token)->content, "unset", 5) == 0)
-		(*token)->type = TOKEN_BUILTIN;
-	else if (ft_strncmp((*token)->content, "env", 3) == 0)
-		(*token)->type = TOKEN_BUILTIN;
-	else if (ft_strncmp((*token)->content, "exit", 4) == 0)
-		(*token)->type = TOKEN_BUILTIN;
-	else if (ft_strncmp((*token)->content, "<", 1) == 0)
-		(*token)->type = TOKEN_REDIRECTION_IN;
-	else if (ft_strncmp((*token)->content, ">", 1) == 0)
-		(*token)->type = TOKEN_REDIRECTION_OUT;
-	else
-		(*token)->type = TOKEN_COMMAND;
-}
+// void	first_token_type_assigning(t_token **token)
+// {
+// 	if (ft_strncmp((*token)->content, "echo", 4) == 0)
+// 		(*token)->type = TOKEN_BUILTIN;
+// 	else if (ft_strncmp((*token)->content, "pwd", 3) == 0)
+// 		(*token)->type = TOKEN_BUILTIN;
+// 	else if (ft_strncmp((*token)->content, "cd", 2) == 0)
+// 		(*token)->type = TOKEN_BUILTIN;
+// 	else if (ft_strncmp((*token)->content, "export", 6) == 0)
+// 		(*token)->type = TOKEN_BUILTIN;
+// 	else if (ft_strncmp((*token)->content, "unset", 5) == 0)
+// 		(*token)->type = TOKEN_BUILTIN;
+// 	else if (ft_strncmp((*token)->content, "env", 3) == 0)
+// 		(*token)->type = TOKEN_BUILTIN;
+// 	else if (ft_strncmp((*token)->content, "exit", 4) == 0)
+// 		(*token)->type = TOKEN_BUILTIN;
+// 	else if (ft_strncmp((*token)->content, "<", 1) == 0)
+// 		(*token)->type = TOKEN_REDIRECTION_IN;
+// 	else if (ft_strncmp((*token)->content, ">", 1) == 0)
+// 		(*token)->type = TOKEN_REDIRECTION_OUT;
+// 	else
+// 		(*token)->type = TOKEN_COMMAND;
+// }
 
 int is_a_builtin_check(t_token *token)
 {
@@ -261,6 +257,9 @@ int is_a_builtin_check(t_token *token)
 // AGGIUNTO PER ASSEGNARE IL TIPO AL NODO PASSATO 
 void	assign_token_type(t_token *token, t_token *prev_token)
 {
+	int n;
+
+	n = ft_strlen(token->content);
 	if (prev_token && prev_token->type == TOKEN_PIPE)
 		token->type = TOKEN_COMMAND; // dopo pipe sempre  commanda
 	else if (!prev_token)
@@ -273,26 +272,18 @@ void	assign_token_type(t_token *token, t_token *prev_token)
 		token->type = TOKEN_DELIMITER;
 	else if (ft_strncmp(token->content, "-", 1) == 0)
 		token->type = TOKEN_OPTION;
-	else if (ft_strncmp(token->content, "<", 2) == 0)
+	else if (ft_strncmp(token->content, "<", n) == 0)
 		token->type = TOKEN_REDIRECTION_IN;
-	else if (ft_strncmp(token->content, ">", 2) == 0)
+	else if (ft_strncmp(token->content, ">", n) == 0)
 		token->type = TOKEN_REDIRECTION_OUT;
-	else if (ft_strncmp(token->content, ">>", 2) == 0)
+	else if (ft_strncmp(token->content, ">>", n) == 0)
 		token->type = TOKEN_APPEND_OUT;
-	else if (ft_strncmp(token->content, "<<", 2) == 0)
+	else if (ft_strncmp(token->content, "<<", n) == 0)
 		token->type = TOKEN_HEREDOC;
-	else if (ft_strncmp(token->content, "|", 2) == 0)
+	else if (ft_strncmp(token->content, "|", n) == 0)
 		token->type = TOKEN_PIPE;
 	else if (is_a_builtin_check(token) == 1)
 		token->type = TOKEN_BUILTIN;
-	// else if(ft_strncmp(token->content, "echo", 4) == 0
-	// 	|| ft_strncmp(token->content, "cd", 2) == 0
-	// 	|| ft_strncmp(token->content, "pwd", 3) == 0
-	// 	|| ft_strncmp(token->content, "export", 6) == 0
-	// 	|| ft_strncmp(token->content, "unset", 5) == 0
-	// 	|| ft_strncmp(token->content, "env", 3) == 0 // e invironment? Siamo sicuri che token->content e qquesto? da capire un attimo
-	// 	|| ft_strncmp(token->content, "exit", 4)== 0)
-	//	token->type = TOKEN_BUILTIN;
 	else
 		token->type = TOKEN_ARGUMENT;
 }
@@ -338,19 +329,12 @@ t_token	*ft_tokenizer_main(char *input, t_main *main)
 		token = ft_token_list_creation(tokens);
 		
 		if (token == NULL)
-		//controllare se devo freare
+		//controllare se devo freeare
 			return(NULL);
 		// else 
 		// 	print_token_list(token);
 	}
 	else
 		return (NULL);
-	// while (token)
-	// {
-	// 	printf("Token: %s\n", token->content);
-	// 	printf("Type: %d\n", token->type);
-	// 	token = token->next;
-	// }
-	// exit(0);
 	return (token);
 }

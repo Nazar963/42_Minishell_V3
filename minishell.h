@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/23 15:14:01 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/23 16:29:51 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,17 @@ typedef struct s_mtx //
 	int k; // contatore per allocare le array dentro matrice(tokens)
 	int check;
 } t_mtx;
+
+typedef struct s_check // 
+{
+	int i;
+	int last_was_operator;
+	int redirection_count;
+	int open_files_count;
+	int pipe_count;
+	int max_open_files;
+	int error_index;
+} t_check;
 
 typedef enum {
 	ERR_UNEXPECTED_PIPE,
