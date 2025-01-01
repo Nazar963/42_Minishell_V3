@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins_main.c                                    :+:      :+:    :+:   */
+/*   builtins_main_pipes.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/02 22:40:05 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/29 21:56:34 by naal-jen         ###   ########.fr       */
+/*   Created: 2024/12/29 16:22:26 by naal-jen          #+#    #+#             */
+/*   Updated: 2024/12/30 15:16:16 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_builtins_main(t_token **token, t_main *main)
+int	ft_builtins_main_pipes(t_token **token, t_main *main, int **fds)
 {
 	int	len;
 
 	len = ft_strlen((*token)->content);
 	if (ft_strncmp((*token)->content, "echo", len) == 0)
-		ft_echo(token);
+		ft_echo_pipes(token, main);
 	else if (ft_strncmp((*token)->content, "pwd", len) == 0)
-		ft_pwd(token);
+		ft_pwd_pipes(token);
 	else if (ft_strncmp((*token)->content, "cd", len) == 0)
-		ft_cd(token, main);
+		ft_cd_pipes(token, main);
 	else if (ft_strncmp((*token)->content, "export", len) == 0)
-		ft_export(token, main);
+		ft_export_pipes(token, main);
 	else if (ft_strncmp((*token)->content, "unset", len) == 0)
-		ft_unset(token, main);
+		ft_unset_pipes(token, main);
 	else if (ft_strncmp((*token)->content, "env", len) == 0)
-		ft_env(token, main);
+		ft_env_pipes(token, main);
 	else if (ft_strncmp((*token)->content, "exit", len) == 0)
-		ft_exit(token, main);
+		ft_exit_pipes(token, main, fds);
 	return (0);
 }

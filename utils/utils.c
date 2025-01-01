@@ -6,13 +6,12 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 20:44:33 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/20 19:29:55 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/31 18:56:41 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//TODO: Posso eliminare il size perche aumento di uno alla volta
 char	**ft_realloc(char **mtx, int size)
 {
 	char	**new_mtx;
@@ -54,4 +53,68 @@ int	ft_control_int(char *str)
 			return (1);
 	}
 	return (0);
+}
+
+void	ft_del_first_node(t_token **token)
+{
+	t_token	*temp;
+
+	if (token == NULL || *token == NULL)
+		return;
+
+	temp = *token;
+	if ((*token)->next == NULL)
+	{
+		*token = (*token)->next;
+		*token = NULL;
+	}
+	else {
+		*token = (*token)->next;
+	}
+	free(temp->content);
+	free(temp);
+}
+
+void	ft_del_first_node_delimeter(t_delimeter **delimeter)
+{
+	t_delimeter	*temp;
+
+	if (delimeter == NULL || *delimeter == NULL)
+		return;
+
+	temp = *delimeter;
+	if ((*delimeter)->next == NULL)
+	{
+		*delimeter = (*delimeter)->next;
+		*delimeter = NULL;
+	}
+	else {
+		*delimeter = (*delimeter)->next;
+	}
+	free(temp->delimeter);
+	free(temp);
+}
+
+void	ft_del_node(t_token **token, t_token *delete)
+{
+	t_token	*temp;
+
+	if (token == NULL || *token == NULL || delete == NULL)
+		return;
+
+	if (*token == delete) {
+		*token = delete->next;
+		free(delete->content);
+		delete->content = NULL;
+		free(delete);
+		return;
+	}
+
+	temp = *token;
+	while (temp->next != NULL && temp->next != delete)
+		temp = temp->next;
+	temp->next = delete->next;
+	free(delete->content);
+	delete->content = NULL;
+	free(delete);
 }

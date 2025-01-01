@@ -6,28 +6,56 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:51:41 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/04 12:45:33 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/01 18:25:01 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <sys/ioctl.h>
 
-//TODO: da gestire il exit_status che sarebbe un variabile globale e dovrebbe essere settata a 1
-//TODO: da gestire il caso in qui il rl_redisplay() dovrebbe essere eseguita solo se il prompt è vuoto
-void ft_signals(int sig)
+
+extern int rl_done;
+
+void	ft_signals(int sig)
 {
 	if (sig == SIGINT)
 	{
-		write(1, "\n",  1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		if (g_global != 666)
+		{
+			printf("hello \n ");
+			write(1, "\n", 1);
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay();
+		}
 		(void)sig;
 	}
 }
 
-void set_signals()
+void	set_signals()
 {
 	signal(SIGINT, ft_signals);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+
+void	ft_signals_heredoc(int sig)
+{
+	if (sig == SIGINT)
+	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		exit(130);
+		g_global = 130;
+		(void)sig;
+	}
+}
+
+void	set_signals_heredoc(t_main *main, t_token **token, t_delimeter *delimeter)
+{
+	free_linked_list_delimeter(&delimeter);
+	free_all(main, token);
+	signal(SIGINT, ft_signals_heredoc);
 	signal(SIGQUIT, SIG_IGN);
 }

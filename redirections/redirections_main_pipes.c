@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:26:55 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/20 15:46:49 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/30 15:14:45 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	ft_heredoc_pipes(t_token **token, t_token *temp)
 				{
 					free(heredoc_input);
 					ft_del_node(token, temp);
+					temp = *token;
 					break ;
 				}
 				ft_putstr_fd(heredoc_input, fd);
@@ -71,8 +72,12 @@ int	ft_herdoc_pipes_main(t_token **token)
 	while (temp)
 	{
 		if (temp->type == TOKEN_HEREDOC)
+		{
 			ft_heredoc_pipes(token, temp);
-		temp = temp->next;
+			temp = *token;
+		}
+		if (temp)
+			temp = temp->next;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:58:01 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/21 18:44:20 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/01 16:38:02 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,37 @@ void free_mtx(char **mtx)
 	free(mtx);
 }
 
-void	free_linked_list(t_token *token)
+void	free_linked_list(t_token **token)
 {
 	t_token	*temp;
 
-	while (token)
+	if (*token)
 	{
-		temp = token;
-		token = token->next;
-		free(temp->content);
-		free(temp);
+		while (*token)
+		{
+			temp = *token;
+			*token = (*token)->next;
+			free(temp->content);
+			if (temp->heredoc_file)
+				free(temp->heredoc_file);
+			free(temp);
+		}
+	}
+}
+
+void	free_linked_list_delimeter(t_delimeter **delimeter)
+{
+	t_delimeter	*temp;
+
+	if (*delimeter)
+	{
+		while (*delimeter)
+		{
+			temp = *delimeter;
+			*delimeter = (*delimeter)->next;
+			free(temp->delimeter);
+			free(temp);
+		}
 	}
 }
 
@@ -57,7 +78,9 @@ void	free_all(t_main *main, t_token **token)
 {
 	free_mtx(main->env);
 	if (*token != NULL)
-		free_linked_list(*token);
+		free_linked_list(token);
+	if (main->token != NULL)
+		free_linked_list(&main->token);
 }
 
 void free_str(char *str)
@@ -68,7 +91,7 @@ void free_str(char *str)
 	str = NULL;
 }
 
-void free_all_preparsing (t_mtx *data)
+void free_all_preparsing(t_mtx *data)
 {
 	if (data->str)
 		free_str(data->str);

@@ -12,6 +12,15 @@
     Memcheck:Leak
     ...
     ...
+    fun:add_history
+    fun:main
+}
+
+{
+    readline
+    Memcheck:Leak
+    ...
+    ...
     fun:rl_initialize
     fun:readline
 }

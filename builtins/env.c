@@ -1,35 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstlast.c                                       :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/04 14:20:33 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/31 18:55:22 by naal-jen         ###   ########.fr       */
+/*   Created: 2024/12/29 15:31:26 by naal-jen          #+#    #+#             */
+/*   Updated: 2024/12/29 15:31:33 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-t_token	*ft_lstlast(t_token *lst)
+void	ft_env(t_token **token, t_main *main)
 {
-	if (!lst)
-		return (0);
-	while (lst->next != NULL)
-	{
-		lst = lst->next;
-	}	
-	return (lst);
-}
+	int	i;
 
-t_delimeter		*ft_lstlast_delimeter(t_delimeter *lst)
-{
-	if (!lst)
-		return (0);
-	while (lst->next != NULL)
+	i = -1;
+	ft_del_first_node(token);
+	while (main->env[++i])
 	{
-		lst = lst->next;
-	}	
-	return (lst);
+		if (!ft_strchr(main->env[i], '='))
+			continue ;
+		printf("%s\n", main->env[i]);
+	}
 }

@@ -150,15 +150,6 @@
 
 #include "../minishell.h"
 
-//TODO: Separazione tra parsing e tokenizzazione
-//TODO: integrare la funziona tokenization direttamente dentro ft_token_generator
-//TODO: Inorder to create the right tokens which could be multiple we will need to split
-//TODO - the tokens into multiple matrix arrays inorder to reset the proccess of tokenization
-//TODO - in case of pipes
-//TODO: i modified the ft_lstnew to create a new string from the input string inorder to free tokens at the end.
-
-
-
 void preparsing_check_and_split_input(t_mtx *data, char **env)
 {
 	while (data->i < data->len) //ciclo per creare tokens
@@ -167,8 +158,12 @@ void preparsing_check_and_split_input(t_mtx *data, char **env)
 			ft_token_space(data);
 		else if (ft_is_tab(data->str[data->i], data->str[data->i + 1]))
 		{
-			data->buffer[data->j++] = data->str[data->i++];
-			data->buffer[data->j++] = data->str[data->i++];
+			data->buffer[data->j] = data->str[data->i];
+			data->j++;
+			data->i++;
+			data->buffer[data->j] = data->str[data->i];
+			data->j++;
+			data->i++;
 		}
 		else if (data->str[data->i] == '\'' || data->str[data->i] == '\"')
 		{
@@ -189,7 +184,11 @@ void preparsing_check_and_split_input(t_mtx *data, char **env)
 		else if (data->str[data->i] == '|' || data->str[data->i] == '>' || data->str[data->i] == '<')
 			ft_token_operator(data);
 		else
-			data->buffer[data->j++] = data->str[data->i++];
+		{
+			data->buffer[data->j] = data->str[data->i];
+			data->j++;
+			data->i++;
+		}
 	}
 }
 
@@ -263,7 +262,12 @@ void	assign_token_type(t_token *token, t_token *prev_token)
 	if (prev_token && prev_token->type == TOKEN_PIPE)
 		token->type = TOKEN_COMMAND; // dopo pipe sempre  commanda
 	else if (!prev_token)
-		token->type = TOKEN_COMMAND;
+	{
+		if (ft_strncmp(token->content, ">>", n) == 0)
+			token->type = TOKEN_APPEND_OUT;
+		else
+			token->type = TOKEN_COMMAND;
+	}
 	else if (prev_token && (prev_token->type == TOKEN_REDIRECTION_IN
 		|| prev_token->type == TOKEN_REDIRECTION_OUT
 		|| prev_token->type == TOKEN_APPEND_OUT))
@@ -298,16 +302,16 @@ t_token	*ft_token_list_creation(char **tokens)
 	new_token = NULL;
 	prev_token = NULL;
 	i = 0;
-	token = malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
+	// token = malloc(sizeof(t_token));
+	// if (!token)
+	// 	return (NULL);
 	token = ft_lstnew(tokens[i]);
 	assign_token_type(token, prev_token);
 	//first_token_type_assigning(&token);
 	prev_token = token;
 	while (tokens[++i])
 	{
-		new_token = ft_lstnew(tokens[i]);
+			new_token = ft_lstnew(tokens[i]);
 		ft_lstadd_back(&token, new_token);
 		assign_token_type(new_token, prev_token);
 		prev_token = new_token;
@@ -327,7 +331,7 @@ t_token	*ft_tokenizer_main(char *input, t_main *main)
 	{
 		// print_mtx(tokens, "Tokens");
 		token = ft_token_list_creation(tokens);
-		
+		free_mtx(tokens);
 		if (token == NULL)
 		//controllare se devo freeare
 			return(NULL);
@@ -335,6 +339,6 @@ t_token	*ft_tokenizer_main(char *input, t_main *main)
 		// 	print_token_list(token);
 	}
 	else
-		return (NULL);
+		return (free_mtx(tokens), NULL);
 	return (token);
 }

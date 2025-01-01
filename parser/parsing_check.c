@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_check.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:51:30 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/23 16:52:43 by nakoriko         ###   ########.fr       */
+/*   Updated: 2024/12/30 15:36:24 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void error_num( int n, const char *arg)
 	else if (n == 6)
 		print_error("Error: too many pipes", arg, NULL);
 	g_global = 2;
-		
 }
 
 
@@ -43,14 +42,14 @@ int ft_pipe_parsig_mtxcheck(char *str, t_check *check)
 	check->pipe_count++;
 	if(check->pipe_count > check->max_open_files)
 	{
-			error_num(6, NULL);
-			return(1);
+		error_num(6, NULL);
+		return(1);
 	}
 	check->last_was_operator = 1; 
 	return(0);
 }
 
-int ft_redirection_parsig_check(char *str, char *next, int i, t_check *check)
+int ft_red_parsig_check(char *str, char *next, int i, t_check *check)
 {
 	(void) i;
 	check->redirection_count++;
@@ -99,9 +98,9 @@ int ft_tokens_check(char **tokens)
 		}
 		else if(ft_is_redirection(tokens[i]))
 		{
-			if (ft_redirection_parsig_check(tokens[i], tokens[i + 1], 
+			if (ft_red_parsig_check(tokens[i], tokens[i + 1], 
 			i, &check) == 1)
-				return (1);			
+				return (1);
 		}
 		else
 		{

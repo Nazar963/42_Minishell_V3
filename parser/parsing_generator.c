@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_generator.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 13:13:26 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/23 16:35:46 by nakoriko         ###   ########.fr       */
+/*   Updated: 2024/12/27 08:46:24 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void ft_tokendata_init(t_mtx *data, char *input)
 		data->tokens[data->k] = NULL;
 		data->k++;
 	}
-	data->buffer = malloc(sizeof(char) * data->len + 1);
+	data->buffer = malloc(sizeof(char) * (data->len + 1000));
 	if (data->buffer == NULL)
 	{
 		free(data->tokens);

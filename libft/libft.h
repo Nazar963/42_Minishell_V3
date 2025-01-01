@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 15:58:14 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/16 19:36:57 by naal-jen         ###   ########.fr       */
+/*   Updated: 2024/12/31 18:55:08 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,21 +150,33 @@ typedef struct s_token
 {
 	char			*content;
 	TokenType		type;
+	char			*heredoc_file;
 	struct s_token	*next;
 }					t_token;
+
+typedef struct s_delimeter
+{
+	char				*delimeter;
+	struct s_delimeter	*next;
+}	t_delimeter;
 // Allocates with malloc and returns a new node. The member variable ’content’ 
 // is initialized with the value of the parameter ’content’. The variable ’next’
 // is initialized to NULL.
 t_token		*ft_lstnew(char *content);
+t_delimeter		*ft_lstnew_delimeter(char *content);
 t_token		*ft_lstnew_for_pipes(t_token *token);
 // Adds the node ’new’ at the beginning of the token.
 void		ft_lstadd_front(t_token **lst, t_token *new);
 // Counts the number of nodes in a token.
 int			ft_lstsize(t_token *lst);
+int			ft_lstsize_delimeter(t_delimeter *lst);
 // Returns the last node of the token.
 t_token		*ft_lstlast(t_token *lst);
+t_delimeter		*ft_lstlast_delimeter(t_delimeter *lst);
 // Adds the node ’new’ at the end of the token.
 void		ft_lstadd_back(t_token **lst, t_token *new);
+void		ft_lstadd_back_delimeter(t_delimeter **lst, t_delimeter *new);
+
 // Takes as a parameter a node and frees the memory of the node’s content using
 // the function ’del’ given as a parameter and free the node.
 // The memory of ’next’ must not be freed.

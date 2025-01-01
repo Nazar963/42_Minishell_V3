@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:26:55 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/23 15:13:52 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/01 17:08:37 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,57 +124,156 @@ int	ft_append_out(t_token **token, t_main *main, t_token *temp)
 	return (0);
 }
 
+// void	ft_heredoc(t_token **token, t_main *main, t_token *temp)
+// {
+// 	char	*heredoc_input;
+// 	int		fd;
+
+// 	(void) main;
+// 	ft_del_node(token, temp);
+// 	temp = *token;
+// 	fd = open("/tmp/heredoc.txt", O_WRONLY | O_CREAT | O_TRUNC, 0666);
+// 	while (temp)
+// 	{
+// 		if (temp->type == TOKEN_DELIMITER)
+// 		{
+// 			set_signals_heredoc(main);
+// 			while (1)
+// 			{
+// 				heredoc_input = readline("> ");
+// 				if (!heredoc_input || g_global == 666)
+// 				{
+// 					return ;
+// 				}
+// 				if (!heredoc_input)
+// 				{
+// 					printf("bash: warning: here-document at line 31 delimited by end-of-file (wanted`%s')\n", temp->content);
+// 					ft_del_node(token, temp);
+// 					temp = *token;
+// 					break ;
+// 				}
+// 				if (ft_strncmp(heredoc_input, temp->content, ft_strlen(temp->content)) == 0
+// 					&& ft_strlen(heredoc_input) == ft_strlen(temp->content))
+// 				{
+// 					free(heredoc_input);
+// 					ft_del_node(token, temp);
+// 					temp = *token;
+// 					break ;
+// 				}
+// 				ft_putstr_fd(heredoc_input, fd);
+// 				ft_putstr_fd("\n", fd);
+// 				free(heredoc_input);
+// 			}
+// 		}
+// 		temp = temp->next;
+// 	}
+// 	close(fd);
+
+// 	fd = open("/tmp/heredoc.txt", O_RDONLY);
+// 	if (fd < 0) {
+// 		perror("open");
+// 		return;
+// 	}
+
+// 	if (dup2(fd, STDIN_FILENO) < 0) {
+// 		perror("dup2");
+// 		close(fd);
+// 		return;
+// 	}
+
+// 	close(fd);
+// }
+
+
 void	ft_heredoc(t_token **token, t_main *main, t_token *temp)
 {
-	char	*heredoc_input;
-	int		fd;
+	int			fd;
+	int			pid;
+	int			status;
+	char		*heredoc_input;
+	t_delimeter	*delimeter;
 
 	(void) main;
 	ft_del_node(token, temp);
 	temp = *token;
-	fd = open("utils/heredoc.txt", O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	fd = open("/tmp/heredoc.txt", O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	temp->heredoc_file = ft_strdup("/tmp/heredoc.txt");
+	temp = temp->next;
+	delimeter = ft_lstnew_delimeter(temp->content);
+	ft_del_node(token, temp);
+	temp = *token;
 	while (temp)
 	{
 		if (temp->type == TOKEN_DELIMITER)
 		{
-			while (1)
+			ft_lstadd_back_delimeter(&delimeter, ft_lstnew_delimeter(temp->content));
+			ft_del_node(token, temp);
+			temp = *token;
+		}
+		else if (temp->type == TOKEN_HEREDOC)
+		{
+			ft_del_node(token, temp);
+			temp = *token;
+		}
+		if (temp)
+			temp = temp->next;
+	}
+	g_global = 666;
+	pid = fork();
+	if (pid == 0)
+	{
+		set_signals_heredoc(main, token, delimeter);
+		while (1)
+		{
+			heredoc_input = readline("> ");
+			if (g_global == 130)
 			{
-				heredoc_input = readline("> ");
-				if (!heredoc_input)
-				{
-					ft_del_node(token, temp);
-					break ;
-				}
-				if (ft_strncmp(heredoc_input, temp->content, ft_strlen(temp->content)) == 0
-					&& ft_strlen(heredoc_input) == ft_strlen(temp->content))
-				{
-					free(heredoc_input);
-					ft_del_node(token, temp);
-					break ;
-				}
+				free_all(main, token);
+				// free_linked_list(token);
+				free_linked_list_delimeter(&delimeter);
+				exit(130);
+			}
+			if (!heredoc_input)
+			{
+				printf("bash: warning: here-document at line 31 delimited by end-of-file (wanted`%s')\n", delimeter->delimeter);
+				free_linked_list(token);
+				free_linked_list_delimeter(&delimeter);
+				exit(0);
+			}
+			if (ft_strncmp(heredoc_input, delimeter->delimeter, ft_strlen(delimeter->delimeter)) == 0
+				&& ft_strlen(heredoc_input) == ft_strlen(delimeter->delimeter) && ft_lstsize_delimeter(delimeter) == 1)
+			{
+				free(heredoc_input);
+				free_linked_list(token);
+				free_linked_list_delimeter(&delimeter);
+				exit(0);
+			}
+			if (ft_strncmp(heredoc_input, delimeter->delimeter, ft_strlen(delimeter->delimeter)) == 0
+				&& ft_strlen(heredoc_input) == ft_strlen(delimeter->delimeter) && ft_lstsize_delimeter(delimeter) != 1)
+			{
+				ft_del_first_node_delimeter(&delimeter);
+			}
+			else if (ft_lstsize_delimeter(delimeter) == 1)
+			{
 				ft_putstr_fd(heredoc_input, fd);
 				ft_putstr_fd("\n", fd);
-				free(heredoc_input);
 			}
+			free(heredoc_input);
 		}
-		temp = temp->next;
 	}
-	close(fd);
-
-	fd = open("utils/heredoc.txt", O_RDONLY);
-	if (fd < 0) {
-		perror("open");
-		return;
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+	{
+		if (WEXITSTATUS(status) == 130)
+		{
+			write(1, "\n", 1);
+			free_linked_list(token);
+		}
 	}
-
-	if (dup2(fd, STDIN_FILENO) < 0) {
-		perror("dup2");
-		close(fd);
-		return;
-	}
-
+	g_global = WEXITSTATUS(status);
 	close(fd);
 }
+
 
 int	ft_redirections_main(t_token **token, t_main *main)
 {
@@ -187,20 +286,27 @@ int	ft_redirections_main(t_token **token, t_main *main)
 		{
 			if (ft_redirection_out(token, main, temp) == 1)
 				return (1);
+			temp = *token;
 		}
 		else if (temp->type == TOKEN_REDIRECTION_IN)
 		{
 			if (ft_redirection_in(token, main, temp) == 1)
 				return (1);
+			temp = *token;
 		}
 		else if (temp->type == TOKEN_APPEND_OUT)
 		{
 			if (ft_append_out(token, main, temp) == 1)
 				return (1);
+			temp = *token;
 		}
 		else if (temp->type == TOKEN_HEREDOC)
+		{
 			ft_heredoc(token, main, temp);
-		temp = temp->next;
+			temp = *token;
+		}
+		if (temp)
+			temp = temp->next;
 	}
 	return (0);
 }

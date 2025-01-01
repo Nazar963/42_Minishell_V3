@@ -1,6 +1,4 @@
-
 $PWD
-$EMPTY
 $EMPTY echo hi
 ./test_files/invalid_permission
 ./missing.out
