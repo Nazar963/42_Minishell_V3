@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_check.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:51:30 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/30 15:36:24 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/02 18:20:42 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void error_num( int n, const char *arg)
+void	error_num( int n, const char *arg)
 {
 	if (n == 1)
 		print_error("Error: syntax error near unexpected token `", arg, NULL);
@@ -29,11 +29,8 @@ void error_num( int n, const char *arg)
 		print_error("Error: too many pipes", arg, NULL);
 	g_global = 2;
 }
-
-
-int ft_pipe_parsig_mtxcheck(char *str, t_check *check)
+int	ft_pipe_parsig_mtxcheck(char *str, t_check *check)
 {
-	
 	if (check->last_was_operator == 1)
 	{
 		error_num(1, str);
@@ -48,16 +45,14 @@ int ft_pipe_parsig_mtxcheck(char *str, t_check *check)
 	check->last_was_operator = 1; 
 	return(0);
 }
-
-int ft_red_parsig_check(char *str, char *next, int i, t_check *check)
+int	ft_red_parsig_check(char *str, char *next, int i, t_check *check)
 {
-	(void) i;
+	(void)	i;
+
 	check->redirection_count++;
 	check->open_files_count++;
 	if (check->redirection_count > 1)
 		return(error_num(1, str), 1);
-	// else if (check->last_was_operator && i > 0)
-	// 	return(error_num(2, NULL), 1);
 	else if (check->open_files_count > check->max_open_files)
 		return(error_num(3, NULL), 1);
 	else if (!next)
@@ -71,7 +66,7 @@ int ft_red_parsig_check(char *str, char *next, int i, t_check *check)
 	return(0);
 }
 
-void t_check_init(t_check *check)
+void	t_check_init(t_check *check)
 {
 	check->last_was_operator = 1;
 	check->redirection_count = 0;
@@ -81,11 +76,10 @@ void t_check_init(t_check *check)
 	check->error_index = 0;
 
 }
-
-int ft_tokens_check(char **tokens)
+int	ft_tokens_check(char **tokens)
 {
-	t_check check;	
-	int i;
+	t_check	check;	
+	int		i;
 
 	i = 0;
 	t_check_init(&check);
@@ -110,6 +104,7 @@ int ft_tokens_check(char **tokens)
 		i++;
 	}
 	if (check.last_was_operator)
+	//if (check.last_was_operator)
 		return(error_num(4, NULL), 1);
-	return(0);
+	return (0);
 }

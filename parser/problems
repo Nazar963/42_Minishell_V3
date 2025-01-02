@@ -1,0 +1,11 @@
+
+
+Test 5-10: /bin/echo \$USER  - non interpretiamo '\' (subject)
+Test 23-24, 33,: -n opzione per eliminare nuova righa. Anche se ci sono doppiaggi  - devono essere eseguiti 
+come opzione, ed anche se c'e -nnnnnn deve esssere comunque risonosciuto come -n.
+Su punto di parsing - tutto a posto, i tipi di token si assegnano giusto (
+per -n -n ed anche per -nnnn -nnnn), quindi bisogna di controllare esecutor.
+Tets 27: >| echo sure  - >| e' un operatore speciale, quale noi non gestiamo
+
+
+Test 44: echo '$?'  - provare di togliere espanzione di variabile globalie da parte di NIZZ

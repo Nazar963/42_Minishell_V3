@@ -41,7 +41,7 @@ echo $"HOME"$USER
 echo $"HOM"E$USER
 echo $"HOME"
 echo $"42$"
-echo '$?'
+echo '$?' 
 echo \\\$USER
 echo \\\\$USER
 echo \\\\\$USER

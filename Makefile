@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+         #
+#    By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/02 19:06:12 by naal-jen          #+#    #+#              #
-#    Updated: 2024/12/30 13:37:09 by naal-jen         ###   ########.fr        #
+#    Updated: 2025/01/02 17:52:49 by nakoriko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SRC = main.c signals.c\
 	redirections/redirections_main.c redirections/redirections_main_pipes.c\
 	utils/free.c utils/utils.c utils/print.c\
 	execve/execve_main.c execve/execve_main_pipes.c\
-	pipes/pipes_main.c
+	pipes/pipes_main.c parser/quotes_and_expansion.c
 OBJ = $(SRC:%.c=$(OBJDIR)/%.o)
 
 OBJDIR = .objectFiles

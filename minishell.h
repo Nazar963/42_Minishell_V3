@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/01 12:56:55 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/02 18:15:23 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,12 @@ void		ft_unset_pipes(t_token **token, t_main *main);
 //* ------------------------------------------------------------------------ */
 //*                                  parser                                  */
 //* ------------------------------------------------------------------------ */
+//£ -------------------------- quotes and expansion ------------------------ */
+void		ft_expand(t_mtx *data, char **env_test);
+void		ft_expand_global(t_mtx *data);
+void		ft_token_quote(t_mtx *data, char **env_test);
+char		*check_content_quotes(char *str);
+
 //£ ----------------------------- parsing_check ---------------------------- */
 void		error_num( int n, const char *arg);
 int			ft_pipe_parsig_mtxcheck(char *str, t_check *check);
@@ -180,9 +186,9 @@ void		ft_token_space(t_mtx *data);
 void		ft_add_to_buffer(t_mtx *data, char *var_value);
 int			ft_var_len(char *str);
 char		*ft_get_env(char *str, char **env_test, int var_len);
-void		ft_expand(t_mtx *data, char **env_test);
-void		ft_expand_global(t_mtx *data);
-void		ft_token_quote(t_mtx *data, char **env_test);
+
+
+
 void		ft_token_operator(t_mtx *data);
 void		ft_tokens_finish(t_mtx *data);
 //£ ----------------------------- parsing_main ----------------------------- */
@@ -196,7 +202,6 @@ t_token		*ft_tokenizer_main(char *input, t_main *main);
 int			ft_is_pipe(char *token);
 int			ft_is_redirection(char *token);
 int			ft_is_operator(char *token);
-int			ft_is_special_char(char *token);
 int			ft_is_tab(char c, char next);
 //£ ----------------------------- parsing_utils ---------------------------- */
 int			check_only_spaces(char **str);

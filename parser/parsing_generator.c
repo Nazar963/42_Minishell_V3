@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_generator.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 13:13:26 by nakoriko          #+#    #+#             */
-/*   Updated: 2024/12/27 08:46:24 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/02 18:22:24 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void ft_tokendata_init(t_mtx *data, char *input)
+void	ft_tokendata_init(t_mtx *data, char *input)
 {
 	data->i = 0;
 	data->y = 0;
@@ -31,7 +31,7 @@ void ft_tokendata_init(t_mtx *data, char *input)
 		data->tokens[data->k] = NULL;
 		data->k++;
 	}
-	data->buffer = malloc(sizeof(char) * (data->len + 1000));
+	data->buffer = malloc(sizeof(char) * (data->len + 1));
 	if (data->buffer == NULL)
 	{
 		free(data->tokens);
@@ -39,7 +39,7 @@ void ft_tokendata_init(t_mtx *data, char *input)
 	}
 }
 
-void ft_token_space(t_mtx *data)
+void	ft_token_space(t_mtx *data)
 {
 	if (data->j > 0)
 	{
@@ -52,11 +52,11 @@ void ft_token_space(t_mtx *data)
 	data->i++;
 }
 
-void 	ft_add_to_buffer(t_mtx *data, char *var_value)
+void	ft_add_to_buffer(t_mtx *data, char *var_value)
 {
-	int i;
-	char *new_buffer;
-	size_t var_len;
+	int		i;
+	char	*new_buffer;
+	size_t	var_len;
 
 	var_len = ft_strlen(var_value) + ft_strlen(data->str);
 	////// aggiungere la memoria nel buffer. Dimensione precisa o solo dimensione abbastanza? Se precisa - bisogna di toglere il nome (var_name)
@@ -79,9 +79,9 @@ void 	ft_add_to_buffer(t_mtx *data, char *var_value)
 	data->buffer[data->j] = '\0';
 }
 
-int ft_var_len(char *str)
+int	ft_var_len(char *str)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	if (!str[len] || !(ft_isalpha(str[len])) || str[len] == '_') // controllo che la prima lettera esiste, lettera o underscore
@@ -91,26 +91,26 @@ int ft_var_len(char *str)
 	return (len);
 }
 
-char *ft_get_env(char *str, char **env_test, int var_len)
+char	*ft_get_env(char *str, char **env_test, int var_len)
 {
-	char *new;
-	int i;
-	int j;
-	int value_len;
+	char	*new;
+	int		i;
+	int		j;
+	int		value_len;
 
 	i = 0;
 	j = 0;
 	new = NULL;
 	while (env_test[j]) // passrae largezza di matrice
 	{
-		if ((ft_strncmp(str, env_test[j], var_len) == 0) && (env_test[j][var_len] == '=')) //se stringe uguali
+		if ((ft_strncmp(str, env_test[j], var_len) == 0) 
+			&& (env_test[j][var_len] == '=')) //se stringe uguali
 		{
-			
 			value_len = ft_strlen(&env_test[j][var_len + 1]); // calcoliamo lunghezza del valore iniziando
 			//dal fine del nome di variabile + 1 (simbolo "=");
 			new = malloc(sizeof(char) * (value_len + 1)); // lunghezza + "\0"
 			if (new == NULL)
-				return(NULL);
+				return (NULL);
 			i = 0;
 			while(env_test[j][var_len + 1 + i] != '\0') // aggiunggere controllo di '\n'?
 			{
@@ -118,88 +118,14 @@ char *ft_get_env(char *str, char **env_test, int var_len)
 				i++;
 			}
 			new[i] = '\0';
-			return(new);
+			return (new);
 		}
 		j++;
 	}
-	return(new);
+	return (new);
 }
 
-void ft_expand(t_mtx *data, char **env_test)
-{
-	char *var_name;
-	char *var_value;
-	int var_len;
-
-	var_len = ft_var_len(&data->str[data->i + 1]);
-	if (var_len > 0)
-	{
-		var_name = ft_substr(data->str, data->i + 1, var_len);
-		var_value = ft_get_env(var_name, env_test, var_len);
-		free_str(var_name);
-		if (var_value)
-		{
-			ft_add_to_buffer(data, var_value);
-			free(var_value);
-			if (data->check == 1)
-				return ;
-		}
-		else
-			data->buffer[data->j] = '\0';
-		data->i = data->i + var_len + 1;
-	}
-	else 
-		data->buffer[data->j++] = data->str[data->i++];
-}
-
-void ft_expand_global(t_mtx *data)
-{
-	char *str_global;
-
-	str_global = ft_itoa(g_global);
-	if (str_global)
-	{
-		ft_add_to_buffer(data, str_global);
-		data->i = data->i + ft_strlen(str_global) + 1; // non sono sicura se +1;
-		free(str_global);
-		if (data->check == 1)
-			return ;
-	}
-}
-
-void ft_token_quote(t_mtx *data, char **env_test)
-{
-	data->quote = data->str[data->i];
-	data->i++;
-	while (data->str[data->i] && data->str[data->i] != data->quote)
-	{
-		if (data->str[data->i] == '$' && data->quote== '\"')
-		{
-			if (data->str[data->i + 1] == '?')
-				ft_expand_global(data);
-			else
-				ft_expand(data, env_test);
-			if (data->check == 1)
-				return ;
-		}
-		else
-		{
-			data->buffer[data->j] = data->str[data->i];
-			data->j++;
-			data->i++;
-		}
-	}
-	if (data->str[data->i] != data->quote)
-	{
-		print_error("Error: Unmatched quote", NULL, NULL);
-		data->check = 1;
-		return ;
-	}
-	data->i++;
-}
-
-
-void ft_token_operator(t_mtx *data)
+void	ft_token_operator(t_mtx *data)
 {
 	data->twin_char = data->str[data->i];
 	if (data->j > 0)
@@ -223,7 +149,7 @@ void ft_token_operator(t_mtx *data)
 	data->i++;
 }
 
-void ft_tokens_finish(t_mtx *data)
+void	ft_tokens_finish(t_mtx *data)
 {
 	if (data->j > 0)
 	{
