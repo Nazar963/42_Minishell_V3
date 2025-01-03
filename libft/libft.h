@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 15:58:14 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/31 18:55:08 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/02 19:20:52 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,12 +151,14 @@ typedef struct s_token
 	char			*content;
 	TokenType		type;
 	char			*heredoc_file;
+	int				expaned_del;
 	struct s_token	*next;
 }					t_token;
 
 typedef struct s_delimeter
 {
 	char				*delimeter;
+	int					expaned;
 	struct s_delimeter	*next;
 }	t_delimeter;
 // Allocates with malloc and returns a new node. The member variable ’content’ 

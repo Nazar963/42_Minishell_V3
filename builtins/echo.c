@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:00:21 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/30 15:37:09 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/02 20:37:27 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ void	ft_echo(t_token **token)
 	{
 		if (flag_op)
 		{
-			if (ft_strncmp((*token)->content, "$?", 2) == 0
-				&& ft_strlen((*token)->content) == 2)
-				printf("%d ", g_global);
-			else if ((*token)->next == NULL)
+			// if (ft_strncmp((*token)->content, "$?", 2) == 0
+			// 	&& ft_strlen((*token)->content) == 2)
+			// 	printf("%d ", g_global);
+			/* else  */if ((*token)->next == NULL)
 				printf("%s", (*token)->content);
 			else
 				if (*token && (*token)->content)
@@ -45,15 +45,15 @@ void	ft_echo(t_token **token)
 		{
 			if ((*token)->next == NULL)
 			{
-				if (ft_strncmp((*token)->content, "$?", 2) == 0
-					&& ft_strlen((*token)->content) == 2)
-					printf("%d\n", g_global);
-				else
+				// if (ft_strncmp((*token)->content, "$?", 2) == 0
+				// 	&& ft_strlen((*token)->content) == 2)
+				// 	printf("%d\n", g_global);
+				// else
 					printf("%s\n", (*token)->content);
 			}
-			else if (ft_strncmp((*token)->content, "$?", 2) == 0
-				&& ft_strlen((*token)->content) == 2)
-				printf("%d ", g_global);
+			// else if (ft_strncmp((*token)->content, "$?", 2) == 0
+			// 	&& ft_strlen((*token)->content) == 2)
+			// 	printf("%d ", g_global);
 			else
 				printf("%s ", (*token)->content);
 

@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/30 15:35:35 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/02 16:56:20 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,8 +226,8 @@ void	handle_path_pipes(t_token **token, t_main *main, int **fds)
 int	child_pipes(t_token **list, t_main *main, int **fds, int pos)
 {
 	int	pid1;
+	int	fd;
 
-	ft_herdoc_pipes_main(list);
 	pid1 = fork();
 	if (pid1 < 0)
 	{
@@ -236,24 +236,48 @@ int	child_pipes(t_token **list, t_main *main, int **fds, int pos)
 	}
 	if (pid1 == 0)
 	{
+		if ((*list)->heredoc_file)
+			fd = open((*list)->heredoc_file, O_RDONLY, 0666);
 		if (pos == 1)
 		{
+			if ((*list)->heredoc_file)
+			{
+				dup2(fd, STDIN_FILENO);
+				close(fd);
+			}
 			dup2(fds[main->pos_fd][1], STDOUT_FILENO);
 			close(fds[main->pos_fd][1]);
 			close(fds[main->pos_fd][0]);
+
 		}
 		else if (pos == 2)
 		{
-			dup2(fds[main->pos_fd - 1][0], STDIN_FILENO);
-			close(fds[main->pos_fd - 1][0]);
+			if ((*list)->heredoc_file)
+			{
+				dup2(fd, STDIN_FILENO);
+				close(fd);
+			}
+			else
+			{
+				dup2(fds[main->pos_fd - 1][0], STDIN_FILENO);
+				close(fds[main->pos_fd - 1][0]);
+			}
 
 			dup2(fds[main->pos_fd][1], STDOUT_FILENO);
 			close(fds[main->pos_fd][1]);
 		}
 		else if (pos == 3)
 		{
-			dup2(fds[main->pos_fd - 1][0], STDIN_FILENO);
-			close(fds[main->pos_fd - 1][0]);
+			if ((*list)->heredoc_file)
+			{
+				dup2(fd, STDIN_FILENO);
+				close(fd);
+			}
+			else
+			{
+				dup2(fds[main->pos_fd - 1][0], STDIN_FILENO);
+				close(fds[main->pos_fd - 1][0]);
+			}
 
 			dup2(main->orig_fd[1], STDOUT_FILENO);
 		}

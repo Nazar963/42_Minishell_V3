@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/02 18:15:23 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/02 20:36:04 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ int			ft_strlen_mtx(char **mtx);
 int			ft_control_int(char *str);
 void		ft_del_first_node(t_token **token);
 void		ft_del_first_node_delimeter(t_delimeter **delimeter);
+void		ft_del_first_node_and_restructure_temp(t_token **token, t_token *temp);
 void		ft_del_node(t_token **token, t_token *delete);
 //£ --------------------------------- print -------------------------------- */
 void		print_error(const char *str, const char *arg, char *other);
@@ -217,11 +218,13 @@ void		ft_path_identifier(t_token **token, t_main *main);
 int			ft_redirection_out(t_token **token, t_main *main, t_token *temp);
 int			ft_redirection_in(t_token **token, t_main *main, t_token *temp);
 int			ft_append_out(t_token **token, t_main *main, t_token *temp);
+char		*ft_getenv(char *name, t_main *main);
+char		*ft_expaned_var(char *str, t_main *main);
 void		ft_heredoc(t_token **token, t_main *main, t_token *temp);
 int			ft_redirections_main(t_token **token, t_main *main);
 //£ ------------------------ redirections_main_pipes ----------------------- */
-void		ft_heredoc_pipes(t_token **token, t_token *temp);
-int			ft_herdoc_pipes_main(t_token **token);
+void		ft_heredoc_pipes(t_token **token, t_main *main, t_token *temp);
+int			ft_herdoc_pipes_main(t_token **token, t_main *main);
 
 //* ------------------------------------------------------------------------ */
 //*                                  execve                                  */

@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:58:01 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/01 16:38:02 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/02 23:16:54 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,18 @@ void	free_linked_list(t_token **token)
 		{
 			temp = *token;
 			*token = (*token)->next;
-			free(temp->content);
+			if (temp->content)
+			{
+				free(temp->content);
+				temp->content = NULL;
+			}
 			if (temp->heredoc_file)
+			{
 				free(temp->heredoc_file);
+				temp->heredoc_file = NULL;
+			}
 			free(temp);
+			temp = NULL;
 		}
 	}
 }
@@ -76,7 +84,8 @@ void	free_orig_linked_list(t_token **token)
 
 void	free_all(t_main *main, t_token **token)
 {
-	free_mtx(main->env);
+	if (main->env)
+		free_mtx(main->env);
 	if (*token != NULL)
 		free_linked_list(token);
 	if (main->token != NULL)

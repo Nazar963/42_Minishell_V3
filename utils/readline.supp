@@ -24,3 +24,12 @@
     fun:rl_initialize
     fun:readline
 }
+
+{
+    readline
+    Memcheck:Leak
+    ...
+    ...
+    fun:readline
+    fun:ft_heredoc
+}

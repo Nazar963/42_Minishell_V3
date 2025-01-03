@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:00:21 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/30 15:37:27 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/03 12:50:31 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ void	ft_echo_pipes(t_token **token, t_main *main)
 	{
 		if (flag_op)
 		{
-			if (ft_strncmp((*token)->content, "$?", 2) == 0
+			/* if (ft_strncmp((*token)->content, "$?", 2) == 0
 				&& ft_strlen((*token)->content) == 2)
 				printf("%d ", g_global);
-			else if ((*token)->next == NULL)
+			else  */if ((*token)->next == NULL)
 				printf("%s", (*token)->content);
 			else
 				if (*token && (*token)->content)
@@ -45,15 +45,15 @@ void	ft_echo_pipes(t_token **token, t_main *main)
 		{
 			if ((*token)->next == NULL)
 			{
-				if (ft_strncmp((*token)->content, "$?", 2) == 0
+				/* if (ft_strncmp((*token)->content, "$?", 2) == 0
 					&& ft_strlen((*token)->content) == 2)
 					printf("%d\n", g_global);
-				else
+				else */
 					printf("%s\n", (*token)->content);
 			}
-			else if (ft_strncmp((*token)->content, "$?", 2) == 0
+			/* else if (ft_strncmp((*token)->content, "$?", 2) == 0
 				&& ft_strlen((*token)->content) == 2)
-				printf("%d ", g_global);
+				printf("%d ", g_global); */
 			else
 				printf("%s ", (*token)->content);
 

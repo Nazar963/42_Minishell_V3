@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 20:44:33 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/31 18:56:41 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/02 15:16:37 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,33 @@ void	ft_del_first_node(t_token **token)
 	}
 	free(temp->content);
 	free(temp);
+}
+
+void	ft_del_first_node_and_restructure_temp(t_token **token, t_token *temp)
+{
+	t_token	*tmp;
+	t_token	*holder;
+
+	
+	if (token == NULL || *token == NULL)
+		return;
+
+	holder = temp;
+	tmp = *token;
+	while (temp->next != *token)
+		temp = temp->next;
+	temp->next = temp->next->next;
+	temp = holder;
+	if ((*token)->next == NULL)
+	{
+		*token = (*token)->next;
+		*token = NULL;
+	}
+	else {
+		*token = (*token)->next;
+	}
+	free(tmp->content);
+	free(tmp);
 }
 
 void	ft_del_first_node_delimeter(t_delimeter **delimeter)

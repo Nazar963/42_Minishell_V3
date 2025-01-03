@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 12:43:05 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/30 15:35:48 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/03 13:02:33 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,11 @@ int	ft_pipes_main(t_token **token, t_main *main)
 	if (main->pids == NULL)
 		return (false);
 /* -------------------------------------------------------------------------- */
-
+	ft_herdoc_pipes_main(token, main);
+	if (!(*token))
+	{
+		return (true);
+	}
 	list = ft_lstnew_for_pipes(*token);
 	while (done == false)
 	{
