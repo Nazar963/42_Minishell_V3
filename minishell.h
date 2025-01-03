@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/02 20:36:04 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/03 18:06:28 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ typedef struct s_mtx
 	int		j; // contatore di caratteri dentro buffer
 	int		k; // contatore per allocare le array dentro matrice(tokens)
 	int		check;
+	int arg_count;
+	int delim_flag;
 }	t_mtx;
 
 typedef struct s_check // 

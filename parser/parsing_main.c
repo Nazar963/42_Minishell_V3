@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:43:55 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/03 13:48:49 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/03 18:23:49 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void preparsing_check_and_split_input(t_mtx *data, char **env)
 {
-	while (data->i < data->len) //ciclo per creare tokens
+	while (data->i < data->len && data->arg_count < data->k) //ciclo per creare tokens
 	{
 		if(data->str[data->i] == ' ') //se c'e spazio, metti token in tokens
 			ft_token_space(data);
@@ -35,8 +35,10 @@ void preparsing_check_and_split_input(t_mtx *data, char **env)
 				ft_expand_global(data);
 			else if (data->str[data->i + 1] == '\"' || data->str[data->i + 1] == '\'')
 				data->i++;
-			else
+			else if (data->delim_flag == 0)
 				ft_expand(data, env);
+			else
+				data->buffer[data->j++] = data->str[data->i++];
 			if (data->check == 1)
 				return ;
 		}
@@ -56,7 +58,7 @@ char	**ft_token_generator(char *input, char **env)
 	if(data.tokens == NULL || data.buffer == NULL)
 		return (NULL);
 	preparsing_check_and_split_input(&data, env); // spazi, virgolette, operatori
-	if (data.check == 1)
+	if (data.check == 1 || data.arg_count >= data.k)
 	{
 		free_all_preparsing(&data);
 		return (NULL);
@@ -181,7 +183,7 @@ t_token	*ft_tokenizer_main(char *input, t_main *main)
 	(void)main;
 	token = NULL;
 	tokens = ft_token_generator(input, main->env);
-	if (tokens[0] && ft_tokens_check(tokens) == 0)
+	if (tokens!= NULL && tokens[0] && ft_tokens_check(tokens) == 0)
 	{
 		//print_mtx(tokens, "Tokens");
 		token = ft_token_list_creation(tokens);

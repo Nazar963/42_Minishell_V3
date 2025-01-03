@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 17:45:01 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/02 18:02:42 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/03 18:18:58 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void ft_expand(t_mtx *data, char **env_test)
 		var_name = ft_substr(data->str, data->i + 1, var_len);
 		var_value = ft_get_env(var_name, env_test, var_len);
 		free_str(var_name);
-		if (var_value)
+		if (var_value)//controllo delimitatore
 		{
 			ft_add_to_buffer(data, var_value);
 			free(var_value);

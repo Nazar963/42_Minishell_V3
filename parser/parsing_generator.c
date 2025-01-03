@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 13:13:26 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/02 18:22:24 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/03 18:10:28 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,18 @@ void	ft_tokendata_init(t_mtx *data, char *input)
 	data->i = 0;
 	data->y = 0;
 	data->j = 0;
+	data->arg_count = 0;
 	data->quote = 0;
 	data->twin_char = 0;
 	data->k = 0;
 	data->check = 0;
+	data->delim_flag = 0;
 	data->str = remove_begin_end_whitespaces(input);
 	data->len = ft_strlen(data->str);
-	data->tokens = malloc(sizeof(char *) * 256);//massima quantita di argomenti, visto che non possiamo usare realloc
+	data->tokens = malloc(sizeof(char *) * 2000);//massima quantita di argomenti, visto che non possiamo usare realloc
 	if (!data->tokens)
 		return ;
-	while (data->k < 256)
+	while (data->k < 2000)
 	{
 		data->tokens[data->k] = NULL;
 		data->k++;
@@ -43,7 +45,8 @@ void	ft_token_space(t_mtx *data)
 {
 	if (data->j > 0)
 	{
-		data->buffer[data->j] = '\0'; //per finire il token precedente
+		data->buffer[data->j] = '\0';
+		data->arg_count++; //per finire il token precedente
 		data->tokens[data->y] = ft_strdup(data->buffer);
 		//free_str(data->buffer); // ?
 		data->y++;
@@ -77,6 +80,7 @@ void	ft_add_to_buffer(t_mtx *data, char *var_value)
 		data->j++;
 	}
 	data->buffer[data->j] = '\0';
+	data->arg_count++; 
 }
 
 int	ft_var_len(char *str)
@@ -131,18 +135,26 @@ void	ft_token_operator(t_mtx *data)
 	if (data->j > 0)
 	{
 		data->buffer[data->j] = '\0';
+		data->arg_count++; 
 		data->tokens[data->y] = ft_strdup(data->buffer);
 		data->y++;
 		data->j = 0;
 	}
+	if (data->arg_count >= data->k)//////
+		return ;
 	data->buffer[data->j] = data->str[data->i];
 	if (data->str[data->i + 1] == data->twin_char)
 	{
+		if(data->str[data->i] == '<') /// flag pe respansione
+			data->delim_flag = 1;
 		data->j++;
 		data->i++;
 		data->buffer[data->j] = data->str[data->i];
 	}
 	data->buffer[data->j + 1] = '\0';
+	data->arg_count++; 
+	if (data->arg_count >= data->k)//////
+		return ;
 	data->tokens[data->y] = ft_strdup(data->buffer);
 	data->y++;
 	data->j = 0;
@@ -154,9 +166,12 @@ void	ft_tokens_finish(t_mtx *data)
 	if (data->j > 0)
 	{
 		data->buffer[data->j] = '\0';
+		data->arg_count++; 
 		data->tokens[data->y] = ft_strdup(data->buffer);
 		data->y++;
 	}
+	if (data->arg_count >= data->k)
+		return ;
 	data->tokens[data->y] = NULL;
 	free(data->buffer);
 	free(data->str);

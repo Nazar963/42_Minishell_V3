@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:58:01 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/02 23:16:54 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/03 17:02:47 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,13 @@ void free_mtx(char **mtx)
 	i = 0;
 	if (mtx == NULL)
 		return ;
+	if (!mtx)
+		return ;
+	if (!mtx[i])
+		return ;
 	while (mtx[i] != NULL)
 	{
-		free(mtx[i]);
+		free_str(mtx[i]);
 		i++;
 	}
 	free(mtx);

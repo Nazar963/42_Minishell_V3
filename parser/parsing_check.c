@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:51:30 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/02 18:20:42 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/03 18:00:23 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	error_num( int n, const char *arg)
 	else if (n == 5)
 		print_error("Error: Unsupported character or operator `", arg, NULL);
 	else if (n == 6)
-		print_error("Error: too many pipes", arg, NULL);
+		print_error("Error: too many files", arg, NULL);
 	g_global = 2;
 }
 int	ft_pipe_parsig_mtxcheck(char *str, t_check *check)
@@ -72,7 +72,7 @@ void	t_check_init(t_check *check)
 	check->redirection_count = 0;
 	check->open_files_count = 0;
 	check->pipe_count = 0;
-	check->max_open_files = 256;
+	check->max_open_files = 3000;
 	check->error_index = 0;
 
 }
