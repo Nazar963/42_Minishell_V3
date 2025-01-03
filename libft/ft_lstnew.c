@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 14:20:46 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/03 13:16:34 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/03 13:51:36 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_token	*ft_lstnew(char *content)
 	if (!temp)
 		return (NULL);
 	temp->content = ft_strdup(content);
-	// temp->expaned_del = 1;
+	temp->expaned_del = 0;
 	temp->heredoc_file = NULL;
 	temp->next = NULL;
 	return (temp);

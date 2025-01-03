@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_main.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:26:55 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/03 12:25:32 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/03 13:54:47 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,12 +320,17 @@ void	ft_heredoc(t_token **token, t_main *main, t_token *temp)
 		else if (ft_lstsize_delimeter(delimeter) == 1)
 		{
 			if (delimeter->expaned)
+			{
 				new_input = ft_expaned_var(heredoc_input, main);
+				ft_putstr_fd(new_input, fd);
+				ft_putstr_fd("\n", fd);
+				free (new_input);
+			}
 			else
-				new_input = heredoc_input;
-			ft_putstr_fd(new_input, fd);
-			ft_putstr_fd("\n", fd);
-			free (new_input);
+			{
+				ft_putstr_fd(heredoc_input, fd);
+				ft_putstr_fd("\n", fd);
+			}
 		}
 		free(heredoc_input);
 	}

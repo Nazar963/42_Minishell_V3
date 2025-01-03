@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:43:55 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/02 18:23:49 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/03 13:48:49 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,20 @@ int	is_a_builtin_check(t_token *token)
 	return (0);
 }
 
+int quotes_delimiter(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '\"')
+			return(1);
+		i++;
+	}
+	return(0);
+}
+
 // AGGIUNTO PER ASSEGNARE IL TIPO AL NODO PASSATO 
 void	assign_token_type(t_token *token, t_token *prev_token)
 {
@@ -103,7 +117,11 @@ void	assign_token_type(t_token *token, t_token *prev_token)
 		|| prev_token->type == TOKEN_APPEND_OUT))
 		token->type = TOKEN_FILENAME; // dopo questi solo filename
 	else if (prev_token && prev_token->type == TOKEN_HEREDOC)
+	{
 		token->type = TOKEN_DELIMITER;
+		if (quotes_delimiter(token->content) == 0)//se non ci sono virgolette
+			token->expaned_del = 1;
+	}
 	else if (ft_strncmp(token->content, "-", 1) == 0)
 		token->type = TOKEN_OPTION;
 	else if (ft_strncmp(token->content, "<", n) == 0)
