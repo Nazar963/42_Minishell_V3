@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/03 18:06:28 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/03 19:56:52 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ char		*ft_expaned_var(char *str, t_main *main);
 void		ft_heredoc(t_token **token, t_main *main, t_token *temp);
 int			ft_redirections_main(t_token **token, t_main *main);
 //£ ------------------------ redirections_main_pipes ----------------------- */
-void		ft_heredoc_pipes(t_token **token, t_main *main, t_token *temp);
+int			ft_heredoc_pipes(t_token **token, t_main *main, t_token *temp);
 int			ft_herdoc_pipes_main(t_token **token, t_main *main);
 
 //* ------------------------------------------------------------------------ */

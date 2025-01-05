@@ -244,3 +244,4 @@ echo -1
 /bin/echo 'totally logical'
 /bin/echo ''totally logical''
 /bin/echo ""'totally logical'""
+$EMPTY

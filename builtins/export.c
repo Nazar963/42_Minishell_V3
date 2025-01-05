@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:30:09 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/30 15:32:53 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/05 13:51:17 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,9 @@ int	ft_check_for_already_existing_variable(char **env, char *variable)
 
 char **ft_export_var_reassign(char **env, char *variable, char *value)
 {
-	int i;
-	char *temp;
+	int		i;
+	char	*temp;
+	char	*join_helper;
 
 	i = 0;
 	while (env[i])
@@ -75,35 +76,76 @@ char **ft_export_var_reassign(char **env, char *variable, char *value)
 		temp = ft_strjoin(variable, "=");
 		if (ft_strncmp(env[i], temp, ft_strlen(temp)) == 0)
 		{
+			free(temp);
 			free(env[i]);
-			env[i] = ft_strdup(variable);
-			env[i] = ft_strjoin(env[i], "=");
+			join_helper = ft_strdup(variable);
+			env[i] = ft_strjoin(join_helper, "=");
+			free(join_helper);
+			char *hi;
 			if (strchr(value, ' '))
 			{
+				hi = env[i];
 				env[i] = ft_strjoin(env[i], "\"");
+				free (hi);
+
+				hi = env[i];
 				env[i] = ft_strjoin(env[i], value);
+				free (hi);
+
+				hi = env[i];
 				env[i] = ft_strjoin(env[i], "\"");
+				free (hi);
 			}
 			else
+			{
+				hi = env[i];
 				env[i] = ft_strjoin(env[i], value);
-			free(temp);
+				free (hi);
+			}
 			return (env);
 		}
 		else if (ft_strncmp(env[i], variable, ft_strlen(variable)) == 0
 				&& env[i][ft_strlen(variable)] == '\0')
 		{
-			free(env[i]);
-			env[i] = ft_strdup(variable);
-			env[i] = ft_strjoin(env[i], "=");
-			if (strchr(value, ' '))
-			{
-				env[i] = ft_strjoin(env[i], "\"");
-				env[i] = ft_strjoin(env[i], value);
-				env[i] = ft_strjoin(env[i], "\"");
-			}
-			else
-				env[i] = ft_strjoin(env[i], value);
 			free(temp);
+			free(env[i]);
+			join_helper = ft_strdup(variable);
+			if (join_helper)
+			{
+				env[i] = ft_strjoin(join_helper, "=");
+				free(join_helper);
+				if (env[i])
+				{
+					char *temp = env[i];
+					if (strchr(value, ' '))
+					{
+						env[i] = ft_strjoin(env[i], "\"");
+						free(temp);
+						temp = env[i];
+						env[i] = ft_strjoin(env[i], value);
+						free(temp);
+						temp = env[i];
+						env[i] = ft_strjoin(env[i], "\"");
+						free(temp);
+					}
+					else
+					{
+						env[i] = ft_strjoin(env[i], value);
+						free(temp);
+					}
+				}
+			}
+			// env[i] = ft_strjoin(join_helper, "=");
+			// free(join_helper);
+			// if (strchr(value, ' '))
+			// {
+			// 	env[i] = ft_strjoin(env[i], "\"");
+			// 	env[i] = ft_strjoin(env[i], value);
+			// 	env[i] = ft_strjoin(env[i], "\"");
+			// }
+			// else
+			// 	env[i] = ft_strjoin(env[i], value);
+			// free(temp);
 			return (env);
 		}
 		free(temp);

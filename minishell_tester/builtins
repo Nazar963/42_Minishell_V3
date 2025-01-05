@@ -1,3 +1,12 @@
+/bin/echo $"HOME"$USER
+/bin/echo $"HOM"E$USER
+/bin/echo $"HOME"
+/bin/echo $"42$"
+echo $USER'$USER'text oui oui     oui  oui $USER oui      $USER    ''
+/bin/echo '' ""
+echo hi |  "|"
+>">" asd
+/bin/rm -f ">"
 echo "cd ~"
 echo ""$?""
 echo $?"42"

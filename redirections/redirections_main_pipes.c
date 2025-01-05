@@ -6,13 +6,13 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:26:55 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/03 13:16:23 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/03 17:19:48 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_heredoc_pipes(t_token **token, t_main *main, t_token *temp)
+int	ft_heredoc_pipes(t_token **token, t_main *main, t_token *temp)
 {
 	char		*heredoc_input;
 	int			fd;
@@ -78,19 +78,23 @@ void	ft_heredoc_pipes(t_token **token, t_main *main, t_token *temp)
 				free(heredoc_input);
 				free_linked_list_delimeter(&delimeter);
 				close(fd);
-				free_all(main, &temp);
+				// free_linked_list(token);
+				free_linked_list(&temp);
+				*token = NULL;
 				dup2(main->orig_fd[0], STDIN_FILENO);
-				return ;
+				return (1);
 			}
 			if (!heredoc_input)
 			{
 				printf("bash: warning: here-document at line 31 delimited by end-of-file (wanted`%s')\n", delimeter->delimeter);
-				free_linked_list(token);
+				// free_linked_list(token);
+				free_linked_list(&temp);
+				*token = NULL;
 				// close(fd);
 				free_linked_list_delimeter(&delimeter);
 				close(fd);
 				dup2(main->orig_fd[0], STDIN_FILENO);
-				return ;
+				return (1);
 			}
 			if (ft_strncmp(heredoc_input, delimeter->delimeter, ft_strlen(delimeter->delimeter)) == 0
 				&& ft_strlen(heredoc_input) == ft_strlen(delimeter->delimeter) && ft_lstsize_delimeter(delimeter) == 1)
@@ -113,14 +117,26 @@ void	ft_heredoc_pipes(t_token **token, t_main *main, t_token *temp)
 			}
 			else if (ft_lstsize_delimeter(delimeter) == 1)
 			{
+				// if (delimeter->expaned)
+				// 	new_input = ft_expaned_var(heredoc_input, main);
+				// else
+				// 	new_input = heredoc_input;
+				// ft_putstr_fd(new_input, fd);
+				// ft_putstr_fd("\n", fd);
+				// if (delimeter->expaned)
+				// 	free(new_input);
 				if (delimeter->expaned)
+				{
 					new_input = ft_expaned_var(heredoc_input, main);
+					ft_putstr_fd(new_input, fd);
+					ft_putstr_fd("\n", fd);
+					free (new_input);
+				}
 				else
-					new_input = heredoc_input;
-				ft_putstr_fd(new_input, fd);
-				ft_putstr_fd("\n", fd);
-				if (delimeter->expaned)
-					free(new_input);
+				{
+					ft_putstr_fd(heredoc_input, fd);
+					ft_putstr_fd("\n", fd);
+				}
 			}
 
 			free(heredoc_input);
@@ -137,6 +153,7 @@ void	ft_heredoc_pipes(t_token **token, t_main *main, t_token *temp)
 			break ;
 		}
 	}
+	return (0);
 }
 
 // void	ft_heredoc_pipes(t_token **token, t_token *temp)
@@ -200,14 +217,9 @@ int	ft_herdoc_pipes_main(t_token **token, t_main *main)
 	{
 		if (temp->type == TOKEN_HEREDOC)
 		{
-			ft_heredoc_pipes(token, main, temp);
-			if (*token)
-				temp = *token;
-			else
-			{
-				printf("hi man\n");
-				temp = NULL;
-			}
+			if (ft_heredoc_pipes(token, main, temp) == 1)
+				return (1);
+			temp = *token;
 		}
 		if (temp)
 			temp = temp->next;
