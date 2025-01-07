@@ -1,0 +1,62 @@
+Memory Leaks
+
+
+✅export PATH=/usr/bin | printenv | grep PATH 
+✅export PATH=/usr/local/bin | pwd
+✅export LANG=C | printenv | cut -d= -f1 | grep LANG 
+❌ $T.
+mini exit code = 126
+bash exit code = 2
+mini error = ( Permission denied)
+bash error = ( filename argument required)
+
+// 
+// 
+
+
+pwd + new line - command not found
+
+
+
+
+❌ cd echo
+mini exit code = 0
+bash exit code = 1
+mini error = ()
+bash error = ( Not a directory)
+
+Test  29: ❌ cd echo echo 
+mini output = (echo)
+bash output = ()
+mini exit code = 0
+bash exit code = 1
+mini error = ()
+bash error = ( too many arguments)
+
+Test  30: ❌ cd - ananas dot jpeg 
+mini exit code = 127
+bash exit code = 1
+mini error = ( command not found)
+bash error = ( too many arguments)
+
+
+Test  34: ❌ export TEST+=100 
+mini exit code = 1
+bash exit code = 0
+mini error = ( not a valid identifier)
+bash error = ()
+
+Test  35: ❌ unset TES;T 
+mini exit code = 0
+bash exit code = 127
+mini error = ()
+bash error = ( command not found)
+
+
+
+
+
+
+
+
+

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/03 19:56:52 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/07 13:32:53 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,17 +175,21 @@ void		ft_unset_pipes(t_token **token, t_main *main);
 void		ft_expand(t_mtx *data, char **env_test);
 void		ft_expand_global(t_mtx *data);
 void		ft_token_quote(t_mtx *data, char **env_test);
-char		*check_content_quotes(char *str);
+char		*check_content_quotes(char *str, t_token *token);
+int 		quotes_delimiter(char *str);
+
+//£ ------------------------- token_list_creaition ------------------------- */
+t_token		*ft_token_list_creation(char **tokens);
 
 //£ ----------------------------- parsing_check ---------------------------- */
 void		error_num( int n, const char *arg);
-int			ft_pipe_parsig_mtxcheck(char *str, t_check *check);
+int			ft_pipe_parsig_check(char *str, t_check *check);
 int			ft_red_parsig_check(char *str, char *next, int i, t_check *check);
 void		t_check_init(t_check *check);
 int			ft_tokens_check(char **tokens);
 //£ --------------------------- parsing_generator -------------------------- */
 void		ft_tokendata_init(t_mtx *data, char *input);
-void		ft_token_space(t_mtx *data);
+void		ft_new_token(t_mtx *data);
 void		ft_add_to_buffer(t_mtx *data, char *var_value);
 int			ft_var_len(char *str);
 char		*ft_get_env(char *str, char **env_test, int var_len);
