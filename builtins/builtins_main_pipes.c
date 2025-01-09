@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 16:22:26 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/30 15:16:16 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/05 23:07:43 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_builtins_main_pipes(t_token **token, t_main *main, int **fds)
 
 	len = ft_strlen((*token)->content);
 	if (ft_strncmp((*token)->content, "echo", len) == 0)
-		ft_echo_pipes(token, main);
+		ft_echo_pipes(token);
 	else if (ft_strncmp((*token)->content, "pwd", len) == 0)
 		ft_pwd_pipes(token);
 	else if (ft_strncmp((*token)->content, "cd", len) == 0)
@@ -26,7 +26,7 @@ int	ft_builtins_main_pipes(t_token **token, t_main *main, int **fds)
 	else if (ft_strncmp((*token)->content, "export", len) == 0)
 		ft_export_pipes(token, main);
 	else if (ft_strncmp((*token)->content, "unset", len) == 0)
-		ft_unset_pipes(token, main);
+		ft_unset(token, main);
 	else if (ft_strncmp((*token)->content, "env", len) == 0)
 		ft_env_pipes(token, main);
 	else if (ft_strncmp((*token)->content, "exit", len) == 0)

@@ -1,35 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstlast.c                                       :+:      :+:    :+:   */
+/*   execve_main_pipes_utils2.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/04 14:20:33 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/09 14:14:21 by naal-jen         ###   ########.fr       */
+/*   Created: 2025/01/06 12:50:23 by naal-jen          #+#    #+#             */
+/*   Updated: 2025/01/06 12:55:38 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-t_token	*ft_lstlast(t_token *lst)
+void	error_cmd_pipes(char *cmd)
 {
-	if (!lst)
-		return (0);
-	while (lst->next != NULL)
-	{
-		lst = lst->next;
-	}
-	return (lst);
+	ft_putstr_fd(cmd, 2);
+	ft_putendl_fd(": command not found", 2);
+	if (errno == ENOENT)
+		exit(127);
+	else
+		exit(126);
 }
 
-t_delimeter	*ft_lstlast_delimeter(t_delimeter *lst)
+char	*ft_join_path_pipes(char **cmd)
 {
-	if (!lst)
-		return (0);
-	while (lst->next != NULL)
+	char	*exec_path;
+	int		i;
+
+	i = 0;
+	while (cmd[i])
 	{
-		lst = lst->next;
+		exec_path = ft_strjoin(cmd[i], "/");
+		i++;
 	}
-	return (lst);
+	printf("this is the whole path man: %s\n", exec_path);
+	exit(0);
+	return (exec_path);
 }

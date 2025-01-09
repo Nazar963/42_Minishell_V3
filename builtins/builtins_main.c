@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_main.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 22:40:05 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/05 18:37:13 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/09 14:06:58 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ int	ft_builtins_main(t_token **token, t_main *main)
 	int	len;
 
 	len = ft_strlen((*token)->content);
-	// if (len == 0)
-	// 	return (0);
 	if (ft_strncmp((*token)->content, "echo", len) == 0)
 		ft_echo(token);
 	else if (ft_strncmp((*token)->content, "pwd", len) == 0)

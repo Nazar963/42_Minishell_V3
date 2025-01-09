@@ -3,43 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:58:01 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/07 16:09:26 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/09 08:20:17 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	free_mtx(char **mtx)
+void	free_mtx(char ***mtx)
 {
 	int	i;
 
 	i = 0;
-	if (mtx == NULL)
+	if ((*mtx) == NULL)
 		return ;
-	if (!mtx)
+	if (!(*mtx))
 		return ;
-	if (!mtx[i])
+	if (!(*mtx)[i])
 	{
-		free(mtx);
+		free((*mtx));
 		return ;
 	}
-	while (mtx[i] != NULL)
+	while ((*mtx)[i] != NULL)
 	{
-		free_str(mtx[i]);
-		mtx[i] = NULL;
+		free_str((*mtx)[i]);
+		(*mtx)[i] = NULL;
 		i++;
 	}
-	free(mtx);
-	mtx = NULL;
+	free((*mtx));
+	(*mtx) = NULL;
 }
 
 void	free_all(t_main *main, t_token **token)
 {
 	if (main->env)
-		free_mtx(main->env);
+		free_mtx(&main->env);
 	if (*token != NULL)
 		free_linked_list(token);
 	if (main->token != NULL)
@@ -61,5 +61,5 @@ void	free_all_preparsing(t_mtx *data)
 	if (data->buffer)
 		free_str(data->buffer);
 	if (data->tokens)
-		free_mtx(data->tokens);
+		free_mtx(&data->tokens);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 14:20:46 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/03 13:51:36 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/08 20:34:59 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ t_token	*ft_lstnew(char *content)
 	return (temp);
 }
 
-t_delimeter	*ft_lstnew_delimeter(char *content)
+t_delimeter	*ft_lstnew_d(char *content)
 {
 	t_delimeter	*temp;
 
 	temp = (t_delimeter *)malloc(sizeof(*temp));
 	if (!temp)
 		return (NULL);
-	temp->delimeter = ft_strdup(content);
+	temp->del = ft_strdup(content);
 	temp->next = NULL;
 	return (temp);
 }

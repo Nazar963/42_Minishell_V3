@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:29:24 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/30 13:37:35 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/05 22:51:56 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	ft_cd_pipes(t_token **token, t_main *main)
 		return ;
 	}
 	if (!*token || (ft_strncmp((*token)->content, "~", 1) == 0)
-	|| ((*token)->content[0] == '|'))
+		|| ((*token)->content[0] == '|'))
 	{
 		if (chdir(getenv("HOME")) == -1)
 		{
@@ -61,15 +61,7 @@ void	ft_cd_pipes(t_token **token, t_main *main)
 		g_global = 0;
 	}
 	else
-	{
-		if (chdir((*token)->content) == -1)
-		{
-			g_global = 1;
-			print_error("cd: No such file or directory", NULL, NULL);
-		}
-		else
-			g_global = 0;
-	}
+		ft_cd_norm0(token);
 	ft_update_env(main);
 	ft_del_first_node(token);
 }

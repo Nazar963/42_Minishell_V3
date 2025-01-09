@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_main.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:43:55 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/07 15:23:56 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/09 08:19:36 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,13 @@ t_token	*ft_tokenizer_main(char *input, t_main *main)
 	if (tokens != NULL && tokens[0] && ft_tokens_check(tokens) == 0)
 	{
 		token = ft_token_list_creation(tokens);
-		free_mtx(tokens);
+		free_mtx(&tokens);
 		if (token == NULL)
 			return (NULL);
 	}
 	else
 	{
-		free_mtx(tokens);
+		free_mtx(&tokens);
 		return (NULL);
 	}
 	return (token);

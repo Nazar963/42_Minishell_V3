@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:19:00 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/07 16:04:07 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/09 13:59:08 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <termios.h>
 
 int g_global = 0;
 
@@ -60,6 +61,11 @@ int	main(int ac, char **av, char **env)
 	t_token	*token;
 
 	(void) **av;
+    struct termios term;
+
+    tcgetattr(STDIN_FILENO, &term);
+    term.c_lflag &= ~(ECHOCTL);
+    tcsetattr(STDIN_FILENO, TCSAFLUSH, &term);
 	main.token = NULL;
 	if (ac != 1)
 		return (printf("Error\n"), 0);

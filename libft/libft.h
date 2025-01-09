@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 15:58:14 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/07 11:58:04 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/09 14:15:13 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include	<stddef.h> // size_t NULL
-# include	<stdlib.h> // malloc free sizeof
-# include	<stdio.h>
-# include	<stdlib.h>
-# include	<stddef.h>
-# include	<sys/types.h>
-# include	<sys/stat.h>
-# include	<fcntl.h>
-# include	<unistd.h>
-# include	"../minishell.h"
+# include <stddef.h> // size_t NULL
+# include <stdlib.h> // malloc free sizeof
+# include <stdio.h>
+# include <stdlib.h>
+# include <stddef.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+# include <unistd.h>
+# include "../minishell.h"
 
 // -------------------------------------------------------------------------- */
 //                                 <ctype.h>                                  */
@@ -131,25 +131,26 @@ void		ft_putnbr_fd(int n, int fd);
 //                                 Bonus Part                                */
 // ------------------------------------------------------------------------- */
 
-typedef enum {
-	TOKEN_COMMAND,			//* 0
-	TOKEN_ARGUMENT,			//* 1
-	TOKEN_OPTION,			//* 2
-	TOKEN_PIPE,				//* 3
-	TOKEN_REDIRECTION_IN,	//* 4
-	TOKEN_REDIRECTION_OUT,	//* 5
-	TOKEN_APPEND_OUT,		//* 6
-	TOKEN_HEREDOC,			//* 7
-	TOKEN_FILENAME,			//* 8
-	TOKEN_DELIMITER,		//* 9
-	TOKEN_BUILTIN,			//* 10
-	TOKEN_UNKNOWN			//* 11 might not be needed.
-}	TokenType;
+typedef enum n
+{
+	TOKEN_COMMAND,
+	TOKEN_ARGUMENT,
+	TOKEN_OPTION,
+	TOKEN_PIPE,
+	TOKEN_REDIRECTION_IN,
+	TOKEN_REDIRECTION_OUT,
+	TOKEN_APPEND_OUT,
+	TOKEN_HEREDOC,
+	TOKEN_FILENAME,
+	TOKEN_DELIMITER,
+	TOKEN_BUILTIN,
+	TOKEN_UNKNOWN
+}	t_TokenType;
 
 typedef struct s_token
 {
 	char			*content;
-	TokenType		type;
+	t_TokenType		type;
 	char			*heredoc_file;
 	int				expaned_del;
 	struct s_token	*next;
@@ -157,7 +158,7 @@ typedef struct s_token
 
 typedef struct s_delimeter
 {
-	char				*delimeter;
+	char				*del;
 	int					expaned;
 	struct s_delimeter	*next;
 }	t_delimeter;
@@ -165,16 +166,16 @@ typedef struct s_delimeter
 // is initialized with the value of the parameter ’content’. The variable ’next’
 // is initialized to NULL.
 t_token		*ft_lstnew(char *content);
-t_delimeter		*ft_lstnew_delimeter(char *content);
+t_delimeter	*ft_lstnew_d(char *content);
 t_token		*ft_lstnew_for_pipes(t_token *token);
 // Adds the node ’new’ at the beginning of the token.
 void		ft_lstadd_front(t_token **lst, t_token *new);
 // Counts the number of nodes in a token.
 int			ft_lstsize(t_token *lst);
-int			ft_lstsize_delimeter(t_delimeter *lst);
+int			ft_lsts_d(t_delimeter *lst);
 // Returns the last node of the token.
 t_token		*ft_lstlast(t_token *lst);
-t_delimeter		*ft_lstlast_delimeter(t_delimeter *lst);
+t_delimeter	*ft_lstlast_delimeter(t_delimeter *lst);
 // Adds the node ’new’ at the end of the token.
 void		ft_lstadd_back(t_token **lst, t_token *new);
 void		ft_lstadd_back_delimeter(t_delimeter **lst, t_delimeter *new);
@@ -193,9 +194,8 @@ void		ft_lstiter(t_token *lst, void (*f)(void *));
 // node. Creates a new token resulting of the successive applications of the
 // function ’f’. The ’del’ function is used to delete the content of a node if
 // needed.
-t_token		*ft_lstmap(t_token *lst, void *(*f)(void *), void (*del)(void *));
 
-TokenType	ft_token_type(char *token);
+// t_TokenType	ft_token_type(char *token);
 
 /* -------------------------------------------------------------------------- */
 /*                                Get_next_line                               */
@@ -204,12 +204,12 @@ TokenType	ft_token_type(char *token);
 #  define BUFFER_SIZE 10
 # endif
 
-char	*get_next_line(int fd);
-char	*process_str(int fd, char *buff, char *str);
-char	*process_line(char *str);
+char		*get_next_line(int fd);
+char		*process_str(int fd, char *buff, char *str);
+char		*process_line(char *str);
 
-char	*ft_strchr_gnl(char *s, int c);
-char	*ft_strjoin_gnl(char *str, char *buff);
-size_t	ft_strlen_gnl(char *s);
+char		*ft_strchr_gnl(char *s, int c);
+char		*ft_strjoin_gnl(char *str, char *buff);
+size_t		ft_strlen_gnl(char *s);
 
 #endif

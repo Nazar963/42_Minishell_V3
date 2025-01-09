@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_token_type.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:56:12 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/20 21:17:55 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/09 14:14:35 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-// TokenType	ft_token_type(char *token)
+// t_TokenType	ft_token_type(char *token)
 // {
 // 	static	int	i;
 
@@ -33,7 +33,6 @@
 // 		i = TOKEN_REDIRECTION_IN;
 // 		return (TOKEN_REDIRECTION_IN);
 // 	}
-// 	else if (ft_strncmp(token, "|", 1) == 0) //* Here am going to need to reset the process in order to get a new command sequence.
 // 		return (TOKEN_PIPE);
 // 	else if (ft_strncmp(token, "<<", 2) == 0)
 // 	{
@@ -42,7 +41,6 @@
 // 	}
 // 	// else if (ft_strncmp(token, " ", 2) == 0) //! This is not a token type
 // 	// 	return (TOKEN_DELIMITER);
-// 	else if (i == TOKEN_REDIRECTION_OUT || i == TOKEN_APPEND_OUT || i == TOKEN_REDIRECTION_IN)
 // 	{
 // 		i = 0;
 // 		return (TOKEN_FILENAME);

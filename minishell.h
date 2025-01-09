@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/07 13:32:53 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/09 14:19:14 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <sys/wait.h>
 # include <errno.h>
 # include <string.h>
+# include <stdbool.h>
 # include "libft/libft.h"
 
 # define TRUE 1
@@ -42,7 +43,25 @@ typedef struct s_main
 	int			pos_fd;
 	int			pipe_count;
 	int			*pids;
+	bool		first;
+	bool		last;
+	bool		done;
+	int			fd;
+	int			exit;
 }				t_main;
+
+typedef struct s_ex
+{
+	char	*new_str;
+	char	*var;
+	char	*temp;
+	char	*joined_str;
+	char	*env_var;
+	char	*env_var_copy;
+	char	*helper;
+	int		i;
+	int		y;
+}				t_ex;
 
 //* -------------------------------- Natalie ------------------------------- */
 typedef struct s_mtx
@@ -91,14 +110,14 @@ int			main(int ac, char **av, char **env);
 //£ -------------------------------- signals -------------------------------- */
 void		ft_signals(int sig);
 void		set_signals(void);
-void		ft_signals_heredoc(int sig);
-void		set_signals_heredoc(t_main *main, t_token **token, t_delimeter *delimeter);
+// void		ft_signals_heredoc(int sig);
+// void		set_signals_heredoc(t_main *main, t_token **token, t_delimeter *delimeter);
 
 //* ------------------------------------------------------------------------ */
 //*                                   utils                                  */
 //* ------------------------------------------------------------------------ */
 //£ --------------------------------- free --------------------------------- */
-void		free_mtx(char **mtx);
+void		free_mtx(char ***mtx);
 void		free_linked_list(t_token **token);
 void		free_linked_list_delimeter(t_delimeter **delimeter);
 void		free_orig_linked_list(t_token **token);
@@ -111,9 +130,11 @@ char		**ft_realloc(char **mtx, int size);
 int			ft_strlen_mtx(char **mtx);
 int			ft_control_int(char *str);
 void		ft_del_first_node(t_token **token);
-void		ft_del_first_node_delimeter(t_delimeter **delimeter);
+//£ --------------------------------- utils1 ------------------------------- */
 void		ft_del_first_node_and_restructure_temp(t_token **token, t_token *temp);
+void		ft_del_first_node_delimeter(t_delimeter **delimeter);
 void		ft_del_node(t_token **token, t_token *delete);
+char		*ft_strjoin_mod(char *orig, char *join);
 //£ --------------------------------- print -------------------------------- */
 void		print_error(const char *str, const char *arg, char *other);
 void		print_mtx(char **mtx, char *name);
@@ -129,14 +150,18 @@ int			ft_builtins_main(t_token **token, t_main *main);
 int			ft_builtins_main_pipes(t_token **token, t_main *main, int **fds);
 //£ ---------------------------------- cd ---------------------------------- */
 void		ft_update_env(t_main *main);
+void		ft_cd_norm0(t_token **token);
 void		ft_cd(t_token **token, t_main *main);
 //£ ------------------------------- cd_pipes ------------------------------- */
 void		ft_update_env_pipes(t_main *main);
 void		ft_cd_pipes(t_token **token, t_main *main);
 //£ --------------------------------- echo --------------------------------- */
+int			ft_check_sequence(t_token *temp);
+int			ft_clean_options(t_token **token);
+void		ft_echo_norm0(t_token **token);
 void		ft_echo(t_token **token);
 //£ ------------------------------ echo_pipes ------------------------------ */
-void		ft_echo_pipes(t_token **token, t_main *main);
+void		ft_echo_pipes(t_token **token);
 //£ ---------------------------------- env --------------------------------- */
 void		ft_env(t_token **token, t_main *main);
 //£ ------------------------------- env_pipes ------------------------------ */
@@ -151,14 +176,19 @@ void		ft_exit_pipes(t_token **token, t_main *main, int **fds);
 void		print_env_export(t_main *main);
 int			ft_check_for_already_existing_variable(char **env, char *variable);
 char		**ft_export_var_reassign(char **env, char *variable, char *value);
-int			is_valid_var_name(const char *name);
 void		ft_export(t_token **token, t_main *main);
 //£ ----------------------------- export_pipes ----------------------------- */
 void		print_env_export_pipes(t_main *main);
 int			ft_check_already_existing_var_pipes(char **env, char *variable);
 char		**ft_export_var_reassign_p(char **env, char *variable, char *value);
-int			is_valid_var_name_pipes(const char *name);
+int			ft_export_pipes_check_var(t_token **token);
 void		ft_export_pipes(t_token **token, t_main *main);
+//£ -------------------------- export_pipes_utils -------------------------- */
+int			is_valid_var_name_pipes(const char *name);
+void		ft_export_pipes_norm0(t_token **token, t_main *main);
+void		ft_export_pipes_norm1(t_token **token, t_main *main, char **splitted);
+void		ft_export_pipes_norm2(t_main *main, char **s);
+char		*ft_export_var_reassign_p_norm0(char *orig, char *value);
 //£ ---------------------------------- pwd --------------------------------- */
 void		ft_pwd(t_token **token);
 //£ ------------------------------- pwd_pipes ------------------------------ */
@@ -193,9 +223,6 @@ void		ft_new_token(t_mtx *data);
 void		ft_add_to_buffer(t_mtx *data, char *var_value);
 int			ft_var_len(char *str);
 char		*ft_get_env(char *str, char **env_test, int var_len);
-
-
-
 void		ft_token_operator(t_mtx *data);
 void		ft_tokens_finish(t_mtx *data);
 //£ ----------------------------- parsing_main ----------------------------- */
@@ -221,35 +248,59 @@ void		ft_path_identifier(t_token **token, t_main *main);
 //*                               redirections                               */
 //* ------------------------------------------------------------------------ */
 //£ --------------------------- redirections_main ------------------------ */
-int			ft_redirection_out(t_token **token, t_main *main, t_token *temp);
+int			ft_redirection_out(t_token **token, t_token *temp);
 int			ft_redirection_in(t_token **token, t_main *main, t_token *temp);
-int			ft_append_out(t_token **token, t_main *main, t_token *temp);
-char		*ft_getenv(char *name, t_main *main);
-char		*ft_expaned_var(char *str, t_main *main);
-void		ft_heredoc(t_token **token, t_main *main, t_token *temp);
+int			ft_append_out(t_token **token, t_token *temp);
+int			ft_heredoc(t_token **token, t_main *main, t_token *temp);
 int			ft_redirections_main(t_token **token, t_main *main);
+//£ ------------------------ redirections_main_utils0 ---------------------- */
+char		*ft_getenv(char *name, t_main *main);
+void		ft_expaned_var_ini(t_ex *ex, char *str);
+void		ft_expaned_var_norm0(t_ex *ex, char *str);
+void		ft_expaned_var_norm1(t_ex *ex, char *str, t_main *main);
+int			ft_access_check(t_token *temp, t_token **token);
+//£ ------------------------ redirections_main_utils1 ---------------------- */
+int			ft_redirections_main_norm0(t_token **token, t_main *main, t_token **temp);
+char		*ft_expaned_var(char *str, t_main *main);
+void		ft_h_ini(t_token **token, t_token **temp, t_delimeter **d, t_main *main);
 //£ ------------------------ redirections_main_pipes ----------------------- */
+int			ft_r(t_delimeter **d, t_token **token, t_main *main, t_token *temp);
+void		ft_heredoc_pipes_norm2(t_token **token, t_token **temp);
 int			ft_heredoc_pipes(t_token **token, t_main *main, t_token *temp);
 int			ft_herdoc_pipes_main(t_token **token, t_main *main);
-
+//£ --------------------- redirections_main_pipes_utils0 -------------------- */
+t_delimeter	*ft_h_p_norm0(int i, t_token **token, t_token **temp, t_main *main);
+void		ft_h_p_norm1(t_token **token, t_token **temp, t_delimeter **delimeter);
+int			ft_r_norm0(t_delimeter **d, t_token **token, t_main *main, t_token **temp);
+void		ft_r_norm1(t_delimeter *delimeter);
+void		ft_r_norm2(t_delimeter *d, char **new_input, t_main *main, char *h_in);
 //* ------------------------------------------------------------------------ */
 //*                                  execve                                  */
 //* ------------------------------------------------------------------------ */
+//£ ----------------------- execve_main_pipes_utils0 ----------------------- */
+void		ft_first_pos_dup(t_token **list, t_main *main, int **fds);
+void		ft_second_pos_dup(t_token **list, t_main *main, int **fds);
+void		ft_third_pos_dup(t_token **list, t_main *main, int **fds);
+void		ft_parent_pos_dup_close(int pos, t_main *main, int **fds);
+int			ft_fork(void);
+//£ ----------------------- execve_main_pipes_utils1 ----------------------- */
+char		**ft_from_list_to_array_pipes(t_token **token);
+int			error_file_dir(char *cmd);
+int			ft_no_special_characters_pipes(char *cmd);
+int			ft_add_slash_pipes_file(char **cmd, char **envp);
+char		*add_slash_pipes_norm0(char *new);
+//£ ----------------------- execve_main_pipes_utils2 ----------------------- */
+void		error_cmd_pipes(char *cmd);
+char		*ft_join_path_pipes(char **cmd);
 //£ --------------------------- execve_main_pipes -------------------------- */
 void		execute_cmd_pipes(char *exec_path, char **cmd, char **envp);
-int			error_file_dir_pipes(char *cmd);
-int			ft_no_special_characters_pipes(char *cmd);
 int			add_slash_pipes(char **new_path, char **cmd, char **envp);
-char		**ft_from_list_to_array_pipes(t_token **token);
 void		handle_path_pipes(t_token **token, t_main *main, int **fds);
 int			child_pipes(t_token **list, t_main *main, int **fds, int pos);
 int			ft_exe_main_pipes(t_token **list, t_main *main, int **fds, int pos);
 //£ ----------------------------- execve_main ---------------------------- */
 void		execute_cmd(char *exec_path, char **cmd, t_main *main);
-int			error_file_dir(char *cmd);
-int			ft_no_special_characters(char *cmd);
 int			add_slash(char **new_path, char **cmd, t_main *main);
-char		**ft_from_list_to_array(t_token **token);
 void		handle_path(t_token **token, t_main *main);
 void		child(t_token **token, t_main *main);
 void		ft_execve_main(t_token **token, t_main *main);
@@ -257,11 +308,16 @@ void		ft_execve_main(t_token **token, t_main *main);
 //* ------------------------------------------------------------------------ */
 //*                                   pipes                                  */
 //* ------------------------------------------------------------------------ */
+//£ ---------------------------- pipes_main_utils -------------------------- */
+int			ft_count_pipes(t_token *token);
+void		free_fds(int **fds, int pipe_count);
+int			ft_pipes_main_init(t_token **token, t_main *main, int ***fds);
+void		ft_g_global_status(t_token **list, t_main *main, int **fds);
 //£ ------------------------------ pipes_main ------------------------------ */
 int			ft_check_for_pipes(t_token **token);
-int			ft_count_pipes(t_token *token);
+int			ft_handle_execution_route(t_main *main, t_token **list, int **fds);
 int			ft_pip_handler(t_token **list, t_main *main, int **fds, int pos_fd);
-void		free_fds(int **fds, int pipe_count);
+void		ft_pipes_loop(t_token **token, t_main *main, t_token **list, int **fds);
 int			ft_pipes_main(t_token **token, t_main *main);
 
 #endif

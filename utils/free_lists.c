@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_lists.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:07:52 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/07 16:10:11 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/08 23:22:41 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	free_linked_list_delimeter(t_delimeter **delimeter)
 		{
 			temp = *delimeter;
 			*delimeter = (*delimeter)->next;
-			free(temp->delimeter);
+			free(temp->del);
 			free(temp);
 		}
 	}

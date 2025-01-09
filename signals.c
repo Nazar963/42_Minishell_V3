@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:51:41 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/03 12:25:13 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/09 13:59:40 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_signals(int sig)
 		}
 		else if (g_global == 666)
 		{
-			write(STDOUT_FILENO, "\n", 1);
+			write(1, "\n", 1);
 			close(STDIN_FILENO);
 			g_global = 130;
 			rl_done = 1;

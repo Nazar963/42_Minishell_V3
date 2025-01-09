@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:30:09 by naal-jen          #+#    #+#             */
-/*   Updated: 2024/12/30 15:38:31 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/09 08:19:36 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,15 @@ void	print_env_export_pipes(t_main *main)
 	while (main->env[i])
 	{
 		var = ft_split(main->env[i], '=');
-		// if (var[1] && var[1][0] && ft_strncmp(main->env[i], "hi", 2) == 0)
-			// printf("thello this is the result: var[0]: %c\n ", var[1][0]);
-			// printf("thello this is the result: var[0]: %s,  var[1]: %s\n ", var[0], var[1]);
 		if (!ft_strchr(main->env[i], '='))
 			printf("declare -x %s\n", var[0]);
-		else if (var[1] && var[1][0] && var[1][0] == '\"'/*  && var[1][ft_strlen(var[1] - 2)] == '\"' */) //* Which means the variable was first assigned to " " and so it has the " already inside.
+		else if (var[1] && var[1][0] && var[1][0] == '\"')
 			printf("declare -x %s=%s\n", var[0], var[1]);
 		else if (var[1])
 			printf("declare -x %s=\"%s\"\n", var[0], var[1]);
 		else
 			printf("declare -x %s=\"\"\n", var[0]);
-		free_mtx(var);
+		free_mtx(&var);
 		i++;
 	}
 	return ;
@@ -40,8 +37,8 @@ void	print_env_export_pipes(t_main *main)
 
 int	ft_check_already_existing_var_pipes(char **env, char *variable)
 {
-	int i;
-	char *temp;
+	int		i;
+	char	*temp;
 
 	i = 0;
 	while (env[i])
@@ -53,7 +50,7 @@ int	ft_check_already_existing_var_pipes(char **env, char *variable)
 			return (1);
 		}
 		else if (ft_strncmp(env[i], variable, ft_strlen(variable)) == 0
-				&& env[i][ft_strlen(variable)] == '\0')
+			&& env[i][ft_strlen(variable)] == '\0')
 		{
 			free(temp);
 			return (1);
@@ -64,150 +61,78 @@ int	ft_check_already_existing_var_pipes(char **env, char *variable)
 	return (0);
 }
 
-char **ft_export_var_reassign_p(char **env, char *variable, char *value)
+char	**ft_export_var_reassign_p(char **env, char *variable, char *value)
 {
-	int i;
-	char *temp;
+	int		i;
+	char	*temp;
 
-	i = 0;
-	while (env[i])
+	i = -1;
+	while (env[++i])
 	{
 		temp = ft_strjoin(variable, "=");
-		if (ft_strncmp(env[i], temp, ft_strlen(temp)) == 0)
+		if (ft_strncmp(env[i], temp, ft_strlen(temp)) == 0
+			|| (ft_strncmp(env[i], variable, ft_strlen(variable)) == 0
+				&& env[i][ft_strlen(variable)] == '\0'))
 		{
-			free(env[i]);
-			env[i] = ft_strdup(variable);
-			env[i] = ft_strjoin(env[i], "=");
-			if (strchr(value, ' '))
-			{
-				env[i] = ft_strjoin(env[i], "\"");
-				env[i] = ft_strjoin(env[i], value);
-				env[i] = ft_strjoin(env[i], "\"");
-			}
-			else
-				env[i] = ft_strjoin(env[i], value);
 			free(temp);
-			return (env);
-		}
-		else if (ft_strncmp(env[i], variable, ft_strlen(variable)) == 0
-				&& env[i][ft_strlen(variable)] == '\0')
-		{
 			free(env[i]);
-			env[i] = ft_strdup(variable);
-			env[i] = ft_strjoin(env[i], "=");
-			if (strchr(value, ' '))
-			{
-				env[i] = ft_strjoin(env[i], "\"");
-				env[i] = ft_strjoin(env[i], value);
-				env[i] = ft_strjoin(env[i], "\"");
-			}
-			else
-				env[i] = ft_strjoin(env[i], value);
+			temp = ft_strdup(variable);
+			env[i] = ft_strjoin(temp, "=");
 			free(temp);
+			if (strchr(value, ' '))
+				env[i] = ft_export_var_reassign_p_norm0(env[i], value);
+			else
+				env[i] = ft_strjoin_mod(env[i], value);
 			return (env);
 		}
 		free(temp);
-		i++;
 	}
 	return (NULL);
 }
 
-int	is_valid_var_name_pipes(const char *name)
+int	ft_export_pipes_check_var(t_token **token)
 {
-	int	i;
+	char	**splitted_argument;
 
-	i = 0;
-	if (!name || name[0] == '\0')
-		return 0;
-
-	if (!(ft_isalpha((unsigned char)name[0]) || name[0] == '_'))
-		return 0;
-
-	while (name[++i] != '\0' && name[i] != '=')
+	splitted_argument = ft_split((*token)->content, '=');
+	if (splitted_argument)
 	{
-		if (!(ft_isalnum((unsigned char)name[i]) || name[i] == '_'))
-			return 0;
+		if (is_valid_var_name_pipes(splitted_argument[0]) == 0)
+		{
+			free_orig_linked_list(token);
+			free_mtx(&splitted_argument);
+			g_global = 1;
+			print_error("export: not a valid identifier", NULL, NULL);
+			return (1);
+		}
+		free_mtx(&splitted_argument);
 	}
-	return 1;
+	return (0);
 }
 
 void	ft_export_pipes(t_token **token, t_main *main)
 {
 	char	**splitted_argument;
-	int		len;
 
 	ft_del_first_node(token);
 	if (!*token || (*token)->content[0] == '|')
 		return (print_env_export(main), (void)0);
-	splitted_argument = ft_split((*token)->content, '=');
-	if (splitted_argument)
-	{
-		// if (ft_strchr(splitted_argument[0], '-'))
-		if (is_valid_var_name(splitted_argument[0]) == 0)
-		{
-			free_orig_linked_list(token);
-			free_mtx(splitted_argument);
-			g_global = 1;
-			print_error("export: not a valid identifier", NULL, NULL);
-			return ;
-		}
-		free_mtx(splitted_argument);
-	}
+	if (ft_export_pipes_check_var(token) == 1)
+		return ;
 	while (*token && (*token)->type != 3)
 	{
 		if (!ft_strchr((*token)->content, '='))
 		{
-			//TODO: in case the variable exists dont do anything
-			if (ft_check_for_already_existing_variable(main->env, (*token)->content))
-			{
-				ft_del_first_node(token);
-				continue ;
-			}
-			len = ft_strlen_mtx(main->env);
-			main->env = ft_realloc(main->env, len + 1);
-			main->env[len] = ft_strdup((*token)->content);
-			ft_del_first_node(token);
+			ft_export_pipes_norm0(token, main);
 			continue ;
 		}
 		splitted_argument = ft_split((*token)->content, '=');
 		if (splitted_argument[1] == NULL)
-		{
-			//TODO: if the variable exists then remove the value and set it to "" 
-			if (ft_check_for_already_existing_variable(main->env, splitted_argument[0]))
-			{
-				main->env = ft_export_var_reassign_p(main->env, splitted_argument[0], "");
-			}
-			else
-			{
-				len = ft_strlen_mtx(main->env);
-				// printf("here am here before: %d\n", ft_strlen_mtx(main->env));
-				main->env = ft_realloc(main->env, len + 1);
-				// printf("here am here after: %d\n", ft_strlen_mtx(main->env));
-				main->env[len] = ft_strdup((*token)->content);
-			}
-		}
+			ft_export_pipes_norm1(token, main, splitted_argument);
 		else
-		{
-			//TODO: if the variable exists then remove the value and set it to the new value
-			if (ft_check_for_already_existing_variable(main->env, splitted_argument[0]))
-			{
-				main->env = ft_export_var_reassign_p(main->env, splitted_argument[0], splitted_argument[1]);
-			}
-			else
-			{
-				len = ft_strlen_mtx(main->env);
-				main->env = ft_realloc(main->env, len + 1);
-				main->env[len] = ft_strdup(splitted_argument[0]);
-				char *tmp = main->env[len];
-				main->env[len] = ft_strjoin(main->env[len], "=");
-				free (tmp);
-				tmp = main->env[len];
-				main->env[len] = ft_strjoin(main->env[len], splitted_argument[1]);
-				free (tmp);
-			}
-		}
+			ft_export_pipes_norm2(main, splitted_argument);
 		if (splitted_argument)
-			free_mtx(splitted_argument);
+			free_mtx(&splitted_argument);
 		ft_del_first_node(token);
 	}
 	g_global = 0;
