@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:26:55 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/07 17:43:41 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/11 15:31:00 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,11 @@ int	ft_r(t_delimeter **d, t_token **token, t_main *main, t_token *temp)
 	while (1)
 	{
 		h_in = readline("> ");
-		if (g_global == 130)
+		if (h_in || g_global == 130)
+		{
+			g_global = 667;
 			return (free(h_in), ft_r_norm0(d, token, main, &temp));
+		}
 		if (!h_in)
 			return (ft_r_norm1(*d), ft_r_norm0(d, token, main, &temp));
 		if (ft_strncmp(h_in, (*d)->del, ft_strlen((*d)->del)) == 0

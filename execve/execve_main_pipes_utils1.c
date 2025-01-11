@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 12:47:45 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/06 12:52:16 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/09 21:54:50 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,11 @@ int	ft_no_special_characters_pipes(char *cmd)
 			ft_putendl_fd(": command not found", 2);
 			return (127);
 		}
+	}
+	if (ft_strlen(cmd) == 1 && cmd[0] == '.')
+	{
+		ft_putstr_fd("minishell: .: filename argument required\n", 2);
+		return (2);
 	}
 	return (0);
 }

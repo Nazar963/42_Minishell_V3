@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/09 08:19:36 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/11 14:58:09 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	child_pipes(t_token **list, t_main *main, int **fds, int pos)
 {
 	int	pid1;
 
+	g_global = 7;
 	pid1 = ft_fork();
 	if (pid1 == 0)
 	{

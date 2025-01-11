@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 16:21:45 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/08 23:17:02 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/11 15:37:40 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ void	ft_handle_exit_status_command_main(t_token **token)
 		&& ft_strlen((*token)->content) == 2
 		&& ft_lstsize(*token) == 1)
 	{
-		printf("%d: command not found\n", g_global);
+		if (g_global == 667)
+			printf("%d: command not found\n", 0);
+		else
+			printf("%d: command not found\n", g_global);
 		ft_del_first_node(token);
 	}
 }
@@ -27,7 +30,8 @@ void	ft_path_identifier(t_token **token, t_main *main)
 {
 	if (ft_pipes_main(token, main) == TRUE)
 		return ;
-	ft_handle_exit_status_command_main(token);
+	if (*token)
+		ft_handle_exit_status_command_main(token);
 	if (*token)
 		ft_redirections_main(token, main);
 	if (*token)

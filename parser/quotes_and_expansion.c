@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_and_expansion.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 17:45:01 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/07 15:42:41 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/11 15:26:25 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ void	ft_expand_global(t_mtx *data)
 {
 	char	*str_global;
 
-	str_global = ft_itoa(g_global);
+	if (g_global == 667)
+		str_global = ft_itoa(130);
+	else
+		str_global = ft_itoa(g_global);
 	if (str_global)
 	{
 		ft_add_to_buffer(data, str_global);

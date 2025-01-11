@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:11:16 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/08 23:29:27 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/11 15:40:42 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,13 @@ void	ft_h_p_norm1(t_token **token, t_token **temp, t_delimeter **delimeter)
 int	ft_r_norm0(t_delimeter **d, t_token **token, t_main *main, t_token **temp)
 {
 	free_linked_list_delimeter(d);
+	if (!*temp)
+		free_linked_list(token);
 	free_linked_list(temp);
-	free_linked_list(token);
 	*token = NULL;
 	close(main->fd);
 	dup2(main->orig_fd[0], STDIN_FILENO);
-	g_global = main->exit;
+	// g_global = 0;
 	return (1);
 }
 

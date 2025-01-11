@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:05:14 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/03 20:25:47 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/09 17:13:37 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ void	ft_exit_with_multi_args(t_token **token, t_main *main)
 
 	if (ft_control_int((*token)->content) == 0)
 	{
-		print_error("exit\nbash: exit: ", (*token)->content,
+		// print_error("exit\nbash: exit: ", (*token)->content,
+		// 	": numeric argument required\n");
+		print_error("bash: exit: ", (*token)->content,
 			": numeric argument required\n");
 		free_all(main, token);
 		exit(2);

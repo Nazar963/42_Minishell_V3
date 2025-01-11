@@ -6,14 +6,12 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:51:41 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/09 13:59:40 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/11 15:20:15 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/ioctl.h>
-
-extern int rl_done;
 
 void	ft_signals(int sig)
 {
@@ -21,11 +19,12 @@ void	ft_signals(int sig)
 	{
 		if (g_global != 666)
 		{
-			write(1, "\n", 1);
-			rl_on_new_line();
+			if (g_global != 667)
+				write(1, "\n", 1);
+			if (g_global != 7)
+				rl_on_new_line();
 			rl_replace_line("", 0);
 			rl_redisplay();
-			g_global = 0;
 		}
 		else if (g_global == 666)
 		{

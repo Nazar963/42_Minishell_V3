@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_list_creation.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 16:30:02 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/07 15:55:48 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/09 17:34:11 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,19 @@ void	assign_token_type(t_token *token, t_token *prev_token)
 		assign_the_rest(token, n);
 }
 
+int	ft_check_for_exit_argument(t_token *token, t_token *prev_token)
+{
+	int	len;
+
+	len = ft_strlen(prev_token->content);
+	if (ft_strncmp(prev_token->content, "exit", len) == 0)
+	{
+		token->type = TOKEN_ARGUMENT;
+		return (0);
+	}
+	return (1);
+}
+
 t_token	*ft_token_list_creation(char **tokens)
 {
 	t_token	*token;
@@ -122,7 +135,8 @@ t_token	*ft_token_list_creation(char **tokens)
 	{
 		new_token = ft_lstnew(tokens[i]);
 		ft_lstadd_back(&token, new_token);
-		assign_token_type(new_token, prev_token);
+		if (ft_check_for_exit_argument(new_token, prev_token))
+			assign_token_type(new_token, prev_token);
 		new_token->content = check_content_quotes(new_token->content, token);
 		if (token_option_check(new_token, token) == 1)
 			return (NULL);

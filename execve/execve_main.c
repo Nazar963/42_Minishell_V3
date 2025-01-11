@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/09 14:07:39 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/11 15:05:53 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,27 @@ void	execute_cmd(char *exec_path, char **cmd, t_main *main)
 	}
 }
 
+int	ft_no_special_characters_fun(char **cmd, t_main *main)
+{
+	int	ret;
+
+	ret = ft_no_special_characters_pipes(cmd[0]);
+	if (ret != 0)
+		return (ret);
+	if (ft_strncmp(cmd[0], "./", 2) == 0 || ft_strrchr(cmd[0], '/'))
+		return (ft_add_slash_pipes_file(cmd, main->env));
+	return (0);
+}
+
 int	add_slash(char **new_path, char **cmd, t_main *main)
 {
 	int		i;
 	char	*exec_path;
 
+	i = ft_no_special_characters_fun(cmd, main);
+	if (i != 0)
+		return (i);
 	i = -1;
-	if (ft_no_special_characters_pipes(cmd[0]) == 127)
-		return (127);
-	if (ft_strncmp(cmd[0], "./", 2) == 0 || ft_strrchr(cmd[0], '/'))
-		return (ft_add_slash_pipes_file(cmd, main->env));
 	while (new_path[++i])
 	{
 		if (ft_strrchr(cmd[0], '/'))
@@ -51,8 +62,7 @@ int	add_slash(char **new_path, char **cmd, t_main *main)
 		else
 			free(exec_path);
 	}
-	print_error(" command not found", NULL, NULL);
-	return (127);
+	return (print_error(" command not found", NULL, NULL), 127);
 }
 
 void	handle_path(t_token **token, t_main *main)
@@ -81,6 +91,7 @@ void	child(t_token **token, t_main *main)
 	int	pid1;
 	int	fd;
 
+	g_global = 7;
 	pid1 = ft_fork();
 	if ((*token)->heredoc_file)
 	{
@@ -92,9 +103,15 @@ void	child(t_token **token, t_main *main)
 		handle_path(token, main);
 	waitpid(pid1, &status, 0);
 	if (WIFEXITED(status))
+	{
 		g_global = WEXITSTATUS(status);
+		if (g_global == 7)
+			g_global = 0;
+	}
 	else if (WIFSIGNALED(status))
+	{
 		g_global = 128 + WTERMSIG(status);
+	}
 	else
 		g_global = 1;
 	dup2(main->orig_fd[0], STDIN_FILENO);

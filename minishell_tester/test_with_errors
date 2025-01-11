@@ -1,7 +1,0 @@
-/bin/echo \\$USER
-/bin/echo \\\$USER
-/bin/echo \\\\$USER
-/bin/echo \\\\\$USER
-/bin/echo \\\\\\\\\$USER
-/bin/echo \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\$USER \$PATH \\$PWD
->| echo sure

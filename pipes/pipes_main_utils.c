@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 16:14:45 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/06 16:15:42 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/11 15:12:06 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,16 +73,35 @@ void	ft_g_global_status(t_token **list, t_main *main, int **fds)
 {
 	int	status;
 	int	i;
+	int	last;
+	int	counter;
 
+	counter = 0;
 	free_linked_list(list);
 	i = -1;
 	while (++i <= main->pipe_count)
 	{
 		waitpid(main->pids[i], &status, 0);
 		if (WIFEXITED(status))
+		{
 			g_global = WEXITSTATUS(status);
+			if (g_global == 0 && last == 130)
+			{
+				if (i == counter + 1)
+					g_global = 130;
+			}
+			if (g_global == 7)
+				g_global = 0;
+		}
 		else if (WIFSIGNALED(status))
+		{
 			g_global = 128 + WTERMSIG(status);
+			if (g_global == 130)
+			{
+				last = g_global;
+				counter = i;
+			}
+		}
 		else
 			g_global = 1;
 	}

@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:19:00 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/09 13:59:08 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/11 11:35:42 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		add_history(input);
 		token = ft_tokenizer_main(input, &main);
+		if (g_global == 667)
+			g_global = 0;
 		if (token == NULL)
 			continue ;
 		ft_path_identifier(&token, &main);

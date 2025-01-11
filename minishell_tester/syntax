@@ -245,3 +245,7 @@ echo -1
 /bin/echo ''totally logical''
 /bin/echo ""'totally logical'""
 $EMPTY
+>> '$USER'
+">>" asd
+$T$E$S$L
+$NOVAR
