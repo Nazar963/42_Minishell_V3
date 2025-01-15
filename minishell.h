@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/09 14:19:14 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/13 16:58:26 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@
 # define TRUE 1
 # define FALSE 0
 
-typedef struct s_token	t_token;
+typedef struct s_token		t_token;
 typedef struct s_delimeter	t_delimeter;
 
-extern int				g_global;
+extern int					g_global;
 
 typedef struct s_main
 {
@@ -64,7 +64,7 @@ typedef struct s_ex
 }				t_ex;
 
 //* -------------------------------- Natalie ------------------------------- */
-typedef struct s_mtx
+typedef struct s_mtx // struttura per splittare input
 {
 	char	*str; // stringa pulita dal spazi al inizio e il fine
 	char	**tokens; // matrice di tokens
@@ -77,8 +77,8 @@ typedef struct s_mtx
 	int		j; // contatore di caratteri dentro buffer
 	int		k; // contatore per allocare le array dentro matrice(tokens)
 	int		check;
-	int arg_count;
-	int delim_flag;
+	int		arg_count;
+	int		delim_flag;
 }	t_mtx;
 
 typedef struct s_check // 
@@ -102,6 +102,7 @@ typedef enum error_type
 	ERR_UNSUPPORTED_CHAR,
 	ERR_UNEXPECTED_NEWLINE
 }	t_error_type;
+
 /* -------------------------------------------------------------------------- */
 
 //£ --------------------------------- main --------------------------------- */
@@ -111,8 +112,8 @@ int			main(int ac, char **av, char **env);
 void		ft_signals(int sig);
 void		set_signals(void);
 // void		ft_signals_heredoc(int sig);
-// void		set_signals_heredoc(t_main *main, t_token **token, t_delimeter *delimeter);
-
+/* void		set_signals_heredoc(t_main *main, 
+		t_token **token, t_delimeter *delimeter);*/
 //* ------------------------------------------------------------------------ */
 //*                                   utils                                  */
 //* ------------------------------------------------------------------------ */
@@ -125,13 +126,15 @@ void		free_all(t_main *main, t_token **token);
 void		free_str(char *str);
 void		free_all_preparsing(t_mtx *data);
 void		ft_free_linked_list_until_pipe(t_token **token);
+void		free_token_and_input(char *input, t_token **token);
 //£ --------------------------------- utils -------------------------------- */
 char		**ft_realloc(char **mtx, int size);
 int			ft_strlen_mtx(char **mtx);
 int			ft_control_int(char *str);
 void		ft_del_first_node(t_token **token);
 //£ --------------------------------- utils1 ------------------------------- */
-void		ft_del_first_node_and_restructure_temp(t_token **token, t_token *temp);
+void		ft_del_first_node_and_restructure_temp(t_token **token,
+				t_token *temp);
 void		ft_del_first_node_delimeter(t_delimeter **delimeter);
 void		ft_del_node(t_token **token, t_token *delete);
 char		*ft_strjoin_mod(char *orig, char *join);
@@ -186,7 +189,8 @@ void		ft_export_pipes(t_token **token, t_main *main);
 //£ -------------------------- export_pipes_utils -------------------------- */
 int			is_valid_var_name_pipes(const char *name);
 void		ft_export_pipes_norm0(t_token **token, t_main *main);
-void		ft_export_pipes_norm1(t_token **token, t_main *main, char **splitted);
+void		ft_export_pipes_norm1(t_token **token, t_main *main,
+				char **splitted);
 void		ft_export_pipes_norm2(t_main *main, char **s);
 char		*ft_export_var_reassign_p_norm0(char *orig, char *value);
 //£ ---------------------------------- pwd --------------------------------- */
@@ -206,10 +210,17 @@ void		ft_expand(t_mtx *data, char **env_test);
 void		ft_expand_global(t_mtx *data);
 void		ft_token_quote(t_mtx *data, char **env_test);
 char		*check_content_quotes(char *str, t_token *token);
-int 		quotes_delimiter(char *str);
+int			quotes_delimiter(char *str);
 
 //£ ------------------------- token_list_creaition ------------------------- */
 t_token		*ft_token_list_creation(char **tokens);
+
+//£ ------------------------- parsing_tokens_check ------------------------- */
+int			token_option_check(t_token *new_token, t_token *token);
+int			first_token_check(t_token *token);
+int			ft_check_for_exit_argument(t_token *token, t_token *prev_token);
+char		*check_content_quotes(char *str, t_token *token);
+void		ft_token_quote(t_mtx *data, char **env_test);
 
 //£ ----------------------------- parsing_check ---------------------------- */
 void		error_num( int n, const char *arg);
@@ -237,9 +248,14 @@ int			ft_is_pipe(char *token);
 int			ft_is_redirection(char *token);
 int			ft_is_operator(char *token);
 int			ft_is_tab(char c, char next);
+int			ft_is_space(char c);
 //£ ----------------------------- parsing_utils ---------------------------- */
 int			check_only_spaces(char **str);
 char		*remove_begin_end_whitespaces(char *input);
+int			ft_check_for_exit_argument(t_token *token, t_token *prev_token);
+
+//£ --------------------------- parsing_utils_help -------------------------- */
+
 //£ ---------------------------- path_identifier --------------------------- */
 void		ft_handle_exit_status_command_main(t_token **token);
 void		ft_path_identifier(t_token **token, t_main *main);
@@ -260,9 +276,11 @@ void		ft_expaned_var_norm0(t_ex *ex, char *str);
 void		ft_expaned_var_norm1(t_ex *ex, char *str, t_main *main);
 int			ft_access_check(t_token *temp, t_token **token);
 //£ ------------------------ redirections_main_utils1 ---------------------- */
-int			ft_redirections_main_norm0(t_token **token, t_main *main, t_token **temp);
+int			ft_redirections_main_norm0(t_token **token, t_main *main,
+				t_token **temp);
 char		*ft_expaned_var(char *str, t_main *main);
-void		ft_h_ini(t_token **token, t_token **temp, t_delimeter **d, t_main *main);
+void		ft_h_ini(t_token **token, t_token **temp, t_delimeter **d,
+				t_main *main);
 //£ ------------------------ redirections_main_pipes ----------------------- */
 int			ft_r(t_delimeter **d, t_token **token, t_main *main, t_token *temp);
 void		ft_heredoc_pipes_norm2(t_token **token, t_token **temp);
@@ -270,10 +288,13 @@ int			ft_heredoc_pipes(t_token **token, t_main *main, t_token *temp);
 int			ft_herdoc_pipes_main(t_token **token, t_main *main);
 //£ --------------------- redirections_main_pipes_utils0 -------------------- */
 t_delimeter	*ft_h_p_norm0(int i, t_token **token, t_token **temp, t_main *main);
-void		ft_h_p_norm1(t_token **token, t_token **temp, t_delimeter **delimeter);
-int			ft_r_norm0(t_delimeter **d, t_token **token, t_main *main, t_token **temp);
+void		ft_h_p_norm1(t_token **token, t_token **temp,
+				t_delimeter **delimeter);
+int			ft_r_norm0(t_delimeter **d, t_token **token, t_main *main,
+				t_token **temp);
 void		ft_r_norm1(t_delimeter *delimeter);
-void		ft_r_norm2(t_delimeter *d, char **new_input, t_main *main, char *h_in);
+void		ft_r_norm2(t_delimeter *d, char **new_input, t_main *main,
+				char *h_in);
 //* ------------------------------------------------------------------------ */
 //*                                  execve                                  */
 //* ------------------------------------------------------------------------ */
@@ -317,7 +338,8 @@ void		ft_g_global_status(t_token **list, t_main *main, int **fds);
 int			ft_check_for_pipes(t_token **token);
 int			ft_handle_execution_route(t_main *main, t_token **list, int **fds);
 int			ft_pip_handler(t_token **list, t_main *main, int **fds, int pos_fd);
-void		ft_pipes_loop(t_token **token, t_main *main, t_token **list, int **fds);
+void		ft_pipes_loop(t_token **token, t_main *main, t_token **list,
+				int **fds);
 int			ft_pipes_main(t_token **token, t_main *main);
 
 #endif

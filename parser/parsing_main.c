@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_main.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:43:55 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/09 08:19:36 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/13 15:47:23 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ char	*remove_begin_end_whitespaces(char *input)
 
 	end = ft_strlen(input) - 1;
 	start = 0;
-	while (input[start] == ' ')
+	while (input[start] == ' ' || input[start] == '	')
 		start++;
-	while (input[end] == ' ' && end > start)
+	while ((ft_is_space(input[end]) == 1) && end > start)
 		end--;
 	new = malloc(sizeof(char) * (end - start) + 2);
 	if (!new)
@@ -117,5 +117,7 @@ t_token	*ft_tokenizer_main(char *input, t_main *main)
 		free_mtx(&tokens);
 		return (NULL);
 	}
+	if (g_global == 667)
+		g_global = 0;
 	return (token);
 }

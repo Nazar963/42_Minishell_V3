@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_main_pipes.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:26:55 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/11 15:31:00 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/11 23:07:10 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_r(t_delimeter **d, t_token **token, t_main *main, t_token *temp)
 	while (1)
 	{
 		h_in = readline("> ");
-		if (h_in || g_global == 130)
+		if (g_global == 130)
 		{
 			g_global = 667;
 			return (free(h_in), ft_r_norm0(d, token, main, &temp));

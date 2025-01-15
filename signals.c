@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:51:41 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/11 15:20:15 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/13 15:16:57 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,11 @@ void	ft_signals(int sig)
 	}
 }
 
-void	set_signals()
+void	set_signals(void)
 {
 	signal(SIGINT, ft_signals);
 	signal(SIGQUIT, SIG_IGN);
 }
-
 
 // void	ft_signals_heredoc(int sig)
 // {
@@ -82,7 +81,8 @@ void	set_signals()
 // 	}
 // }
 
-// void	set_signals_heredoc(t_main *main, t_token **token, t_delimeter *delimeter)
+// void	set_signals_heredoc(t_main *main, t_token **token,
+//		t_delimeter *delimeter)
 // {
 // 	// free_linked_list_delimeter(&delimeter);
 // 	// free_all(main, token);

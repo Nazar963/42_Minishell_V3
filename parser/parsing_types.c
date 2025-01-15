@@ -6,7 +6,7 @@
 /*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 16:44:11 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/07 15:26:47 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/12 20:45:43 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,13 @@ int	ft_is_tab(char c, char next)
 	if ((c == '\\' && next == 'n') || (c == '\\' && next == 'v')
 		|| (c == '\\' && next == 'b') || (c == '\\' && next == 'r')
 		|| (c == '\\' && next == 't') || (c == '\\' && next == 'f'))
+		return (1);
+	return (0);
+}
+
+int	ft_is_space(char c)
+{
+	if (c == ' ' || c == '\n' || c == '\t')
 		return (1);
 	return (0);
 }

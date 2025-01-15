@@ -3,50 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   token_list_creation.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 16:30:02 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/09 17:34:11 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/13 13:06:18 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	token_option_check(t_token *new_token, t_token *token)
-{
-	int	i;
-
-	i = 0;
-	if (new_token->type == TOKEN_OPTION)
-	{
-		if (new_token->content[i] == '-')
-		{
-			i++;
-			if (new_token->content[i] == '-')
-				i++;
-			if (new_token->content[i] >= 'A' && new_token->content[i] <= 'Z')
-			{
-				print_error(" invalid option", NULL, NULL);
-				free_linked_list(&token);
-				g_global = 2;
-				return (1);
-			}
-		}
-	}
-	return (0);
-}
-
-int	first_token_check(t_token *token)
-{
-	if (token->type == TOKEN_COMMAND && ft_strlen(token->content) == 0)
-	{
-		print_error(" command not found", NULL, NULL);
-		g_global = 127;
-		free_linked_list(&token);
-		return (1);
-	}
-	return (0);
-}
 
 void	assign_the_rest(t_token *token, int n)
 {
@@ -102,17 +66,13 @@ void	assign_token_type(t_token *token, t_token *prev_token)
 		assign_the_rest(token, n);
 }
 
-int	ft_check_for_exit_argument(t_token *token, t_token *prev_token)
+t_token	*ft_first_token_creation(char **tokens, t_token *token,
+		int i, t_token *prev_token)
 {
-	int	len;
-
-	len = ft_strlen(prev_token->content);
-	if (ft_strncmp(prev_token->content, "exit", len) == 0)
-	{
-		token->type = TOKEN_ARGUMENT;
-		return (0);
-	}
-	return (1);
+	token = ft_lstnew(tokens[i]);
+	assign_token_type(token, prev_token);
+	token->content = check_content_quotes(token->content, token);
+	return (token);
 }
 
 t_token	*ft_token_list_creation(char **tokens)
@@ -122,12 +82,11 @@ t_token	*ft_token_list_creation(char **tokens)
 	t_token	*prev_token;
 	int		i;
 
+	token = NULL;
 	new_token = NULL;
 	prev_token = NULL;
 	i = 0;
-	token = ft_lstnew(tokens[i]);
-	assign_token_type(token, prev_token);
-	token->content = check_content_quotes(token->content, token);
+	token = ft_first_token_creation(tokens, token, i, prev_token);
 	if (first_token_check(token) == 1)
 		return (NULL);
 	prev_token = token;

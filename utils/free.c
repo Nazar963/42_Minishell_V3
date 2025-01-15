@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:58:01 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/09 08:20:17 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/13 18:21:52 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,10 @@ void	free_all_preparsing(t_mtx *data)
 		free_str(data->buffer);
 	if (data->tokens)
 		free_mtx(&data->tokens);
+}
+
+void	free_token_and_input(char *input, t_token **token)
+{
+	free_linked_list(token);
+	free_str(input);
 }
