@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/15 20:14:00 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/15 20:43:48 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,6 +283,10 @@ int			ft_redirections_main_norm0(t_token **token, t_main *main,
 char		*ft_expaned_var(char *str, t_main *main);
 void		ft_h_ini(t_token **token, t_token **temp, t_delimeter **d,
 				t_main *main);
+void		ft_h_p_norm01(t_token **token, t_token *temp_token, char *file);
+//£ ------------------------ redirections_main_utils2 ---------------------- */
+int			ft_redirections_main_norm14(t_token **token, t_main *main,
+				t_token **temp);
 //£ ------------------------ redirections_main_pipes ----------------------- */
 int			ft_r(t_delimeter **d, t_token **token, t_main *main, t_token *temp);
 void		ft_heredoc_pipes_norm2(t_token **token, t_token **temp);
@@ -339,7 +343,8 @@ int			ft_pipes_main_init(t_token **token, t_main *main, int ***fds);
 void		ft_g_global_status(t_token **list, t_main *main, int **fds);
 //£ ---------------------------- pipes_main_utils1 -------------------------- */
 void		ft_g_global_status_norm0(int last, int counter, int status, int i);
-void		ft_g_global_status_norm1(int *last, int *counter, int status, int i);
+void		ft_g_global_status_norm1(int *last, int *counter,
+				int status, int i);
 //£ ------------------------------ pipes_main ------------------------------ */
 int			ft_check_for_pipes(t_token **token);
 int			ft_handle_execution_route(t_main *main, t_token **list, int **fds);

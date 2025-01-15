@@ -1,28 +1,29 @@
-==1150649== Memcheck, a memory error detector
-==1150649== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==1150649== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
-==1150649== Command: ../minishell
-==1150649== Parent PID: 1150647
-==1150649== 
-==1150649== Syscall param ioctl(TCSET{S,SW,SF}) points to uninitialised byte(s)
-==1150649==    at 0x49DED10: tcsetattr (tcsetattr.c:83)
-==1150649==    by 0x10975D: terminal_signals_and_init (main.c:61)
-==1150649==    by 0x109814: main (main.c:79)
-==1150649==  Address 0x1ffefff970 is on thread 1's stack
-==1150649==  in frame #0, created by tcsetattr (tcsetattr.c:45)
-==1150649== 
-==1150649== 
-==1150649== HEAP SUMMARY:
-==1150649==     in use at exit: 232,810 bytes in 234 blocks
-==1150649==   total heap usage: 546 allocs, 312 frees, 281,419 bytes allocated
-==1150649== 
-==1150649== LEAK SUMMARY:
-==1150649==    definitely lost: 0 bytes in 0 blocks
-==1150649==    indirectly lost: 0 bytes in 0 blocks
-==1150649==      possibly lost: 0 bytes in 0 blocks
-==1150649==    still reachable: 0 bytes in 0 blocks
-==1150649==         suppressed: 232,810 bytes in 234 blocks
-==1150649== 
-==1150649== Use --track-origins=yes to see where uninitialised values come from
-==1150649== For lists of detected and suppressed errors, rerun with: -s
-==1150649== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==1348124== Memcheck, a memory error detector
+==1348124== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==1348124== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==1348124== Command: ../minishell
+==1348124== Parent PID: 1348122
+==1348124== 
+==1348124== 
+==1348124== Process terminating with default action of signal 2 (SIGINT)
+==1348124==    at 0x4025B6F: __open_nocancel (open64_nocancel.c:39)
+==1348124==    by 0x4005CBB: open_verify.constprop.0 (dl-load.c:1623)
+==1348124==    by 0x4006299: open_path (dl-load.c:1863)
+==1348124==    by 0x40095F2: _dl_map_object (dl-load.c:2100)
+==1348124==    by 0x4002A2C: openaux (dl-deps.c:64)
+==1348124==    by 0x400151B: _dl_catch_exception (dl-catch.c:237)
+==1348124==    by 0x4002E66: _dl_map_object_deps (dl-deps.c:232)
+==1348124==    by 0x402241B: dl_main (rtld.c:1965)
+==1348124==    by 0x401EF45: _dl_sysdep_start (dl-sysdep.c:140)
+==1348124==    by 0x402075D: _dl_start_final (rtld.c:494)
+==1348124==    by 0x402075D: _dl_start (rtld.c:581)
+==1348124==    by 0x401F547: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+==1348124== 
+==1348124== HEAP SUMMARY:
+==1348124==     in use at exit: 0 bytes in 0 blocks
+==1348124==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==1348124== 
+==1348124== All heap blocks were freed -- no leaks are possible
+==1348124== 
+==1348124== For lists of detected and suppressed errors, rerun with: -s
+==1348124== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

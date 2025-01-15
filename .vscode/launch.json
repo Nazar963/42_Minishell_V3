@@ -25,6 +25,9 @@
 					"description":  "Set Disassembly Flavor to Intel",
 					"text": "-gdb-set disassembly-flavor intel",
 					"ignoreFailures": true
+				},
+				{
+					"text": "handle SIGINT pass nostop noprint"
 				}/* ,
 				{
 					"text": "-gdb-set follow-fork-mode child",

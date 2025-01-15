@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:26:55 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/15 20:28:20 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/15 20:33:01 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ void	ft_heredoc_pipes_norm2(t_token **token, t_token **temp)
 {
 	ft_del_node(token, *temp);
 	*temp = *token;
-	while ((*token) && (*token)->next && (*token)->next->type != TOKEN_DELIMITER)
+	while ((*token) && (*token)->next
+		&& (*token)->next->type != TOKEN_DELIMITER)
 		*token = (*token)->next;
 }
 
@@ -70,11 +71,8 @@ int	ft_heredoc_pipes(t_token **token, t_main *main, t_token *temp)
 					break ;
 			*token = (*token)->next;
 		}
-		if (!(*token))
-		{
-			*token = temp;
-			return (close(main->fd), dup2(main->orig_fd[0], STDIN_FILENO), 0);
-		}
+		*token = temp;
+		return (close(main->fd), dup2(main->orig_fd[0], STDIN_FILENO), 0);
 	}
 	return (0);
 }

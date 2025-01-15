@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 21:18:20 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/12 20:02:19 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/15 20:36:11 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,31 +66,8 @@ char	*ft_expaned_var(char *str, t_main *main)
 	return (ex.new_str);
 }
 
-void	ft_h_ini(t_token **token, t_token **temp, t_delimeter **d, t_main *main)
+void	ft_h_ini_norm0(t_token **token, t_token **temp, t_delimeter **d)
 {
-	ft_del_node(token, (*temp));
-	(*temp) = *token;
-	if ((*temp)->type != TOKEN_DELIMITER && ((*temp)->type == TOKEN_COMMAND || (*temp)->type == TOKEN_BUILTIN))
-	{
-		main->fd = open("/tmp/heredoc.txt", O_WRONLY | O_CREAT | O_TRUNC, 0666);
-		(*token)->heredoc_file = ft_strdup("/tmp/heredoc.txt");
-		(*temp) = (*temp)->next;
-	}
-	else
-	{
-		while ((*token) && (*token)->type != TOKEN_COMMAND && (*token)->type != TOKEN_BUILTIN)
-			(*token) = (*token)->next;
-		main->fd = open("/tmp/heredoc.txt", O_WRONLY | O_CREAT | O_TRUNC, 0666);
-		if (*token)
-			(*token)->heredoc_file = ft_strdup("/tmp/heredoc.txt");
-		*token = *temp;
-	}
-	while ((*temp)->type != TOKEN_DELIMITER)
-		(*temp) = (*temp)->next;
-	(*d) = ft_lstnew_d((*temp)->content);
-	(*d)->expaned = (*temp)->expaned_del;
-	ft_del_node(token, (*temp));
-	(*temp) = *token;
 	while ((*temp))
 	{
 		if ((*temp)->type == TOKEN_DELIMITER || (*temp)->type == TOKEN_HEREDOC)
@@ -105,5 +82,49 @@ void	ft_h_ini(t_token **token, t_token **temp, t_delimeter **d, t_main *main)
 		}
 		if ((*temp))
 			(*temp) = (*temp)->next;
+	}
+}
+
+void	ft_h_ini(t_token **token, t_token **temp, t_delimeter **d, t_main *main)
+{
+	ft_del_node(token, (*temp));
+	(*temp) = *token;
+	if ((*temp)->type != 9 && ((*temp)->type == 0 || (*temp)->type == 10))
+	{
+		main->fd = open("/tmp/heredoc.txt", O_WRONLY | O_CREAT | O_TRUNC, 0666);
+		(*token)->heredoc_file = ft_strdup("/tmp/heredoc.txt");
+		(*temp) = (*temp)->next;
+	}
+	else
+	{
+		while ((*token) && (*token)->type != 0 && (*token)->type != 10)
+			(*token) = (*token)->next;
+		main->fd = open("/tmp/heredoc.txt", O_WRONLY | O_CREAT | O_TRUNC, 0666);
+		if (*token)
+			(*token)->heredoc_file = ft_strdup("/tmp/heredoc.txt");
+		*token = *temp;
+	}
+	while ((*temp)->type != TOKEN_DELIMITER)
+		(*temp) = (*temp)->next;
+	(*d) = ft_lstnew_d((*temp)->content);
+	(*d)->expaned = (*temp)->expaned_del;
+	ft_del_node(token, (*temp));
+	(*temp) = *token;
+	ft_h_ini_norm0(token, temp, d);
+}
+
+void	ft_h_p_norm01(t_token **token, t_token *temp_token, char *file)
+{
+	if (temp_token->type != 9
+		&& (temp_token->type == 0 || temp_token->type == 10))
+		(*token)->heredoc_file = ft_strdup(file);
+	else
+	{
+		while ((*token) && (*token)->type != TOKEN_COMMAND
+			&& (*token)->type != TOKEN_BUILTIN)
+			(*token) = (*token)->next;
+		if (*token)
+			(*token)->heredoc_file = ft_strdup(file);
+		*token = temp_token;
 	}
 }
