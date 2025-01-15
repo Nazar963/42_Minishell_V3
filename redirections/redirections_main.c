@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:26:55 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/08 23:27:37 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/11 18:05:20 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,18 @@ int	ft_heredoc(t_token **token, t_main *main, t_token *temp)
 	g_global = 666;
 	if (ft_r(&delimeter, token, main, temp) == 1)
 		return (1);
+	g_global = 0;
+	return (0);
+}
+
+int	ft_redirections_main_norm14(t_token **token, t_main *main, t_token **temp)
+{
+	if ((*temp)->type == TOKEN_HEREDOC)
+	{
+		if (ft_heredoc(token, main, (*temp)) == 1)
+			return (1);
+		(*temp) = *token;
+	}
 	return (0);
 }
 
@@ -118,6 +130,16 @@ int	ft_redirections_main(t_token **token, t_main *main)
 	temp = *token;
 	while (temp)
 	{
+		if (ft_redirections_main_norm14(token, main, &temp) == 1)
+			return (1);
+		if (temp)
+			temp = temp->next;
+	}
+	temp = *token;
+	while (temp)
+	{
+		if (ft_redirections_main_norm14(token, main, &temp) == 1)
+			return (1);
 		if (ft_redirections_main_norm0(token, main, &temp) == 1)
 			return (1);
 		if (temp)

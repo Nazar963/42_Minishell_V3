@@ -1,34 +1,28 @@
-==554242== Memcheck, a memory error detector
-==554242== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==554242== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==554242== Command: ../minishell
-==554242== Parent PID: 554240
-==554242== 
-==554246== 
-==554246== HEAP SUMMARY:
-==554246==     in use at exit: 208,234 bytes in 226 blocks
-==554246==   total heap usage: 548 allocs, 322 frees, 253,903 bytes allocated
-==554246== 
-==554246== LEAK SUMMARY:
-==554246==    definitely lost: 0 bytes in 0 blocks
-==554246==    indirectly lost: 0 bytes in 0 blocks
-==554246==      possibly lost: 0 bytes in 0 blocks
-==554246==    still reachable: 0 bytes in 0 blocks
-==554246==         suppressed: 208,234 bytes in 226 blocks
-==554246== 
-==554246== For lists of detected and suppressed errors, rerun with: -s
-==554246== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-==554242== 
-==554242== HEAP SUMMARY:
-==554242==     in use at exit: 208,178 bytes in 222 blocks
-==554242==   total heap usage: 504 allocs, 282 frees, 251,816 bytes allocated
-==554242== 
-==554242== LEAK SUMMARY:
-==554242==    definitely lost: 0 bytes in 0 blocks
-==554242==    indirectly lost: 0 bytes in 0 blocks
-==554242==      possibly lost: 0 bytes in 0 blocks
-==554242==    still reachable: 0 bytes in 0 blocks
-==554242==         suppressed: 208,178 bytes in 222 blocks
-==554242== 
-==554242== For lists of detected and suppressed errors, rerun with: -s
-==554242== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==1150649== Memcheck, a memory error detector
+==1150649== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==1150649== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==1150649== Command: ../minishell
+==1150649== Parent PID: 1150647
+==1150649== 
+==1150649== Syscall param ioctl(TCSET{S,SW,SF}) points to uninitialised byte(s)
+==1150649==    at 0x49DED10: tcsetattr (tcsetattr.c:83)
+==1150649==    by 0x10975D: terminal_signals_and_init (main.c:61)
+==1150649==    by 0x109814: main (main.c:79)
+==1150649==  Address 0x1ffefff970 is on thread 1's stack
+==1150649==  in frame #0, created by tcsetattr (tcsetattr.c:45)
+==1150649== 
+==1150649== 
+==1150649== HEAP SUMMARY:
+==1150649==     in use at exit: 232,810 bytes in 234 blocks
+==1150649==   total heap usage: 546 allocs, 312 frees, 281,419 bytes allocated
+==1150649== 
+==1150649== LEAK SUMMARY:
+==1150649==    definitely lost: 0 bytes in 0 blocks
+==1150649==    indirectly lost: 0 bytes in 0 blocks
+==1150649==      possibly lost: 0 bytes in 0 blocks
+==1150649==    still reachable: 0 bytes in 0 blocks
+==1150649==         suppressed: 232,810 bytes in 234 blocks
+==1150649== 
+==1150649== Use --track-origins=yes to see where uninitialised values come from
+==1150649== For lists of detected and suppressed errors, rerun with: -s
+==1150649== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

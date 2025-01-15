@@ -1,3 +1,9 @@
+cd .. |ls|cat Makefile|>> out
+pwd
+/bin/rm -f out
+ls|cat Makefile|>> out|cd ..
+/bin/rm -f out
+"."
 |
 | echo oi
 | |
@@ -249,3 +255,9 @@ $EMPTY
 ">>" asd
 $T$E$S$L
 $NOVAR
+ech
+pw
+$?
+unset PATH
+ls | cat << stop | ls -la | cat << stop1 | ls | cat << stop2 | ls -la > > out | cat << stop3
+echo |< echo segf

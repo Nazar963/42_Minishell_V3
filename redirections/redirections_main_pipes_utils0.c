@@ -6,11 +6,27 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:11:16 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/11 15:40:42 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/15 20:22:29 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	ft_h_p_norm01(t_token **token, t_token *temp_token, char *file)
+{
+
+	if (temp_token->type != 9
+		&& (temp_token->type == 0 || temp_token->type == 10))
+		(*token)->heredoc_file = ft_strdup(file);
+	else
+	{
+		while ((*token) && (*token)->type != TOKEN_COMMAND && (*token)->type != TOKEN_BUILTIN)
+			(*token) = (*token)->next;
+		if (*token)
+			(*token)->heredoc_file = ft_strdup(file);
+		*token = temp_token;
+	}
+}
 
 t_delimeter	*ft_h_p_norm0(int i, t_token **token, t_token **temp, t_main *main)
 {
@@ -18,6 +34,7 @@ t_delimeter	*ft_h_p_norm0(int i, t_token **token, t_token **temp, t_main *main)
 	char		*itoa_str;
 	char		*temp_file;
 	t_delimeter	*delimeter;
+	t_token		*temp_token;
 
 	file = ft_strdup("/tmp/heredoc");
 	itoa_str = ft_itoa(i);
@@ -27,7 +44,8 @@ t_delimeter	*ft_h_p_norm0(int i, t_token **token, t_token **temp, t_main *main)
 	file = ft_strjoin(temp_file, ".txt");
 	free(temp_file);
 	main->fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	(*token)->heredoc_file = ft_strdup(file);
+	temp_token = *token;
+	ft_h_p_norm01(token, temp_token, file);
 	free(file);
 	*token = (*token)->next;
 	if ((*token)->type == TOKEN_HEREDOC)

@@ -1,45 +1,6 @@
 cat << "$US"E"R"
-echo cd ~
-cd -
-cd echo
-cd echo echo
-cd - ananas dot jpeg
-export TEST+=100
-< out
-"."
-mkdir tmp_path_test1 tmp_path_test2
-gcc tmp_path_test1/test1.c -o tmp_path_test1/a.out
-printf '#include <unistd.h>\nint main(){write(1, \"1\\n\", 2);}' > tmp_path_test1/test1.c
-printf '#include <unistd.h>\nint main(){write(1, \"2\\n\", 2);}' > tmp_path_test2/test2.c
-gcc tmp_path_test2/test2.c -o tmp_path_test2/a.out
-<<<<<<<<<
-~
-cat 42 42
-.
-..
-||||||||
-cat wouaf wouaf
-/
->| echo wtf
-<<
-<>
-echo 1 | >tmp_out
-export test="arg1	arg2"
-echo |< echo segf
-echo segf >| echo is this invalid
-echo | < echo segf
-echo <<<> ok
-echo segfault <"<<<"<<amazing
-echo |      < echo segf
-echo seg <> echo seg
-echo <<< echo seegf
-echo test |  <<lala
-echo | > la
-unset TES;T
-< out
-<< out
-cat
 echo seg <<<> echo segf
-exit 3.14
-exit --42
-exit 0x10
+echo <<<> ok
+<>
+||||||||
+<<<<<<<<<

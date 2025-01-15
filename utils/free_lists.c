@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:07:52 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/08 23:22:41 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/13 22:48:56 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ void	ft_free_linked_list_until_pipe(t_token **token)
 		temp = *token;
 		*token = (*token)->next;
 		free(temp->content);
+		if (temp->heredoc_file)
+			free(temp->heredoc_file);
 		free(temp);
 	}
 	*token = NULL;

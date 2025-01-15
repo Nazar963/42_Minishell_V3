@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 12:43:05 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/06 16:15:38 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/15 20:10:33 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,8 @@ void	ft_pipes_loop(t_token **token, t_main *main, t_token **list, int **fds)
 	int	i;
 
 	i = -1;
-	while (main->done == false)
+	while (main->done == false && ++i > -1)
 	{
-		++i;
 		while (*token)
 		{
 			if ((*token)->type == TOKEN_PIPE && ft_lstsize(*list) != 1)
@@ -100,7 +99,8 @@ void	ft_pipes_loop(t_token **token, t_main *main, t_token **list, int **fds)
 		free_linked_list(list);
 		if (!*token)
 			break ;
-		free_linked_list(list);
+		if (ft_lstsize(*token) == 1 && (*token)->type == TOKEN_PIPE)
+			return (free_linked_list(token), (void)0);
 		*list = ft_lstnew_for_pipes(*token);
 		if (!*token)
 			main->done = true;

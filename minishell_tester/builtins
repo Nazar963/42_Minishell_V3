@@ -1,3 +1,6 @@
+cd echo
+cd echo echo
+cd - ananas dot jpeg
 cat ./test_files/infile_big | grep oi
 export GHOST=123 | env | grep GHOST
 /bin/echo 1 | grep 1
@@ -748,3 +751,13 @@ unset PATH
 cd /bin/
 exit -0000
 echo "Combining" "multiple" "arguments"
+exit 0x10
+exit 3.14
+exit --42
+< out
+echo | > la
+rm la
+echo |      < echo segf
+usnet test
+echo 1 | >tmp_out
+rm tmp_out

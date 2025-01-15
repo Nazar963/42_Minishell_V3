@@ -1,7 +1,9 @@
+#? --------------------------------------------------------------------------- #
+#?                                     DONE                                    #
+#? --------------------------------------------------------------------------- #
 cat <<EOF | grep line
 cat <<END | sort > sorted.txt
 cat <<X | head -n 5 | tail -n 2
-
 cat <<DATA | grep "nomatch"
 cat <<END | tr 'a-z' 'A-Z' > upper.txt
 cat <<TEXT | sed 's/world/universe/'
@@ -11,127 +13,33 @@ cat <<NUMS | sort -n
 cat <<EOL | tr ':' '-'
 cat <<BLANK | wc -l
 cat <<ROWS | awk '{print $2}'
-cat <<MULTI | grep "repeat"
-cat <<SPC | grep "end"
 cat <<SYM | tr '!' '?'
 cat <<TEND | tail -n 1
 cat <<BLK | grep "^$"
 cat <<EEND | grep "line" | wc -l
-
-echo hi | >./outfiles/outfile01 echo bye >./test_files/invalid_permission
-
-echo -n -1
-echo -n fsadijvj jviaosdjiv
-echo -n -1 -123 4- 412-412
-echo -n -1
-/bin/echo -n"-n" bonjour
-/bin/echo -n -n test1
-/bin/echo -n -n -n -n -n test1
-/bin/echo -n -n -nasd
-/bin/echo -n -n -n-nnnnn
-/bin/echo -n -nnnnnnn -n -nnn -nnnnn -n-n
-/bin/echo -n -nnnnnnn -n -nnn -nnnnn -n feel my pain
-/bin/echo -n -n -n-n
-/bin/echo -n test1
-/bin/echo -n "test1 test2"
-/bin/echo -n "test1 test2" test3
-/bin/echo -n " test1 test2 " 'test3 '
-/bin/echo -n test1		test2
-
 ls | cat << stop | ls -la > out0| cat << stop1 | ls | cat << stop2 | ls -la >> out | cat << stop3
-fe
-wf
-fwe
-f
-stop
-dw
-stop1
-dw
-stop2
-e
-wf
-stop3
-
 ls | cat << stop | ls -la | cat << stop1
-12
-32232
-23
-stop
-awdaw
-daswd
-stop1
-
 ls | cat << stop | grep "asd"
-is this good
-stop
-
 ls | cat << stop | ls -la | cat << stop1 | ls | cat << stop2 | ls -la | cat << stop3
-$USER
-ad
-as $HOME
-stop
-awd
-wf$PWDdqwdwqd
-stop1
-das
-das
-stop2
-dsq
-wd
-wf$PWDdqwdwqd
-stop3
-
 ls | cat << stop | ls -la | cat << stop1 | ls | cat << stop2 | ls -la > out | cat << 'stop3'
-$USER
-ad
-stop
-dsa
-stop1
-sad
-stop2
-as $HOME
-stop3
+/bin/cat Makefile > out >>out1 >out2 | /bin/cat << stop > out3
+echo hi | << j cat
+echo segfault <"<<<"<<amazing
+<< out
+echo test |  <<lala
+/bin/cat Makefile > out >>out1 >out2 | /bin/cat << stop > out3 | /bin/ls
 
-ls | cat << stop | ls -la | cat << stop1 | ls | cat << stop2 | ls -la > > out | cat << stop3
-fe
-wf
-fwe
-f
-stop
-dw
-stop1
-dwasd
-stop2
-
-ls|cat Makefile|cat<<asd>out
-$USER
-asd
-/bin/rm -f out
-ls|cat Makefile|cat<<'asd'>out
-$USER
-asd
-/bin/rm -f out
-ls|cat Makefile|cat<<"asd">out
-$USER
-asd
-/bin/rm -f out
-pwd
-ls|cat Makefile|>> out|cd ..
-/bin/rm -f out
-pwd
-pwd
-cd .. |ls|cat Makefile|>> out
-pwd
-/bin/rm -f out
-
+cat << EOF
+"EOF"
+!! HELLO
+@42 !!
+ EOF\t\b\n
+testing your minishell :)
+limm
+EOF
 
 cat << lim
- "lim"
-HELLO
-42
- lim
-testing your minishell
-limm
+test
 lim
 
 <<lim cat
@@ -144,48 +52,33 @@ limm
 lim
 
 cat << lim
-test
-lim
-
-cat << EOF
-"EOF"
-!! HELLO
-@42 !!
- EOF\t\b\n
-testing your minishell :)
+ "lim"
+HELLO
+42
+ lim
+testing your minishell
 limm
-EOF
-
-cat << hello
-$USER
-$NOVAR
-$HOME
-hello
+lim
 
 cat << 'lim'
-$USER
-$NOVAR
-$HOME
-lim
-
+cat << lim
 cat << lim''
-$USER
-$NOVAR
-$HOME
-lim
-
 cat << "lim"
 $USER
 $NOVAR
 $HOME
 lim
 
-cat << 'lim'
+ls|cat Makefile|cat<<asd>out
 $USER
-$NOVAR
-$HOME
-lim
+asd
 
-/bin/cat Makefile > out >>out1 >out2 | /bin/cat << stop > out3 | /bin/ls
-/bin/cat Makefile > out >>out1 >out2 | /bin/cat << stop > out3
-/bin/cat Makefile > out >>out1 >out2 | /bin/cat << stop > out3
+ls|cat Makefile|cat<<'asd'>out
+$USER
+asd
+
+ls|cat Makefile|cat<<"asd">out
+$USER
+asd
+
+# --------------------------------------------------------------------------- #

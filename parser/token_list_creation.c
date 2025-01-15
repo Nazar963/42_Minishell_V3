@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_list_creation.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 16:30:02 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/13 13:06:18 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/15 20:14:34 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 void	assign_the_rest(t_token *token, int n)
 {
-	if (ft_strncmp(token->content, "-", 1) == 0)
+	int	loco;
+
+	loco = ft_strlen(token->content);
+	if (ft_strncmp(token->content, "-", 1) == 0 && loco != 1)
 		token->type = TOKEN_OPTION;
 	else if (ft_strncmp(token->content, "<", n) == 0)
 		token->type = TOKEN_REDIRECTION_IN;
@@ -38,20 +41,29 @@ void	assign_the_rest(t_token *token, int n)
 		token->type = TOKEN_ARGUMENT;
 }
 
+void	assign_token_type_norm0(t_token **token, int n)
+{
+	if (ft_strncmp((*token)->content, ">>", n) == 0 && n == 2)
+		(*token)->type = TOKEN_APPEND_OUT;
+	else if (ft_strncmp((*token)->content, "<<", n) == 0 && n == 2)
+		(*token)->type = TOKEN_HEREDOC;
+	else if (ft_strncmp((*token)->content, "<", n) == 0 && n == 1)
+		(*token)->type = TOKEN_REDIRECTION_IN;
+	else if (ft_strncmp((*token)->content, ">", n) == 0 && n == 1)
+		(*token)->type = TOKEN_REDIRECTION_OUT;
+	else
+		(*token)->type = TOKEN_COMMAND;
+}
+
 void	assign_token_type(t_token *token, t_token *prev_token)
 {
 	int	n;
 
 	n = ft_strlen(token->content);
 	if (prev_token && prev_token->type == TOKEN_PIPE)
-		token->type = TOKEN_COMMAND;
+		assign_token_type_norm0(&token, n);
 	else if (!prev_token)
-	{
-		if (ft_strncmp(token->content, ">>", n) == 0)
-			token->type = TOKEN_APPEND_OUT;
-		else
-			token->type = TOKEN_COMMAND;
-	}
+		assign_token_type_norm0(&token, n);
 	else if (prev_token && (prev_token->type == TOKEN_REDIRECTION_IN
 			|| prev_token->type == TOKEN_REDIRECTION_OUT
 			|| prev_token->type == TOKEN_APPEND_OUT))
@@ -62,6 +74,11 @@ void	assign_token_type(t_token *token, t_token *prev_token)
 		if (quotes_delimiter(token->content) == 0)
 			token->expaned_del = 1;
 	}
+	else if (prev_token->type == TOKEN_DELIMITER
+		&& ft_strncmp(token->content, "<<", n) != 0
+		&& ft_strncmp(token->content, ">", n) != 0
+		&& ft_strncmp(token->content, "|", n) != 0)
+		token->type = TOKEN_COMMAND;
 	else
 		assign_the_rest(token, n);
 }

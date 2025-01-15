@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 16:14:45 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/11 15:12:06 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/15 20:13:46 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	ft_pipes_main_init(t_token **token, t_main *main, int ***fds)
 	while (++i < main->pipe_count)
 		pipe((*fds)[i]);
 	main->pids = (int *)malloc(sizeof(int) * (main->pipe_count + 1));
+	ft_memset(main->pids, 0, sizeof(int) * (main->pipe_count + 1));
 	if (main->pids == NULL)
 		return (false);
 	if (ft_herdoc_pipes_main(token, main) == 1)
@@ -76,32 +77,17 @@ void	ft_g_global_status(t_token **list, t_main *main, int **fds)
 	int	last;
 	int	counter;
 
-	counter = 0;
 	free_linked_list(list);
 	i = -1;
+	counter = 0;
+	last = 0;
 	while (++i <= main->pipe_count)
 	{
 		waitpid(main->pids[i], &status, 0);
 		if (WIFEXITED(status))
-		{
-			g_global = WEXITSTATUS(status);
-			if (g_global == 0 && last == 130)
-			{
-				if (i == counter + 1)
-					g_global = 130;
-			}
-			if (g_global == 7)
-				g_global = 0;
-		}
+			ft_g_global_status_norm0(last, counter, status, i);
 		else if (WIFSIGNALED(status))
-		{
-			g_global = 128 + WTERMSIG(status);
-			if (g_global == 130)
-			{
-				last = g_global;
-				counter = i;
-			}
-		}
+			ft_g_global_status_norm1(&last, &counter, status, i);
 		else
 			g_global = 1;
 	}

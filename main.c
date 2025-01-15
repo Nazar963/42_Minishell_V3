@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:19:00 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/13 18:18:25 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/15 19:18:24 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	main(int ac, char **av, char **env)
 	char			*input;
 	t_main			main;
 	t_token			*token;
+	// int i = 0;
 	struct termios	term;
 
 	(void) **av;
@@ -87,6 +88,9 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		input = readline("minishell> ");
+		// if (i == 1)
+		// 	ft_signals(SIGINT);
+		// i++;
 		ctrl_d(input, &token, &main);
 		if (ft_strlen(input) == 0 || check_only_spaces(&input) == 0)
 			continue ;

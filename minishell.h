@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/13 16:58:26 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/15 20:14:00 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,8 @@ void		ft_export_pipes_norm1(t_token **token, t_main *main,
 				char **splitted);
 void		ft_export_pipes_norm2(t_main *main, char **s);
 char		*ft_export_var_reassign_p_norm0(char *orig, char *value);
+//£ -------------------------- export_pipes_utils1 ------------------------- */
+void		ft_clean_var(t_token **token);
 //£ ---------------------------------- pwd --------------------------------- */
 void		ft_pwd(t_token **token);
 //£ ------------------------------- pwd_pipes ------------------------------ */
@@ -313,6 +315,7 @@ char		*add_slash_pipes_norm0(char *new);
 //£ ----------------------- execve_main_pipes_utils2 ----------------------- */
 void		error_cmd_pipes(char *cmd);
 char		*ft_join_path_pipes(char **cmd);
+int			ft_no_special_characters_fun(char **cmd, t_main *main);
 //£ --------------------------- execve_main_pipes -------------------------- */
 void		execute_cmd_pipes(char *exec_path, char **cmd, char **envp);
 int			add_slash_pipes(char **new_path, char **cmd, char **envp);
@@ -334,6 +337,9 @@ int			ft_count_pipes(t_token *token);
 void		free_fds(int **fds, int pipe_count);
 int			ft_pipes_main_init(t_token **token, t_main *main, int ***fds);
 void		ft_g_global_status(t_token **list, t_main *main, int **fds);
+//£ ---------------------------- pipes_main_utils1 -------------------------- */
+void		ft_g_global_status_norm0(int last, int counter, int status, int i);
+void		ft_g_global_status_norm1(int *last, int *counter, int status, int i);
 //£ ------------------------------ pipes_main ------------------------------ */
 int			ft_check_for_pipes(t_token **token);
 int			ft_handle_execution_route(t_main *main, t_token **list, int **fds);

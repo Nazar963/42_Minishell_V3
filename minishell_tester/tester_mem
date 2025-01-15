@@ -14,6 +14,7 @@ else
         "pipes"
         "redirects"
         "extras"
+        # "memory-tester"
     )
 fi
 
@@ -60,7 +61,37 @@ for testfile in ${test_lists[*]}; do
         # Run Valgrind with minishell and capture output
         VALGRIND_LOG="valgrind.log"
         MINI_OUTPUT=$(echo -e "$teste" | valgrind --leak-check=full --error-exitcode=1 --suppressions=readline.supp --log-file=$VALGRIND_LOG $MINISHELL_PATH 2>/dev/null | $REMOVE_COLORS | grep -vF "$PROMPT" | $REMOVE_EXIT)
-        VALGRIND_ERRORS=$(grep "ERROR SUMMARY" $VALGRIND_LOG | awk '{print $4}')
+        # # VALGRIND_ERRORS=$(grep "ERROR SUMMARY" $VALGRIND_LOG | awk '{print $4}')
+        
+        # DEFINITELY_LOST=$(grep "definitely lost" $VALGRIND_LOG | awk '{print $4}' | tr -d ',')
+        # INDIRECTLY_LOST=$(grep "indirectly lost" $VALGRIND_LOG | awk '{print $4}' | tr -d ',')
+        # POSSIBLY_LOST=$(grep "possibly lost" $VALGRIND_LOG | awk '{print $4}' | tr -d ',')
+        # STILL_REACHABLE=$(grep "still reachable" $VALGRIND_LOG | awk '{print $4}' | tr -d ',')
+
+        # # Check for memory leaks
+        # if [[ "$DEFINITELY_LOST" -gt 0 || "$INDIRECTLY_LOST" -gt 0 || "$POSSIBLY_LOST" -gt 0 ]]; then
+        #     VALGRIND_ERRORS=1  # Memory leak detected
+        # else
+        #     VALGRIND_ERRORS=0  # No memory leak
+        # fi
+
+        # Parse Valgrind output and sanitize values
+        DEFINITELY_LOST=$(grep "definitely lost" $VALGRIND_LOG | awk '{gsub(/[^0-9]/, "", $4); print $4}' | tr -d ',\n' || echo 0)
+        INDIRECTLY_LOST=$(grep "indirectly lost" $VALGRIND_LOG | awk '{gsub(/[^0-9]/, "", $4); print $4}' | tr -d ',\n' || echo 0)
+        POSSIBLY_LOST=$(grep "possibly lost" $VALGRIND_LOG | awk '{gsub(/[^0-9]/, "", $4); print $4}' | tr -d ',\n' || echo 0)
+        STILL_REACHABLE=$(grep "still reachable" $VALGRIND_LOG | awk '{gsub(/[^0-9]/, "", $4); print $4}' | tr -d ',\n' || echo 0)
+
+        # Debugging (optional): Print sanitized values
+        # echo "DEFINITELY_LOST=$DEFINITELY_LOST, INDIRECTLY_LOST=$INDIRECTLY_LOST, POSSIBLY_LOST=$POSSIBLY_LOST, STILL_REACHABLE=$STILL_REACHABLE"
+        # if [ "$DEFINITELY_LOST" -gt 0 ]; then
+		# 	echo "Definitely lost memory detected!"
+		# fi
+        # Check for memory leaks
+        if [[ "$DEFINITELY_LOST" -gt 0 || "$INDIRECTLY_LOST" -gt 0 || "$POSSIBLY_LOST" -gt 0  || "$STILL_REACHABLE" -gt 0 ]]; then
+            VALGRIND_ERRORS=1  # Memory leak detected
+        else
+            VALGRIND_ERRORS=0  # No memory leak
+        fi
         
         MINI_OUTFILES=$(cp ./outfiles/* ./mini_outfiles &>/dev/null)
         MINI_EXIT_CODE=$(echo -e "$MINISHELL_PATH\n$teste\necho \$?\nexit\n" | bash 2>/dev/null | $REMOVE_COLORS | grep -vF "$PROMPT" | $REMOVE_EXIT | tail -n 1)

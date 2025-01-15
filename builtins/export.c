@@ -6,11 +6,37 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:30:09 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/09 08:19:36 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/11 18:38:28 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	ft_check_for_special_c(char **var)
+{
+	char	**sp;
+	int		i;
+
+	i = 0;
+	if (ft_strnstr(var[1], "\t", ft_strlen(var[1])))
+	{
+		sp = ft_split(var[1], '\t');
+		while (sp[i])
+		{
+			if (i == 0)
+				printf("declare -x %s=$\'%s\\t", var[0], sp[i]);
+			else if (sp[i + 1])
+				printf("%s\\t", sp[i]);
+			else
+				printf("%s", sp[i]);
+			i++;
+		}
+		printf("'\n");
+		free_mtx(&sp);
+		return (1);
+	}
+	return (0);
+}
 
 void	print_env_export(t_main *main)
 {
@@ -26,7 +52,10 @@ void	print_env_export(t_main *main)
 		else if (var[1] && var[1][0] && var[1][0] == '\"')
 			printf("declare -x %s=%s\n", var[0], var[1]);
 		else if (var[1])
-			printf("declare -x %s=\"%s\"\n", var[0], var[1]);
+		{
+			if (ft_check_for_special_c(var) == 0)
+				printf("declare -x %s=\"%s\"\n", var[0], var[1]);
+		}
 		else
 			printf("declare -x %s=\"\"\n", var[0]);
 		free_mtx(&var);

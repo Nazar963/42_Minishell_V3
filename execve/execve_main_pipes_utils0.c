@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 12:46:39 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/06 12:47:32 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/15 19:48:50 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	ft_first_pos_dup(t_token **list, t_main *main, int **fds)
 {
 	int	fd;
 
+	if (!*list)
+		return ;
 	if ((*list)->heredoc_file)
 	{
 		fd = open((*list)->heredoc_file, O_RDONLY, 0666);
@@ -66,7 +68,7 @@ void	ft_third_pos_dup(t_token **list, t_main *main, int **fds)
 
 void	ft_parent_pos_dup_close(int pos, t_main *main, int **fds)
 {
-	if (pos == 1)
+	if (pos == 1 && fds[main->pos_fd])
 		close(fds[main->pos_fd][1]);
 	else if (pos == 2)
 	{
@@ -91,5 +93,6 @@ int	ft_fork(void)
 		perror("Fork Failed");
 		exit(EXIT_FAILURE);
 	}
+	g_global = 7;
 	return (pid1);
 }

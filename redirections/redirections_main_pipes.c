@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_main_pipes.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:26:55 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/11 23:07:10 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/15 20:28:20 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,7 @@ int	ft_r(t_delimeter **d, t_token **token, t_main *main, t_token *temp)
 			return (ft_r_norm1(*d), ft_r_norm0(d, token, main, &temp));
 		if (ft_strncmp(h_in, (*d)->del, ft_strlen((*d)->del)) == 0
 			&& ft_strlen(h_in) == ft_strlen((*d)->del) && ft_lsts_d(*d) == 1)
-		{
-			free(h_in);
-			free_linked_list_delimeter(d);
-			break ;
-		}
+			return (free(h_in), free_linked_list_delimeter(d), 0);
 		if (ft_strncmp(h_in, (*d)->del, ft_strlen((*d)->del)) == 0
 			&& ft_strlen(h_in) == ft_strlen((*d)->del) && ft_lsts_d(*d) != 1)
 			ft_del_first_node_delimeter(d);
@@ -48,7 +44,7 @@ void	ft_heredoc_pipes_norm2(t_token **token, t_token **temp)
 {
 	ft_del_node(token, *temp);
 	*temp = *token;
-	while ((*token)->next->type != TOKEN_DELIMITER)
+	while ((*token) && (*token)->next && (*token)->next->type != TOKEN_DELIMITER)
 		*token = (*token)->next;
 }
 
@@ -67,14 +63,17 @@ int	ft_heredoc_pipes(t_token **token, t_main *main, t_token *temp)
 			return (1);
 		close(main->fd);
 		i++;
-		while ((*token) && (*token)->next->type != TOKEN_HEREDOC)
+		while ((*token))
+		{
+			if ((*token)->next)
+				if ((*token)->next->type == TOKEN_HEREDOC)
+					break ;
 			*token = (*token)->next;
+		}
 		if (!(*token))
 		{
-			close(main->fd);
-			dup2(main->orig_fd[0], STDIN_FILENO);
 			*token = temp;
-			break ;
+			return (close(main->fd), dup2(main->orig_fd[0], STDIN_FILENO), 0);
 		}
 	}
 	return (0);

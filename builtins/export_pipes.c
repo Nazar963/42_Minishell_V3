@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:30:09 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/09 08:19:36 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/15 19:42:46 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int	ft_export_pipes_check_var(t_token **token)
 			print_error("export: not a valid identifier", NULL, NULL);
 			return (1);
 		}
+		ft_clean_var(token);
 		free_mtx(&splitted_argument);
 	}
 	return (0);

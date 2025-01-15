@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/11 14:58:09 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/15 19:47:54 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int	add_slash_pipes(char **new_path, char **cmd, char **envp)
 		else
 			free(exec_path);
 	}
-	print_error(" command not found", NULL, NULL);
-	return (127);
+	write(2, cmd[0], ft_strlen(cmd[0]));
+	return (print_error(": command not found", NULL, NULL), 127);
 }
 
 void	handle_path_pipes(t_token **token, t_main *main, int **fds)
@@ -62,17 +62,24 @@ void	handle_path_pipes(t_token **token, t_main *main, int **fds)
 	char	**cmd;
 
 	i = 0;
-	while (ft_strnstr(main->env[i], "PATH=", 5) == 0)
+	while (main->env[i] && ft_strnstr(main->env[i], "PATH=", 5) == 0)
 		i++;
-	new_path = ft_split(main->env[i] + 5, ':');
-	cmd = ft_from_list_to_array_pipes(token);
-	ret = add_slash_pipes(new_path, cmd, main->env);
-	free_mtx(&cmd);
-	free_mtx(&new_path);
-	free_all(main, &main->token);
+	if (main->env[i])
+	{
+		new_path = ft_split(main->env[i] + 5, ':');
+		cmd = ft_from_list_to_array_pipes(token);
+		ret = add_slash_pipes(new_path, cmd, main->env);
+		free_mtx(&cmd);
+		free_mtx(&new_path);
+	}
+	else
+	{
+		free_linked_list(token);
+		ret = 127;
+	}
 	free(main->pids);
 	free_fds(fds, main->pipe_count);
-	fds = NULL;
+	free_all(main, &main->token);
 	exit(ret);
 }
 
@@ -90,14 +97,14 @@ int	child_pipes(t_token **list, t_main *main, int **fds, int pos)
 			ft_second_pos_dup(list, main, fds);
 		else if (pos == 3)
 			ft_third_pos_dup(list, main, fds);
-		ft_redirections_main(list, main);
+		if (*list)
+			ft_redirections_main(list, main);
 		if (*list)
 			ft_builtins_main_pipes(list, main, fds);
 		if (*list)
 			handle_path_pipes(list, main, fds);
 		free(main->pids);
 		free_fds(fds, main->pipe_count);
-		fds = NULL;
 		free_all(main, list);
 		exit(g_global);
 	}

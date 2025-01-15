@@ -33,3 +33,12 @@
     fun:readline
     fun:ft_heredoc
 }
+
+{
+    readline
+    Memcheck:Leak
+    ...
+    ...
+    fun:readline
+    fun:ft_r
+}

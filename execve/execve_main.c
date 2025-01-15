@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/11 15:05:53 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/15 19:49:51 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,6 @@ void	execute_cmd(char *exec_path, char **cmd, t_main *main)
 		else
 			exit(126);
 	}
-}
-
-int	ft_no_special_characters_fun(char **cmd, t_main *main)
-{
-	int	ret;
-
-	ret = ft_no_special_characters_pipes(cmd[0]);
-	if (ret != 0)
-		return (ret);
-	if (ft_strncmp(cmd[0], "./", 2) == 0 || ft_strrchr(cmd[0], '/'))
-		return (ft_add_slash_pipes_file(cmd, main->env));
-	return (0);
 }
 
 int	add_slash(char **new_path, char **cmd, t_main *main)
@@ -62,7 +50,8 @@ int	add_slash(char **new_path, char **cmd, t_main *main)
 		else
 			free(exec_path);
 	}
-	return (print_error(" command not found", NULL, NULL), 127);
+	write(2, cmd[0], ft_strlen(cmd[0]));
+	return (print_error(": command not found", NULL, NULL), 127);
 }
 
 void	handle_path(t_token **token, t_main *main)
@@ -91,7 +80,6 @@ void	child(t_token **token, t_main *main)
 	int	pid1;
 	int	fd;
 
-	g_global = 7;
 	pid1 = ft_fork();
 	if ((*token)->heredoc_file)
 	{
@@ -109,9 +97,7 @@ void	child(t_token **token, t_main *main)
 			g_global = 0;
 	}
 	else if (WIFSIGNALED(status))
-	{
 		g_global = 128 + WTERMSIG(status);
-	}
 	else
 		g_global = 1;
 	dup2(main->orig_fd[0], STDIN_FILENO);
