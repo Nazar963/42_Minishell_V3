@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 20:44:33 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/11 16:31:58 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/16 19:10:04 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,25 @@ char	**ft_realloc(char **mtx, int size)
 	}
 	new_mtx[size] = NULL;
 	free_mtx(&mtx);
+	return (new_mtx);
+}
+
+char	*ft_realloc_str(char *mtx, int size)
+{
+	char	*new_mtx;
+	int		i;
+
+	i = 0;
+	new_mtx = (char *)malloc(sizeof(char ) * (size + ft_strlen(mtx)));
+	if (new_mtx == NULL)
+		return (NULL);
+	while (i < size - 1)
+	{
+		new_mtx[i] = mtx[i];
+		i++;
+	}
+	new_mtx[size] = '\0';
+	free_str(mtx);
 	return (new_mtx);
 }
 

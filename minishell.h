@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/15 20:43:48 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/16 19:07:13 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ void		ft_free_linked_list_until_pipe(t_token **token);
 void		free_token_and_input(char *input, t_token **token);
 //£ --------------------------------- utils -------------------------------- */
 char		**ft_realloc(char **mtx, int size);
+char		*ft_realloc_str(char *mtx, int size);
 int			ft_strlen_mtx(char **mtx);
 int			ft_control_int(char *str);
 void		ft_del_first_node(t_token **token);
@@ -184,7 +185,7 @@ void		ft_export(t_token **token, t_main *main);
 void		print_env_export_pipes(t_main *main);
 int			ft_check_already_existing_var_pipes(char **env, char *variable);
 char		**ft_export_var_reassign_p(char **env, char *variable, char *value);
-int			ft_export_pipes_check_var(t_token **token);
+int			ft_export_pipes_check_var(t_token **token, t_main *main);
 void		ft_export_pipes(t_token **token, t_main *main);
 //£ -------------------------- export_pipes_utils -------------------------- */
 int			is_valid_var_name_pipes(const char *name);

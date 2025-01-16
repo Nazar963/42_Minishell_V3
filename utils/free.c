@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:58:01 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/15 19:19:14 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/16 18:40:17 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	free_mtx(char ***mtx)
 		(*mtx)[i] = NULL;
 		i++;
 	}
-	free((*mtx));
+	if (*mtx)
+		free((*mtx));
 	(*mtx) = NULL;
 }
 

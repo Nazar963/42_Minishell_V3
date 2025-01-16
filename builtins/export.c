@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:30:09 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/11 18:38:28 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/16 18:00:33 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	ft_export(t_token **token, t_main *main)
 	ft_del_first_node(token);
 	if (!*token || (*token)->content[0] == '|')
 		return (print_env_export(main), (void)0);
-	if (ft_export_pipes_check_var(token) == 1)
+	if (ft_export_pipes_check_var(token, main) == 1)
 		return ;
 	while (*token && (*token)->type != 3)
 	{

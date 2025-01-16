@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/15 19:49:51 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/16 18:41:35 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,20 @@ void	handle_path(t_token **token, t_main *main)
 
 	i = 0;
 	while (ft_strnstr(main->env[i], "PATH=", 5) == 0)
+	{
 		i++;
-	new_path = ft_split(main->env[i] + 5, ':');
-	cmd = ft_from_list_to_array_pipes(token);
-	ret = add_slash(new_path, cmd, main);
-	free_mtx(&cmd);
-	free_mtx(&new_path);
+		if (!main->env[i])
+			break ;
+	}
+	ret = 127;
+	if (main->env[i])
+	{
+		new_path = ft_split(main->env[i] + 5, ':');
+		cmd = ft_from_list_to_array_pipes(token);
+		ret = add_slash(new_path, cmd, main);
+		free_mtx(&cmd);
+		free_mtx(&new_path);
+	}
 	free_all(main, &main->token);
 	free_linked_list(token);
 	exit(ret);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 19:20:52 by naal-jen          #+#    #+#             */
-/*   Updated: 2022/08/05 19:20:53 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/16 18:34:43 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	int		j;
 
 	i = -1;
-	if (*needle == '\0')
+	if (*needle == '\0' || !haystack)
 		return ((char *)haystack);
+	if (!haystack[0])
+		return (NULL);
 	while (haystack[++i] != '\0' && i <= len)
 	{
 		j = 0;

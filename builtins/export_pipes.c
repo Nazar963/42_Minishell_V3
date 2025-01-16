@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:30:09 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/15 19:42:46 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/16 19:02:40 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,19 +90,65 @@ char	**ft_export_var_reassign_p(char **env, char *variable, char *value)
 	return (NULL);
 }
 
-int	ft_export_pipes_check_var(t_token **token)
+void	ft_concatenate_var(t_token **token, t_main *main)
+{
+	int		i;
+	char	*temp;
+	char	**splitted;
+	char	**splitted_2;
+	char	*new_str;
+	char	*tempos;
+
+	i = -1;
+	splitted_2 = ft_split((*token)->content, '=');
+	while (main->env[++i])
+	{
+		temp = ft_strjoin(splitted_2[0], "=");
+		if (ft_strncmp(main->env[i], temp, ft_strlen(temp)) == 0)
+		{
+			splitted = ft_split(main->env[i], '=');
+			new_str = ft_strjoin(splitted[0], "=");
+			tempos = new_str;
+			new_str = ft_strjoin(tempos, splitted[1]);
+			free(tempos);
+			tempos = new_str;
+			new_str = ft_strjoin(new_str, splitted_2[1]);
+			free(tempos);
+			free(temp);
+			free(main->env[i]);
+			free_mtx(&splitted);
+			free_mtx(&splitted_2);
+			main->env[i] = ft_strdup(new_str);
+			free(new_str);
+			free_linked_list(token);
+			return ;
+		}
+		free(temp);
+	}
+}
+
+int	ft_export_pipes_check_var(t_token **token, t_main *main)
 {
 	char	**splitted_argument;
+	int		loco;
 
 	splitted_argument = ft_split((*token)->content, '=');
 	if (splitted_argument)
 	{
-		if (is_valid_var_name_pipes(splitted_argument[0]) == 0)
+		loco = is_valid_var_name_pipes(splitted_argument[0]);
+		if (loco == 0)
 		{
 			free_orig_linked_list(token);
 			free_mtx(&splitted_argument);
 			g_global = 1;
 			print_error("export: not a valid identifier", NULL, NULL);
+			return (1);
+		}
+		else if (loco == 2)
+		{
+			ft_clean_var(token);
+			ft_concatenate_var(token, main);
+			free_mtx(&splitted_argument);
 			return (1);
 		}
 		ft_clean_var(token);
@@ -118,7 +164,7 @@ void	ft_export_pipes(t_token **token, t_main *main)
 	ft_del_first_node(token);
 	if (!*token || (*token)->content[0] == '|')
 		return (print_env_export(main), (void)0);
-	if (ft_export_pipes_check_var(token) == 1)
+	if (ft_export_pipes_check_var(token, main) == 1)
 		return ;
 	while (*token && (*token)->type != 3)
 	{
