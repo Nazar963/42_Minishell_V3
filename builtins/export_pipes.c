@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:30:09 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/16 19:02:40 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/17 15:37:05 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,8 +148,8 @@ int	ft_export_pipes_check_var(t_token **token, t_main *main)
 		{
 			ft_clean_var(token);
 			ft_concatenate_var(token, main);
-			free_mtx(&splitted_argument);
-			return (1);
+			//free_mtx(&splitted_argument);
+			return (free_mtx(&splitted_argument), 1);
 		}
 		ft_clean_var(token);
 		free_mtx(&splitted_argument);

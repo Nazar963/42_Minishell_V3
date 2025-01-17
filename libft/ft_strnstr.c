@@ -3,16 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 19:20:52 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/16 18:34:43 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/17 15:35:53 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 //#include <stdio.h>
 //#include <string.h>
+
+// char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
+// {
+// 	size_t	i;
+// 	int		j;
+
+// 	i = -1;
+// 	if (*needle == '\0' || !haystack)
+// 		return ((char *)haystack);
+// 	if (!haystack[0])
+// 		return (NULL);
+// 	while (haystack[++i] != '\0' && i <= len)
+// 	{
+// 		j = 0;
+// 		if (haystack[i] == needle[j])
+// 		{
+// 			while (haystack[i] == needle[j] && needle[j] != '\0' && i <= len)
+// 			{
+// 				i++;
+// 				j++;
+// 			}
+// 		}
+// 		if (needle[j] == '\0' && i <= len)
+// 		{
+// 			i -= j;
+// 			return ((char *)&haystack[i]);
+// 		}
+// 		i -= j;
+// 	}
+// 	return (NULL);
+// }
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
@@ -22,14 +53,12 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	i = -1;
 	if (*needle == '\0' || !haystack)
 		return ((char *)haystack);
-	if (!haystack[0])
-		return (NULL);
-	while (haystack[++i] != '\0' && i <= len)
+	while (haystack[++i] != '\0' && i < len)
 	{
 		j = 0;
 		if (haystack[i] == needle[j])
 		{
-			while (haystack[i] == needle[j] && needle[j] != '\0' && i <= len)
+			while (haystack[i] == needle[j] && needle[j] != '\0' && i < len)
 			{
 				i++;
 				j++;
@@ -44,6 +73,7 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	}
 	return (NULL);
 }
+
 /*int main(void)
 {   
     // //1
