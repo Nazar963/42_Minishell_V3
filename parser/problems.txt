@@ -29,7 +29,7 @@ number of a received signal.
 ✅Test an empty command.
 ✅Test only spaces or tabs.
 
-❗bin/true - memory problems
+❗bin/true - memory problems => non leaka
 
 
 ////////////
@@ -65,18 +65,18 @@ EXIT
 Execute exit command with or without arguments.
 Repeat multiple times with different arguments:
 
-	❗exit -0000  // non stampa exit
+	❗exit -0000  // non stampa exit OK
 	✅exit ----
-	❗exit 00000 // non stampa exit
-	❗exit 999999999 // non stampa exit
-	❗exit -42 // non stampa exit
+	❗exit 00000 // non stampa exit OK
+	❗exit 999999999 // non stampa exit OK
+	❗exit -42 // non stampa exit OK
 	✅exit --42
 	✅exit 1 2 3
 	✅exit 0x10 // non stampa exit e errore:
 		exit
 		bash: exit: 0x10: numeric argument required
 
-	❗exit 0755 // non stampa exit
+	❗exit 0755 // non stampa exit OK
 	✅exit 3.14 / non stampa exit e errore:
 		exit
 		bash: exit: 3.14: numeric argument required
@@ -106,7 +106,7 @@ Repeat multiple times with different commands and arguments:
 
 	✅/bin/echo
 	✅/bin/sleep 1
-	❗ /bin/exit 42 // memory problems
+	❗ /bin/exit 42 // memory problems => non leaka
 	
 
 Try some wrong commands like '/bin/ls filethatdoesntexist'
@@ -120,7 +120,7 @@ Try some wrong commands like '/bin/ls filethatdoesntexist'
 	✅/bin/grep non_existent_pattern /etc/passwd
 	✅/bin/rm non_existent_file
 	✅/bin/mkdir /existing_directory
-	❗/bin/invalidcommand // memory problmes (?/)
+	❗/bin/invalidcommand // memory problmes (?/) => non leaka
 
 Try anything like expr $? + $?. (io ho aggiunto echo $? dopo)
 	✅/bin/true
@@ -616,3 +616,32 @@ You should never have to edit any file except the configuration file if it exist
 You must also verify the absence of memory leaks. Any memory allocated on the heap must be properly freed before the end of execution.
 
 You are allowed to use any of the different tools available on the computer, such as leaks, valgrind, or e_fence. In case of memory leaks, tick the appropriate flag.
+
+# --------------------------------------------------------------------------- #
+#                                     NIZZ                                    #
+# --------------------------------------------------------------------------- #
+- <DONE> Try ctrl-\ after running a blocking command like cat without arguments or grep "something".
+
+- <DONE> unset PATH
+  <DONE> env | grep PATH
+
+- <DONE> heredoc doesn’t have to update the history!
+
+- <DONE> cat /etc/passwd | grep root | more
+
+- <DONE> conditional jump
+	- <DONE> echo "Hello, World!" | tr ' ' '\n' | sort
+	- <DONE> ps aux | grep root | less // non capisco come verificare
+
+- <DONE> Try to mix pipes and redirections. ❌ conditional jumps
+	- <DONE> cat /etc/passwd | grep root > output.txt
+	- <DONE> cat output.txt | wc -l
+	- <DONE> ls -l | grep '^d' > dirs.txt
+	- <DONE> cat dirs.txt | wc -l
+	- <DONE> echo "Hello, World!" | tr ' ' '\n' | sort > sorted.txt
+	- <DONE> bash se premere ctrl + D: 
+			- <DONE> exit
+			- <DONE> There are stopped jobs.
+
+- <DONE> cat | cat | ls
+# --------------------------------------------------------------------------- #

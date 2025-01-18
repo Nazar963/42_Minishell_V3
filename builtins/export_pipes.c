@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:30:09 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/17 15:37:05 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/17 19:38:32 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,39 +92,67 @@ char	**ft_export_var_reassign_p(char **env, char *variable, char *value)
 
 void	ft_concatenate_var(t_token **token, t_main *main)
 {
-	int		i;
-	char	*temp;
-	char	**splitted;
-	char	**splitted_2;
-	char	*new_str;
-	char	*tempos;
+	t_con	con;
 
-	i = -1;
-	splitted_2 = ft_split((*token)->content, '=');
-	while (main->env[++i])
+	con.i = -1;
+	con.splitted_2 = ft_split((*token)->content, '=');
+	while (main->env[++con.i])
 	{
-		temp = ft_strjoin(splitted_2[0], "=");
-		if (ft_strncmp(main->env[i], temp, ft_strlen(temp)) == 0)
+		con.temp = ft_strjoin(con.splitted_2[0], "=");
+		if (ft_strncmp(main->env[con.i], con.temp, ft_strlen(con.temp)) == 0)
 		{
-			splitted = ft_split(main->env[i], '=');
-			new_str = ft_strjoin(splitted[0], "=");
-			tempos = new_str;
-			new_str = ft_strjoin(tempos, splitted[1]);
-			free(tempos);
-			tempos = new_str;
-			new_str = ft_strjoin(new_str, splitted_2[1]);
-			free(tempos);
-			free(temp);
-			free(main->env[i]);
-			free_mtx(&splitted);
-			free_mtx(&splitted_2);
-			main->env[i] = ft_strdup(new_str);
-			free(new_str);
+			con.splitted = ft_split(main->env[con.i], '=');
+			con.new_str = ft_strjoin(con.splitted[0], "=");
+			con.tempos = con.new_str;
+			con.new_str = ft_strjoin(con.tempos, con.splitted[1]);
+			free(con.tempos);
+			con.tempos = con.new_str;
+			con.new_str = ft_strjoin(con.new_str, con.splitted_2[1]);
+			free(con.tempos);
+			free(con.temp);
+			free(main->env[con.i]);
+			free_mtx(&con.splitted);
+			free_mtx(&con.splitted_2);
+			main->env[con.i] = ft_strdup(con.new_str);
+			free(con.new_str);
 			free_linked_list(token);
 			return ;
 		}
-		free(temp);
+		free(con.temp);
 	}
+}
+
+char	*ft_clean_join(char *var)
+{
+	char	*new_str;
+	int		i;
+
+	i = 0;
+	new_str = (char *)malloc(sizeof(char) * (ft_strlen(var) + 1));
+	while (var[i] != '+')
+	{
+		new_str[i] = var[i];
+		i++;
+	}
+	new_str[i] = '=';
+	new_str[++i] = '\0';
+	return (new_str);
+}
+
+int	ft_check_if_already_exits(char *var, t_main *main)
+{
+	int		i;
+	char	*var_join;
+
+	i = 0;
+	var_join = ft_clean_join(var);
+	while (main->env[i])
+	{
+		if (ft_strncmp(main->env[i], var_join, ft_strlen(var_join)) == 0)
+			return (free(var_join), 1);
+		i++;
+	}
+	return (free(var_join), 0);
 }
 
 int	ft_export_pipes_check_var(t_token **token, t_main *main)
@@ -144,7 +172,7 @@ int	ft_export_pipes_check_var(t_token **token, t_main *main)
 			print_error("export: not a valid identifier", NULL, NULL);
 			return (1);
 		}
-		else if (loco == 2)
+		else if (loco == 2 && ft_check_if_already_exits(splitted_argument[0], main))
 		{
 			ft_clean_var(token);
 			ft_concatenate_var(token, main);

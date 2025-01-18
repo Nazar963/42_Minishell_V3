@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:05:14 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/15 19:33:55 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/18 13:11:49 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	ft_exit(t_token **token, t_main *main)
 		{
 			exit_num = ft_atoi((*token)->content);
 			free_all(main, token);
+			printf("exit\n");
 			exit(exit_num);
 		}
 	}

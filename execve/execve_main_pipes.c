@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/15 19:47:54 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/18 16:36:31 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	handle_path_pipes(t_token **token, t_main *main, int **fds)
 	}
 	else
 	{
+		print_error("minishell: ", (*token)->content, ": No suck file or directory");
 		free_linked_list(token);
 		ret = 127;
 	}
@@ -91,6 +92,7 @@ int	child_pipes(t_token **list, t_main *main, int **fds, int pos)
 	pid1 = ft_fork();
 	if (pid1 == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
 		if (pos == 1)
 			ft_first_pos_dup(list, main, fds);
 		else if (pos == 2)

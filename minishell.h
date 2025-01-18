@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/16 19:07:13 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/16 21:51:08 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,16 @@ typedef struct s_ex
 	int		i;
 	int		y;
 }				t_ex;
+
+typedef struct s_con
+{
+	int		i;
+	char	*temp;
+	char	**splitted;
+	char	**splitted_2;
+	char	*new_str;
+	char	*tempos;
+}				t_con;
 
 //* -------------------------------- Natalie ------------------------------- */
 typedef struct s_mtx // struttura per splittare input

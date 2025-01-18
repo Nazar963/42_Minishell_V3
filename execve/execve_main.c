@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/16 18:41:35 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/18 16:37:01 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,10 @@ void	handle_path(t_token **token, t_main *main)
 	{
 		i++;
 		if (!main->env[i])
+		{
+			print_error("minishell: ", (*token)->content, ": No such file or directory");
 			break ;
+		}
 	}
 	ret = 127;
 	if (main->env[i])
@@ -96,9 +99,19 @@ void	child(t_token **token, t_main *main)
 		close(fd);
 	}
 	if (pid1 == 0)
+	{
+		signal(SIGQUIT, SIG_DFL);
 		handle_path(token, main);
+	}
 	waitpid(pid1, &status, 0);
-	if (WIFEXITED(status))
+
+	if (status == 131)
+	{
+		// Child was killed by SIGQUIT (Ctrl-\)
+		write(2, "Quit (core dumped)\n", 20);
+		g_global = 131;
+	}
+	else if (WIFEXITED(status))
 	{
 		g_global = WEXITSTATUS(status);
 		if (g_global == 7)
