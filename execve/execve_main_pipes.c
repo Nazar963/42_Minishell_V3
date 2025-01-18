@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/18 16:36:31 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/18 22:10:37 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,7 @@ void	handle_path_pipes(t_token **token, t_main *main, int **fds)
 		free_mtx(&new_path);
 	}
 	else
-	{
-		print_error("minishell: ", (*token)->content, ": No suck file or directory");
-		free_linked_list(token);
-		ret = 127;
-	}
+		ret = handle_path_pipes_no_path(token);
 	free(main->pids);
 	free_fds(fds, main->pipe_count);
 	free_all(main, &main->token);
@@ -110,8 +106,7 @@ int	child_pipes(t_token **list, t_main *main, int **fds, int pos)
 		free_all(main, list);
 		exit(g_global);
 	}
-	ft_parent_pos_dup_close(pos, main, fds);
-	return (pid1);
+	return (ft_parent_pos_dup_close(pos, main, fds), pid1);
 }
 
 int	ft_exe_main_pipes(t_token **list, t_main *main, int **fds, int pos)

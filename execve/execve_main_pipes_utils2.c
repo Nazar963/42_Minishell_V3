@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 12:50:23 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/15 19:50:48 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/18 23:09:04 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,31 @@ int	ft_no_special_characters_fun(char **cmd, t_main *main)
 	if (ft_strncmp(cmd[0], "./", 2) == 0 || ft_strrchr(cmd[0], '/'))
 		return (ft_add_slash_pipes_file(cmd, main->env));
 	return (0);
+}
+
+int	handle_path_pipes_no_path(t_token **token)
+{
+	print_error("minishell: ",
+		(*token)->content, ": No suck file or directory");
+	free_linked_list(token);
+	return (127);
+}
+
+void	ft_handle_exit_status(int status)
+{
+	if (status == 131)
+	{
+		write(2, "Quit (core dumped)\n", 20);
+		g_global = 131;
+	}
+	else if (WIFEXITED(status))
+	{
+		g_global = WEXITSTATUS(status);
+		if (g_global == 7)
+			g_global = 0;
+	}
+	else if (WIFSIGNALED(status))
+		g_global = 128 + WTERMSIG(status);
+	else
+		g_global = 1;
 }

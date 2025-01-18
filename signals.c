@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:51:41 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/18 14:30:46 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/18 23:11:13 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,9 @@ void	ft_signals(int sig)
 	}
 }
 
-void	ft_quit(int sig)
-{
-	if (sig == SIGQUIT)
-	{
-		if (g_global == 7)
-		{
-			printf("^\\Quit (core dumped)\n");
-			exit(131);
-		}
-		(void)sig;
-		signal(SIGQUIT, SIG_IGN);
-	}
-}
-
 void	set_signals(void)
 {
 	signal(SIGINT, ft_signals);
-	// signal(SIGQUIT, ft_quit);
 	signal(SIGQUIT, SIG_IGN);
 }
 

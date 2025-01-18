@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/18 20:45:28 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/18 23:09:19 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,10 @@ void		ft_export_pipes_norm2(t_main *main, char **s);
 char		*ft_export_var_reassign_p_norm0(char *orig, char *value);
 //£ -------------------------- export_pipes_utils1 ------------------------- */
 void		ft_clean_var(t_token **token);
+void		ft_free_con_sp(t_con *con);
+void		ft_concatenate_var(t_token **token, t_main *main);
+char		*ft_clean_join(char *var);
+int			ft_check_if_exits(char *var, t_main *main);
 //£ ---------------------------------- pwd --------------------------------- */
 void		ft_pwd(t_token **token);
 //£ ------------------------------- pwd_pipes ------------------------------ */
@@ -331,6 +335,8 @@ char		*add_slash_pipes_norm0(char *new);
 void		error_cmd_pipes(char *cmd);
 char		*ft_join_path_pipes(char **cmd);
 int			ft_no_special_characters_fun(char **cmd, t_main *main);
+int			handle_path_pipes_no_path(t_token **token);
+void		ft_handle_exit_status(int status);
 //£ --------------------------- execve_main_pipes -------------------------- */
 void		execute_cmd_pipes(char *exec_path, char **cmd, char **envp);
 int			add_slash_pipes(char **new_path, char **cmd, char **envp);

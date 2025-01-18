@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/18 16:37:01 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/18 23:08:46 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,11 @@ void	handle_path(t_token **token, t_main *main)
 	char	**cmd;
 
 	i = 0;
-	while (ft_strnstr(main->env[i], "PATH=", 5) == 0)
-	{
+	while (main->env[i] && ft_strnstr(main->env[i], "PATH=", 5) == 0)
 		i++;
-		if (!main->env[i])
-		{
-			print_error("minishell: ", (*token)->content, ": No such file or directory");
-			break ;
-		}
-	}
+	if (!main->env[i])
+		print_error("minishell: ",
+			(*token)->content, ": No such file or directory");
 	ret = 127;
 	if (main->env[i])
 	{
@@ -104,23 +100,7 @@ void	child(t_token **token, t_main *main)
 		handle_path(token, main);
 	}
 	waitpid(pid1, &status, 0);
-
-	if (status == 131)
-	{
-		// Child was killed by SIGQUIT (Ctrl-\)
-		write(2, "Quit (core dumped)\n", 20);
-		g_global = 131;
-	}
-	else if (WIFEXITED(status))
-	{
-		g_global = WEXITSTATUS(status);
-		if (g_global == 7)
-			g_global = 0;
-	}
-	else if (WIFSIGNALED(status))
-		g_global = 128 + WTERMSIG(status);
-	else
-		g_global = 1;
+	ft_handle_exit_status(status);
 	dup2(main->orig_fd[0], STDIN_FILENO);
 }
 
