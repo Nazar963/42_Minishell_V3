@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:49:23 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/16 21:36:20 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/18 20:42:22 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	ft_add_to_buffer(t_mtx *data, char *var_value)
 	size_t	var_len;
 
 	var_len = ft_strlen(var_value) + ft_strlen(data->str);
-	new_buffer = ft_realloc_str(data->buffer, (var_len + 1));
+	new_buffer = ft_realloc_str(data->buffer, data->i,  (var_len + 1));
+	//new_buffer = ft_realloc_str(data->buffer, (var_len + 1));
 	if (!new_buffer)
 	{
 		print_error("Memory alloc error", NULL, NULL);

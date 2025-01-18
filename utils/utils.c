@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 20:44:33 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/18 17:06:42 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/18 20:47:20 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,21 @@ char	**ft_realloc(char **mtx, int size)
 	return (new_mtx);
 }
 
-char	*ft_realloc_str(char *mtx, int size)
+char	*ft_realloc_str(char *mtx, int x, int size)
 {
 	char	*new_mtx;
 	int		i;
 
 	i = 0;
-	new_mtx = (char *)malloc(sizeof(char ) * (size + ft_strlen(mtx)));
+	new_mtx = (char *)malloc(sizeof(char ) * (size));
 	if (new_mtx == NULL)
 		return (NULL);
-	while (mtx[i])
+	while (i < x)
 	{
 		new_mtx[i] = mtx[i];
 		i++;
 	}
-	new_mtx[size] = '\0';
+	new_mtx[i] = '\0';
 	free_str(mtx);
 	return (new_mtx);
 }

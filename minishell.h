@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/16 21:51:08 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/18 20:45:28 by nakoriko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void		ft_free_linked_list_until_pipe(t_token **token);
 void		free_token_and_input(char *input, t_token **token);
 //£ --------------------------------- utils -------------------------------- */
 char		**ft_realloc(char **mtx, int size);
-char		*ft_realloc_str(char *mtx, int size);
+char		*ft_realloc_str(char *mtx, int x, int size);
 int			ft_strlen_mtx(char **mtx);
 int			ft_control_int(char *str);
 void		ft_del_first_node(t_token **token);
