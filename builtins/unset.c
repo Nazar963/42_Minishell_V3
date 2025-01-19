@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:30:41 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/03 20:50:57 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/19 15:45:23 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,30 +25,66 @@ int	ft_unset_norm0(t_token **token, t_main *main, int i, int len)
 	return (i);
 }
 
+int	ft_is_valid_unset_identifier(char *var)
+{
+	int	i;
+
+	i = 0;
+	if (!var || var[0] == '\0')
+		return (0);
+	if (!ft_isalpha(var[0]) && var[0] != '_')
+		return (0);
+	i = 1;
+	while (var[i])
+	{
+		if (var[i] == '=')
+			return (0);
+		if (!ft_isalnum(var[i]) && var[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void	ft_unset_invalid_identifier(t_token **token)
+{
+	g_global = 1;
+	print_error(" not a valid identifier", NULL, NULL);
+	ft_del_first_node(token);
+}
+
+void	ft_unset_unset_loop(int *i, t_main *main, t_token **token)
+{
+	int	len;
+
+	while (*token && main->env[(*i)])
+	{
+		len = ft_strlen((*token)->content);
+		if (ft_strncmp(main->env[(*i)], (*token)->content, len) == 0
+			&& (main->env[(*i)][len] == '=' || main->env[(*i)][len] == '\0'))
+		{
+			(*i) = ft_unset_norm0(token, main, (*i), len);
+			return ;
+		}
+		(*i)++;
+		if (main->env[(*i)] == NULL)
+		{
+			ft_del_first_node(token);
+			return ;
+		}
+	}
+}
+
 void	ft_unset(t_token **token, t_main *main)
 {
 	int	i;
-	int	len;
 
 	ft_del_first_node(token);
 	while (*token)
 	{
+		if (!ft_is_valid_unset_identifier((*token)->content))
+			ft_unset_invalid_identifier(token);
 		i = 0;
-		while (main->env[i])
-		{
-			len = ft_strlen((*token)->content);
-			if (ft_strncmp(main->env[i], (*token)->content, len) == 0
-				&& (main->env[i][len] == '=' || main->env[i][len] == '\0'))
-			{
-				i = ft_unset_norm0(token, main, i, len);
-				break ;
-			}
-			i++;
-			if (main->env[i] == NULL)
-			{
-				ft_del_first_node(token);
-				break ;
-			}
-		}
+		ft_unset_unset_loop(&i, main, token);
 	}
 }

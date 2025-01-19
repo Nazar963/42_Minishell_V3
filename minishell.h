@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/18 23:09:19 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/19 15:48:05 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,16 +76,16 @@ typedef struct s_con
 //* -------------------------------- Natalie ------------------------------- */
 typedef struct s_mtx // struttura per splittare input
 {
-	char	*str; // stringa pulita dal spazi al inizio e il fine
-	char	**tokens; // matrice di tokens
-	char	*buffer; // array di tokens
-	char	quote; // per tenere virgolette ed apici
+	char	*str;
+	char	**tokens;
+	char	*buffer;
+	char	quote;
 	char	twin_char;
 	int		len;
-	int		i; // contatore di input
-	int		y; //contatore di stringhe dentro char **tokens
-	int		j; // contatore di caratteri dentro buffer
-	int		k; // contatore per allocare le array dentro matrice(tokens)
+	int		i;
+	int		y;
+	int		j;
+	int		k;
 	int		check;
 	int		arg_count;
 	int		delim_flag;

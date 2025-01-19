@@ -1,7 +1,6 @@
 cd .. |ls|cat Makefile|>> out
 pwd
 /bin/rm -f out
-ls|cat Makefile|>> out|cd ..
 /bin/rm -f out
 "."
 |

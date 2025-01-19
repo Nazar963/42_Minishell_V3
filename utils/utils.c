@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 20:44:33 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/18 20:47:20 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/19 15:52:35 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,12 @@ char	*ft_realloc_str(char *mtx, int x, int size)
 	int		i;
 
 	i = 0;
-	new_mtx = (char *)malloc(sizeof(char ) * (size));
+	(void)x;
+	new_mtx = (char *)malloc(sizeof(char ) * (size + ft_strlen(mtx)));
+	ft_memset(new_mtx, 0, (size + ft_strlen(mtx)));
 	if (new_mtx == NULL)
 		return (NULL);
-	while (i < x)
+	while (mtx[i])
 	{
 		new_mtx[i] = mtx[i];
 		i++;
@@ -49,6 +51,25 @@ char	*ft_realloc_str(char *mtx, int x, int size)
 	free_str(mtx);
 	return (new_mtx);
 }
+
+// char	*ft_realloc_str(char *mtx, int x, int size)
+// {
+// 	char	*new_mtx;
+// 	int		i;
+
+// 	i = 0;
+// 	new_mtx = (char *)malloc(sizeof(char ) * (size));
+// 	if (new_mtx == NULL)
+// 		return (NULL);
+// 	while (i < x)
+// 	{
+// 		new_mtx[i] = mtx[i];
+// 		i++;
+// 	}
+// 	new_mtx[i] = '\0';
+// 	free_str(mtx);
+// 	return (new_mtx);
+// }
 
 int	ft_strlen_mtx(char **mtx)
 {

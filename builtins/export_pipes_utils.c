@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 22:27:27 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/16 18:42:46 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/19 15:03:01 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ int	is_valid_var_name_pipes(const char *name)
 	i = 0;
 	if (!name || name[0] == '\0')
 		return (0);
-	if (!(ft_isalpha((unsigned char)name[0]) || name[0] == '_'))
+	if (!(ft_isalpha(name[0]) || name[0] == '_'))
 		return (0);
 	while (name[++i] != '\0' && name[i] != '=')
 	{
-		if (!(ft_isalnum((unsigned char)name[i]) || name[i] == '_'))
+		if (!(ft_isalnum(name[i]) || name[i] == '_'))
 		{
 			if (name[i] == '+' && name[i + 1] == '\0')
 				return (2);
