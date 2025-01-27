@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/19 15:48:05 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/26 16:38:28 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -329,7 +329,7 @@ int			ft_fork(void);
 char		**ft_from_list_to_array_pipes(t_token **token);
 int			error_file_dir(char *cmd);
 int			ft_no_special_characters_pipes(char *cmd);
-int			ft_add_slash_pipes_file(char **cmd, char **envp);
+int			ft_add_slash_pipes_file(char **cmd, char **envp, t_main *main);
 char		*add_slash_pipes_norm0(char *new);
 //£ ----------------------- execve_main_pipes_utils2 ----------------------- */
 void		error_cmd_pipes(char *cmd);
@@ -338,8 +338,10 @@ int			ft_no_special_characters_fun(char **cmd, t_main *main);
 int			handle_path_pipes_no_path(t_token **token);
 void		ft_handle_exit_status(int status);
 //£ --------------------------- execve_main_pipes -------------------------- */
-void		execute_cmd_pipes(char *exec_path, char **cmd, char **envp);
-int			add_slash_pipes(char **new_path, char **cmd, char **envp);
+void		execute_cmd_pipes(char *exec_path, char **cmd, char **envp,
+				t_main *m);
+int			add_slash_pipes(char **new_path, char **cmd, char **envp,
+				t_main *main);
 void		handle_path_pipes(t_token **token, t_main *main, int **fds);
 int			child_pipes(t_token **list, t_main *main, int **fds, int pos);
 int			ft_exe_main_pipes(t_token **list, t_main *main, int **fds, int pos);

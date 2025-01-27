@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakoriko <nakoriko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:19:00 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/18 19:54:36 by nakoriko         ###   ########.fr       */
+/*   Updated: 2025/01/26 15:19:53 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ static void	ctrl_d(char *input, t_token **token, t_main *main)
 {
 	if (input == NULL)
 	{
+		close(main->orig_fd[0]);
+		close(main->orig_fd[1]);
 		rl_clear_history();
 		free_all(main, token);
 		printf("exit\n");

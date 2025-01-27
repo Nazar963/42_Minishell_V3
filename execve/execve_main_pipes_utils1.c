@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 12:47:45 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/09 21:54:50 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/26 15:54:44 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	ft_no_special_characters_pipes(char *cmd)
 	return (0);
 }
 
-int	ft_add_slash_pipes_file(char **cmd, char **envp)
+int	ft_add_slash_pipes_file(char **cmd, char **envp, t_main *main)
 {
 	struct stat	path_stat;
 
@@ -102,7 +102,7 @@ int	ft_add_slash_pipes_file(char **cmd, char **envp)
 		print_error(" Error accessing file", NULL, NULL);
 		return (126);
 	}
-	return (execute_cmd_pipes(cmd[0], cmd, envp), 0);
+	return (execute_cmd_pipes(cmd[0], cmd, envp, main), 0);
 }
 
 char	*add_slash_pipes_norm0(char *new)

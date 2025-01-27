@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:29:24 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/15 19:36:22 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/26 16:36:12 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,20 @@ void	ft_cd_norm0(t_token **token)
 		g_global = 0;
 }
 
+int	check_for_home(t_main *main)
+{
+	int	i;
+
+	i = 0;
+	while (main->env[i])
+	{
+		if (ft_strncmp(main->env[i], "HOME=", 5) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	ft_cd(t_token **token, t_main *main)
 {
 	ft_del_first_node(token);
@@ -78,12 +92,13 @@ void	ft_cd(t_token **token, t_main *main)
 	if (!*token || (ft_strncmp((*token)->content, "~", 1) == 0)
 		|| ((*token)->content[0] == '|'))
 	{
-		if (chdir(getenv("HOME")) == -1)
+		if (check_for_home(main) && chdir(getenv("HOME")) == 0)
+			g_global = 0;
+		else
 		{
 			g_global = 1;
-			printf("cd: HOME not set\n");
+			print_error("minishell: cd: HOME not set", NULL, NULL);
 		}
-		g_global = 0;
 	}
 	else
 		ft_cd_norm0(token);

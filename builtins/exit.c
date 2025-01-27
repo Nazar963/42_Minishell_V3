@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:05:14 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/18 13:11:49 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/26 16:35:01 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	ft_exit(t_token **token, t_main *main)
 	int	exit_num;
 
 	ft_del_first_node(token);
+	close(main->orig_fd[0]);
+	close(main->orig_fd[1]);
 	if (*token && (*token)->type == 1 && (*token)->next == NULL)
 	{
 		if (ft_control_int((*token)->content) == 0)
@@ -57,15 +59,13 @@ void	ft_exit(t_token **token, t_main *main)
 			printf("exit\n");
 			print_error("bash: exit: ", (*token)->content,
 				": numeric argument required");
-			free_all(main, token);
-			exit(2);
+			return (free_all(main, token), exit(2), (void)0);
 		}
 		else
 		{
 			exit_num = ft_atoi((*token)->content);
 			free_all(main, token);
-			printf("exit\n");
-			exit(exit_num);
+			return (printf("exit\n"), exit(exit_num), (void)0);
 		}
 	}
 	else if (*token)

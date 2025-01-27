@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 20:44:33 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/19 15:52:35 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/26 18:15:34 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,26 @@ char	*ft_realloc_str(char *mtx, int x, int size)
 {
 	char	*new_mtx;
 	int		i;
+	int		len;
 
-	i = 0;
 	(void)x;
-	new_mtx = (char *)malloc(sizeof(char ) * (size + ft_strlen(mtx)));
-	ft_memset(new_mtx, 0, (size + ft_strlen(mtx)));
+	i = 0;
+	if (mtx)
+		len = size + ft_strlen(mtx);
+	else
+		len = size;
+	new_mtx = (char *)malloc(sizeof(char ) * len);
+	ft_memset(new_mtx, 0, len);
 	if (new_mtx == NULL)
 		return (NULL);
-	while (mtx[i])
+	if (mtx)
 	{
-		new_mtx[i] = mtx[i];
-		i++;
+		while (mtx[i])
+		{
+			new_mtx[i] = mtx[i];
+			i++;
+		}
 	}
-	new_mtx[i] = '\0';
 	free_str(mtx);
 	return (new_mtx);
 }

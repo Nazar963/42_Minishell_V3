@@ -6,14 +6,16 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/18 22:10:37 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/26 16:36:37 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	execute_cmd_pipes(char *exec_path, char **cmd, char **envp)
+void	execute_cmd_pipes(char *exec_path, char **cmd, char **envp, t_main *m)
 {
+	close(m->orig_fd[0]);
+	close(m->orig_fd[1]);
 	if (execve(exec_path, cmd, envp) == -1)
 	{
 		free_mtx(&cmd);
@@ -25,7 +27,7 @@ void	execute_cmd_pipes(char *exec_path, char **cmd, char **envp)
 	}
 }
 
-int	add_slash_pipes(char **new_path, char **cmd, char **envp)
+int	add_slash_pipes(char **new_path, char **cmd, char **envp, t_main *main)
 {
 	int		i;
 	char	*exec_path;
@@ -34,19 +36,19 @@ int	add_slash_pipes(char **new_path, char **cmd, char **envp)
 	if (ft_no_special_characters_pipes(cmd[0]) != 0)
 		return (ft_no_special_characters_pipes(cmd[0]));
 	if (ft_strncmp(cmd[0], "./", 2) == 0 || ft_strrchr(cmd[0], '/'))
-		return (ft_add_slash_pipes_file(cmd, envp));
+		return (ft_add_slash_pipes_file(cmd, envp, main));
 	while (new_path[++i])
 	{
 		if (ft_strrchr(cmd[0], '/'))
 		{
 			exec_path = ft_strjoin(new_path[i], ft_strrchr(cmd[0], '/'));
 			if (access(exec_path, F_OK | X_OK) == 0)
-				execute_cmd_pipes(exec_path, cmd, envp);
+				execute_cmd_pipes(exec_path, cmd, envp, main);
 		}
 		new_path[i] = add_slash_pipes_norm0(new_path[i]);
 		exec_path = ft_strjoin(new_path[i], cmd[0]);
 		if (access(exec_path, F_OK | X_OK) == 0)
-			execute_cmd_pipes(exec_path, cmd, envp);
+			execute_cmd_pipes(exec_path, cmd, envp, main);
 		else
 			free(exec_path);
 	}
@@ -68,7 +70,7 @@ void	handle_path_pipes(t_token **token, t_main *main, int **fds)
 	{
 		new_path = ft_split(main->env[i] + 5, ':');
 		cmd = ft_from_list_to_array_pipes(token);
-		ret = add_slash_pipes(new_path, cmd, main->env);
+		ret = add_slash_pipes(new_path, cmd, main->env, main);
 		free_mtx(&cmd);
 		free_mtx(&new_path);
 	}
@@ -77,6 +79,8 @@ void	handle_path_pipes(t_token **token, t_main *main, int **fds)
 	free(main->pids);
 	free_fds(fds, main->pipe_count);
 	free_all(main, &main->token);
+	close(main->orig_fd[0]);
+	close(main->orig_fd[1]);
 	exit(ret);
 }
 

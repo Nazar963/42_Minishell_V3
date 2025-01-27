@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:43:55 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/15 21:40:57 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/26 17:26:24 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,11 @@ void	ft_tokendata_init(t_mtx *data, char *input)
 		data->tokens[data->k] = NULL;
 		data->k++;
 	}
+	data->buffer = NULL;
 	data->buffer = malloc(sizeof(char) * (data->len + 1));
 	if (data->buffer == NULL)
-	{
-		free(data->tokens);
-		return ;
-	}
+		return (free(data->tokens), (void)0);
+	ft_memset(data->buffer, 0, data->len + 1);
 }
 
 char	**ft_token_generator(char *input, char **env)
@@ -85,7 +84,7 @@ char	**ft_token_generator(char *input, char **env)
 	t_mtx	data;
 
 	ft_tokendata_init(&data, input);
-	if (data.tokens == NULL || data.buffer == NULL)
+	if (data.tokens == NULL)
 		return (NULL);
 	preparsing_check_and_split_input(&data, env);
 	if (data.check == 1 || data.arg_count >= data.k)

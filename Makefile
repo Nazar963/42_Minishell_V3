@@ -6,7 +6,7 @@
 #    By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/02 19:06:12 by naal-jen          #+#    #+#              #
-#    Updated: 2025/01/15 20:37:58 by naal-jen         ###   ########.fr        #
+#    Updated: 2025/01/25 10:23:36 by naal-jen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,17 +31,15 @@ OBJ = $(SRC:%.c=$(OBJDIR)/%.o)
 OBJDIR = .objectFiles
 HEADER = minishell.h
 
-all: LIBFT $(NAME)
+all: $(NAME)
 
-LIBFT:
+$(NAME): $(OBJ)
 	@make -C libft
-
-$(NAME): $(OBJ) LIBFT
 	@$(CC) $(FLAGS) $(SRC) -o $(NAME) libft/libft.a $(READLINE)
 
 $(OBJDIR)/%.o: %.c $(HEADER)
 	@mkdir -p $(dir $@)
-	@$(CC) $(FLAGS) $(READLINE) -c $< -o $@
+	@$(CC) $(FLAGS) -c $< -o $@
 
 clean:
 	@$(RM) $(OBJDIR)

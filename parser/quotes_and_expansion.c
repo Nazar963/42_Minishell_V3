@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 17:45:01 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/15 19:18:47 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/26 18:15:21 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	ft_expand_global(t_mtx *data)
 	if (str_global)
 	{
 		ft_add_to_buffer(data, str_global);
-		data->i = data->i + ft_strlen(str_global) + 1;
+		data->i = data->i + 2;
 		free(str_global);
 		if (data->check == 1)
 			return ;

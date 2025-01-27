@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/18 23:08:46 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/26 15:57:20 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	execute_cmd(char *exec_path, char **cmd, t_main *main)
 {
+	close(main->orig_fd[0]);
+	close(main->orig_fd[1]);
 	if (execve(exec_path, cmd, main->env) == -1)
 	{
 		free_mtx(&cmd);
@@ -78,6 +80,8 @@ void	handle_path(t_token **token, t_main *main)
 	}
 	free_all(main, &main->token);
 	free_linked_list(token);
+	close(main->orig_fd[0]);
+	close(main->orig_fd[1]);
 	exit(ret);
 }
 

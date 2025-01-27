@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 12:50:23 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/18 23:09:04 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/26 15:50:42 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_no_special_characters_fun(char **cmd, t_main *main)
 	if (ret != 0)
 		return (ret);
 	if (ft_strncmp(cmd[0], "./", 2) == 0 || ft_strrchr(cmd[0], '/'))
-		return (ft_add_slash_pipes_file(cmd, main->env));
+		return (ft_add_slash_pipes_file(cmd, main->env, main));
 	return (0);
 }
 
