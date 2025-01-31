@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 22:27:27 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/19 15:03:01 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/31 22:40:48 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,6 @@ void	ft_export_pipes_norm2(t_main *main, char **s)
 
 char	*ft_export_var_reassign_p_norm0(char *orig, char *value)
 {
-	orig = ft_strjoin_mod(orig, "\"");
 	orig = ft_strjoin_mod(orig, value);
-	orig = ft_strjoin_mod(orig, "\"");
 	return (orig);
 }

@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:26:55 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/15 20:33:01 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/31 22:44:17 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_r(t_delimeter **d, t_token **token, t_main *main, t_token *temp)
 			return (free(h_in), ft_r_norm0(d, token, main, &temp));
 		}
 		if (!h_in)
-			return (ft_r_norm1(*d), ft_r_norm0(d, token, main, &temp));
+			return (ft_r_norm1(*d), free_linked_list_delimeter(d), 0);
 		if (ft_strncmp(h_in, (*d)->del, ft_strlen((*d)->del)) == 0
 			&& ft_strlen(h_in) == ft_strlen((*d)->del) && ft_lsts_d(*d) == 1)
 			return (free(h_in), free_linked_list_delimeter(d), 0);

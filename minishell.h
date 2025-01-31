@@ -6,20 +6,20 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/26 16:38:28 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/29 18:22:45 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdio.h> //* PRINTF
-# include <readline/readline.h>// * READLINE
-# include <readline/history.h> //* READLINE
-# include <fcntl.h> //* OPEN
-# include <unistd.h> //* READ
-# include <stdlib.h> //* MALLOC | FREE
-# include <signal.h> //* SIGNAL
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <fcntl.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <errno.h>
@@ -91,7 +91,7 @@ typedef struct s_mtx // struttura per splittare input
 	int		delim_flag;
 }	t_mtx;
 
-typedef struct s_check // 
+typedef struct s_check
 {
 	int	i;
 	int	last_was_operator;

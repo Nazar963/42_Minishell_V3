@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:11:16 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/15 20:32:04 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/01/31 21:00:13 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,11 @@ int	ft_r_norm0(t_delimeter **d, t_token **token, t_main *main, t_token **temp)
 
 void	ft_r_norm1(t_delimeter *delimeter)
 {
-	print_error("bash: warning: here-document ", NULL, NULL);
-	print_error("at line 31 delimited by end-", NULL, NULL);
-	print_error("of-file (wanted`%s')\n", delimeter->del, NULL);
+	write(2, "bash: warning: here-document ", 30);
+	write(2, "at line 31 delimited by end-", 29);
+	write(2, "of-file (wanted`", 17);
+	write(2, delimeter->del, ft_strlen(delimeter->del));
+	write(2, "')\n", 4);
 }
 
 void	ft_r_norm2(t_delimeter *d, char **new_input, t_main *main, char *h_in)
