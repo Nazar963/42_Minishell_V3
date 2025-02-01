@@ -1,4 +1,3 @@
-cd .. |ls|cat Makefile|>> out
 pwd
 /bin/rm -f out
 /bin/rm -f out

@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:30:41 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/19 15:45:23 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/02/01 15:04:06 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,14 @@ void	ft_unset_unset_loop(int *i, t_main *main, t_token **token)
 			&& (main->env[(*i)][len] == '=' || main->env[(*i)][len] == '\0'))
 		{
 			(*i) = ft_unset_norm0(token, main, (*i), len);
+			g_global = 0;
 			return ;
 		}
 		(*i)++;
 		if (main->env[(*i)] == NULL)
 		{
 			ft_del_first_node(token);
+			g_global = 0;
 			return ;
 		}
 	}
@@ -80,6 +82,11 @@ void	ft_unset(t_token **token, t_main *main)
 	int	i;
 
 	ft_del_first_node(token);
+	if (!(*token) || (*token)->type == TOKEN_PIPE)
+	{
+		g_global = 0;
+		return ;
+	}
 	while (*token)
 	{
 		if (!ft_is_valid_unset_identifier((*token)->content))

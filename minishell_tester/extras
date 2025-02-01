@@ -274,7 +274,6 @@ pwd
 echo "no env over here"
 exit asd
 exit 5
-exit 5 asd
 unset OLDPWD
 pwd
 cd

@@ -6,7 +6,7 @@
 #    By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/02 19:06:12 by naal-jen          #+#    #+#              #
-#    Updated: 2025/01/25 10:23:36 by naal-jen         ###   ########.fr        #
+#    Updated: 2025/02/01 16:05:31 by naal-jen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SRC = main.c signals.c\
 	parser/parsing_check.c parser/preparsing_split.c parser/parsing_main.c parser/parsing_types.c parser/parsing_utils.c parser/parsing_tokens_checks.c parser/path_identifier.c\
 	redirections/redirections_main.c redirections/redirections_main_utils0.c redirections/redirections_main_utils1.c redirections/redirections_main_utils2.c redirections/redirections_main_pipes.c redirections/redirections_main_pipes_utils0.c\
 	utils/free.c utils/utils.c utils/print.c utils/utils1.c\
-	execve/execve_main.c execve/execve_main_pipes.c execve/execve_main_pipes_utils0.c execve/execve_main_pipes_utils1.c execve/execve_main_pipes_utils2.c\
+	execve/execve_main.c execve/execve_main_pipes.c execve/execve_main_pipes_utils0.c execve/execve_main_pipes_utils1.c execve/execve_main_pipes_utils2.c execve/execve_main_pipes_cl_fr.c\
 	pipes/pipes_main.c pipes/pipes_main_utils.c pipes/pipes_main_utils1.c parser/quotes_and_expansion.c parser/token_list_creation.c utils/free_lists.c
 OBJ = $(SRC:%.c=$(OBJDIR)/%.o)
 

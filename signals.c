@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:51:41 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/31 20:52:21 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/02/01 16:50:47 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ void	ft_signals(int sig)
 		{
 			write(1, "\n", 1);
 			close(STDIN_FILENO);
-			g_global = 130;
 			rl_done = 1;
 		}
+		g_global = 130;
 		(void)sig;
 	}
 }

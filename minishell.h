@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/29 18:22:45 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/02/01 16:06:10 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_main
 	bool		done;
 	int			fd;
 	int			exit;
+	int			i;
 }				t_main;
 
 typedef struct s_ex
@@ -319,6 +320,9 @@ void		ft_r_norm2(t_delimeter *d, char **new_input, t_main *main,
 //* ------------------------------------------------------------------------ */
 //*                                  execve                                  */
 //* ------------------------------------------------------------------------ */
+//£ ----------------------- execve_main_pipes_cl_fr ----------------------- */
+void		close_fdss(int **fds, t_main *main);
+void		free_free_free(t_main *main, int **fds, t_token **list);
 //£ ----------------------- execve_main_pipes_utils0 ----------------------- */
 void		ft_first_pos_dup(t_token **list, t_main *main, int **fds);
 void		ft_second_pos_dup(t_token **list, t_main *main, int **fds);

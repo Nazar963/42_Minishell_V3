@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 18:52:08 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/26 16:36:37 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/02/01 16:07:33 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,15 +99,14 @@ int	child_pipes(t_token **list, t_main *main, int **fds, int pos)
 			ft_second_pos_dup(list, main, fds);
 		else if (pos == 3)
 			ft_third_pos_dup(list, main, fds);
+		close_fdss(fds, main);
 		if (*list)
 			ft_redirections_main(list, main);
 		if (*list)
 			ft_builtins_main_pipes(list, main, fds);
 		if (*list)
 			handle_path_pipes(list, main, fds);
-		free(main->pids);
-		free_fds(fds, main->pipe_count);
-		free_all(main, list);
+		free_free_free(main, fds, list);
 		exit(g_global);
 	}
 	return (ft_parent_pos_dup_close(pos, main, fds), pid1);
