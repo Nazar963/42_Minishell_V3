@@ -6,7 +6,7 @@
 #    By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/02 19:06:12 by naal-jen          #+#    #+#              #
-#    Updated: 2025/02/01 16:05:31 by naal-jen         ###   ########.fr        #
+#    Updated: 2025/02/06 18:03:20 by naal-jen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ RM = rm -rf
 SRC = main.c signals.c\
 	builtins/builtins_main.c builtins/cd.c builtins/echo.c builtins/env.c builtins/exit.c builtins/export.c builtins/pwd.c builtins/unset.c\
 	builtins/builtins_main_pipes.c builtins/cd_pipes.c builtins/echo_pipes.c builtins/env_pipes.c builtins/exit_pipes.c builtins/export_pipes.c builtins/pwd_pipes.c\
-	builtins/export_pipes_utils.c builtins/export_pipes_utils1.c\
+	builtins/export_pipes_utils.c builtins/export_pipes_utils1.c builtins/export_pipes_utils2.c\
 	parser/parsing_check.c parser/preparsing_split.c parser/parsing_main.c parser/parsing_types.c parser/parsing_utils.c parser/parsing_tokens_checks.c parser/path_identifier.c\
 	redirections/redirections_main.c redirections/redirections_main_utils0.c redirections/redirections_main_utils1.c redirections/redirections_main_utils2.c redirections/redirections_main_pipes.c redirections/redirections_main_pipes_utils0.c\
 	utils/free.c utils/utils.c utils/print.c utils/utils1.c\

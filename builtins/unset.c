@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:30:41 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/02/05 19:44:38 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/02/06 18:26:54 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int	ft_is_valid_unset_identifier(char *var)
 void	ft_unset_invalid_identifier(t_token **token)
 {
 	g_global = 1;
-	print_error("minishell: unset: `", (*token)->content, "\' not a valid identifier");
+	print_error("minishell: unset: `",
+		(*token)->content, "\' not a valid identifier");
 	ft_del_first_node(token);
 }
 

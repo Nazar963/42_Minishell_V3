@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:30:09 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/02/04 21:14:58 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/02/06 18:41:46 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,15 +121,12 @@ char	**ft_export_var_reassign(char **env, char *variable, char *value)
 
 void	ft_export(t_token **token, t_main *main)
 {
-	char	**splitted_argument;
 	int		flag;
 
 	flag = FALSE;
 	ft_del_first_node(token);
 	if (!*token || (*token)->content[0] == '|')
 		return (print_env_export(main), (void)0);
-	// if (ft_export_pipes_check_var(token, main) == 1)
-	// 	return ;
 	while (*token && (*token)->type != 3)
 	{
 		if (ft_export_pipes_check_var(token, main) == 1)
@@ -143,18 +140,9 @@ void	ft_export(t_token **token, t_main *main)
 			ft_export_pipes_norm0(token, main);
 			continue ;
 		}
-		splitted_argument = ft_split((*token)->content, '=');
-		if (splitted_argument[1] == NULL)
-			ft_export_pipes_norm1(token, main, splitted_argument);
-		else
-			ft_export_pipes_norm2(main, splitted_argument);
-		if (splitted_argument)
-			free_mtx(&splitted_argument);
+		ft_export_pipes_variable_handling(token, main);
 		ft_del_first_node(token);
 	}
-	if (flag == TRUE)
-		g_global = 1;
-	else
-		g_global = 0;
+	ft_g_global_final_assigning(flag);
 	return ;
 }

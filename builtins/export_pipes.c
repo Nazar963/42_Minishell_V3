@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:30:09 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/02/04 21:13:09 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/02/06 19:36:00 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,12 @@ int	ft_export_pipes_check_var(t_token **token, t_main *main)
 		loco = is_valid_var_name_pipes(splitted_argument[0]);
 		if (loco == 0)
 		{
-			print_error("minishell: export: `", splitted_argument[0], "\': not a valid identifier");
+			if (splitted_argument[0])
+				print_error("minishell: export: `",
+					splitted_argument[0], "\': not a valid identifier");
+			else
+				print_error("minishell: export: `",
+					(*token)->content, "\': not a valid identifier");
 			free_mtx(&splitted_argument);
 			g_global = 1;
 			return (1);
@@ -120,7 +125,6 @@ int	ft_export_pipes_check_var(t_token **token, t_main *main)
 
 void	ft_export_pipes(t_token **token, t_main *main)
 {
-	char	**splitted_argument;
 	int		flag;
 
 	flag = FALSE;
@@ -140,18 +144,9 @@ void	ft_export_pipes(t_token **token, t_main *main)
 			flag = TRUE;
 			continue ;
 		}
-		splitted_argument = ft_split((*token)->content, '=');
-		if (splitted_argument[1] == NULL)
-			ft_export_pipes_norm1(token, main, splitted_argument);
-		else
-			ft_export_pipes_norm2(main, splitted_argument);
-		if (splitted_argument)
-			free_mtx(&splitted_argument);
+		ft_export_pipes_variable_handling(token, main);
 		ft_del_first_node(token);
 	}
-	if (flag == TRUE)
-		g_global = 1;
-	else
-		g_global = 0;
+	ft_g_global_final_assigning(flag);
 	return ;
 }

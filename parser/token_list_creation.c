@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 16:30:02 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/15 20:14:34 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/02/06 19:04:03 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ void	assign_token_type(t_token *token, t_token *prev_token)
 	else if (prev_token->type == TOKEN_DELIMITER
 		&& ft_strncmp(token->content, "<<", n) != 0
 		&& ft_strncmp(token->content, ">", n) != 0
-		&& ft_strncmp(token->content, "|", n) != 0)
+		&& ft_strncmp(token->content, "|", n) != 0
+		&& ft_strncmp(token->content, ">>", n) != 0)
 		token->type = TOKEN_COMMAND;
 	else
 		assign_the_rest(token, n);
