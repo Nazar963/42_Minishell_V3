@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:30:09 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/18 22:02:36 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/02/04 21:13:09 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,9 @@ int	ft_export_pipes_check_var(t_token **token, t_main *main)
 		loco = is_valid_var_name_pipes(splitted_argument[0]);
 		if (loco == 0)
 		{
-			free_orig_linked_list(token);
+			print_error("minishell: export: `", splitted_argument[0], "\': not a valid identifier");
 			free_mtx(&splitted_argument);
 			g_global = 1;
-			print_error("export: not a valid identifier", NULL, NULL);
 			return (1);
 		}
 		else if (loco == 2 && ft_check_if_exits(splitted_argument[0], main))
@@ -122,17 +121,23 @@ int	ft_export_pipes_check_var(t_token **token, t_main *main)
 void	ft_export_pipes(t_token **token, t_main *main)
 {
 	char	**splitted_argument;
+	int		flag;
 
+	flag = FALSE;
 	ft_del_first_node(token);
 	if (!*token || (*token)->content[0] == '|')
 		return (print_env_export(main), (void)0);
-	if (ft_export_pipes_check_var(token, main) == 1)
-		return ;
 	while (*token && (*token)->type != 3)
 	{
+		if (ft_export_pipes_check_var(token, main) == 1)
+		{
+			ft_del_first_node(token);
+			continue ;
+		}
 		if (!ft_strchr((*token)->content, '='))
 		{
 			ft_export_pipes_norm0(token, main);
+			flag = TRUE;
 			continue ;
 		}
 		splitted_argument = ft_split((*token)->content, '=');
@@ -144,6 +149,9 @@ void	ft_export_pipes(t_token **token, t_main *main)
 			free_mtx(&splitted_argument);
 		ft_del_first_node(token);
 	}
-	g_global = 0;
+	if (flag == TRUE)
+		g_global = 1;
+	else
+		g_global = 0;
 	return ;
 }

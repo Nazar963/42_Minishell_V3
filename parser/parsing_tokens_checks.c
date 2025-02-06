@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:29:20 by nakoriko          #+#    #+#             */
-/*   Updated: 2025/01/26 18:15:05 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/02/04 20:19:35 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_check_for_exit_argument(t_token *token, t_token *prev_token)
 	int	len;
 
 	len = ft_strlen(prev_token->content);
-	if (ft_strncmp(prev_token->content, "exit", len) == 0)
+	if (ft_strncmp(prev_token->content, "exit", len) == 0 && !ft_strnstr(token->content , "|", 1) && ft_strlen(token->content) != 1)
 	{
 		token->type = TOKEN_ARGUMENT;
 		return (0);

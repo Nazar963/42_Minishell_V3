@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:05:14 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/05 16:02:44 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/02/06 16:13:30 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ void	ft_exit_pipes_norm0(t_main *main, t_token **token, int **fds)
 {
 	int	exit_num;
 
-	if (ft_control_int((*token)->content) == 0)
+	if (ft_control_int((*token)->content) == 0 && (*token)->type != TOKEN_PIPE)
 	{
-		print_error("exit\nbash: exit: ", (*token)->content,
-			": numeric argument required\n");
+		print_error("bash: exit: ", (*token)->content,
+			": numeric argument required");
 		ft_free_exit_pipes(main, token, fds);
 		exit(2);
 	}
-	else if (ft_atoi((*token)->content) < 0)
+	else if (ft_atoi((*token)->content) < 0 && (*token)->type != TOKEN_PIPE)
 	{
 		printf("exit\n");
 		exit_num = ft_correct_exit_status_calc(ft_atoi((*token)->content));
@@ -48,6 +48,10 @@ void	ft_exit_pipes_norm0(t_main *main, t_token **token, int **fds)
 		exit (exit_num);
 	}
 	print_error("bash: exit: too many arguments", NULL, NULL);
+	while ((*token) && (*token)->type != TOKEN_PIPE)
+	{
+		ft_del_first_node(token);
+	}
 	ft_free_exit_pipes(main, token, fds);
 	exit(1);
 }
@@ -61,7 +65,6 @@ void	ft_exit_pipes(t_token **token, t_main *main, int **fds)
 	{
 		if (ft_control_int((*token)->content) == 0)
 		{
-			printf("exit\n");
 			print_error("bash: exit: ", (*token)->content,
 				": numeric argument required");
 			ft_free_exit_pipes(main, token, fds);

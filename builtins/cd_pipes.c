@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:29:24 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/05 22:51:56 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/02/04 20:35:18 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ft_cd_pipes(t_token **token, t_main *main)
 	if (!*token || (ft_strncmp((*token)->content, "~", 1) == 0)
 		|| ((*token)->content[0] == '|'))
 	{
-		if (chdir(getenv("HOME")) == -1)
+		if (chdir(ft_getenv("HOME", main)) == -1)
 		{
 			g_global = 1;
 			printf("cd: HOME not set\n");

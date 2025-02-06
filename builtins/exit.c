@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:05:14 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/02/01 17:33:11 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/02/03 22:51:29 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	ft_exit_with_multi_args(t_token **token, t_main *main)
 		free_all(main, token);
 		exit_close_fds(main, exit_num);
 	}
-	print_error("exit\nminishell: exit: too many arguments", NULL, NULL);
+	printf("exit\nminishell: exit: too many arguments\n");
 	if (g_global == 0)
 		g_global = 1;
 	free_linked_list(token);

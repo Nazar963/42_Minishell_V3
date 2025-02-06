@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:29:24 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/01/26 16:36:12 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/02/04 20:37:07 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	ft_cd(t_token **token, t_main *main)
 	if (!*token || (ft_strncmp((*token)->content, "~", 1) == 0)
 		|| ((*token)->content[0] == '|'))
 	{
-		if (check_for_home(main) && chdir(getenv("HOME")) == 0)
+		if (check_for_home(main) && chdir(ft_getenv("HOME", main)) == 0)
 			g_global = 0;
 		else
 		{
