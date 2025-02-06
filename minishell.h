@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:14:47 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/02/06 18:25:00 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/02/06 19:41:11 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,7 @@ int			ft_check_if_exits(char *var, t_main *main);
 //£ -------------------------- export_pipes_utils2 ------------------------- */
 void		ft_export_pipes_variable_handling(t_token **token, t_main *main);
 void		ft_g_global_final_assigning(int flag);
+void		print_error_helpering(char *check, t_token **token);
 //£ ---------------------------------- pwd --------------------------------- */
 void		ft_pwd(t_token **token);
 //£ ------------------------------- pwd_pipes ------------------------------ */

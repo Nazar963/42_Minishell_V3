@@ -6,7 +6,7 @@
 /*   By: naal-jen <naal-jen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:30:09 by naal-jen          #+#    #+#             */
-/*   Updated: 2025/02/06 19:36:00 by naal-jen         ###   ########.fr       */
+/*   Updated: 2025/02/06 19:41:31 by naal-jen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,7 @@ int	ft_export_pipes_check_var(t_token **token, t_main *main)
 		loco = is_valid_var_name_pipes(splitted_argument[0]);
 		if (loco == 0)
 		{
-			if (splitted_argument[0])
-				print_error("minishell: export: `",
-					splitted_argument[0], "\': not a valid identifier");
-			else
-				print_error("minishell: export: `",
-					(*token)->content, "\': not a valid identifier");
+			print_error_helpering(splitted_argument[0], token);
 			free_mtx(&splitted_argument);
 			g_global = 1;
 			return (1);
